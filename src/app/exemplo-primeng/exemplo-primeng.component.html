@@ -62,3 +62,17 @@
 <div class="card flex justify-content-center">
     <p-password [(ngModel)]="password" [feedback]="false" inputId="password"/>
 </div>
+
+
+<div class="card flex justify-content-center">
+    <p-dropdown 
+        [options]="cities" 
+        [(ngModel)]="selectedCity" 
+        optionLabel="name"
+        placeholder="Select a City" />
+</div>
+
+<!-- Criando if para verificar se a cidade selecionada existe, e caso sim, mostrar ela -->
+@if(selectedCity){
+    {{selectedCity.name}}
+}
