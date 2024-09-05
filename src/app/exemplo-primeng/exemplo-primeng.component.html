@@ -63,7 +63,7 @@
     <p-password [(ngModel)]="password" [feedback]="false" inputId="password"/>
 </div>
 
-
+<h3>Selecione a cidade</h3>
 <div class="card flex justify-content-center">
     <p-dropdown 
         [options]="cities" 
@@ -76,3 +76,11 @@
 @if(selectedCity){
     {{selectedCity.name}}
 }
+
+<h3>Selecione a data</h3>
+<div class="card flex justify-content-center">
+    <p-calendar [(ngModel)]="date"
+    dateFormat="dd/mm/yy" />
+</div>
+
+    
