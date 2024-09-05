@@ -1,56 +1,34 @@
 <label for="descricao">Descrição</label>
 <div class="card flex justify-content-center">
-    <textarea 
-        variant="filled"
-        rows="5"
-        cols="30"
-        pInputTextarea 
-        [(ngModel)]="value"
-        id="descricao">
+    <textarea variant="filled" rows="5" cols="30" pInputTextarea [(ngModel)]="value" id="descricao">
     </textarea>
 </div>
 
 <div class="card flex justify-content-center">
     <div class="flex flex-wrap gap-3">
         <div class="flex align-items-center">
-            <p-radioButton 
-                name="pizza" 
-                value="Cheese" 
-                [(ngModel)]="ingredient" 
-                inputId="ingredient1" />
+            <p-radioButton name="pizza" value="Cheese" [(ngModel)]="ingredient" inputId="ingredient1" />
             <label for="ingredient1" class="ml-2">
                 Cheese
             </label>
         </div>
-        
+
         <div class="flex align-items-center">
-            <p-radioButton 
-                name="pizza" 
-                value="Mushroom" 
-                [(ngModel)]="ingredient" 
-                inputId="ingredient2" />
+            <p-radioButton name="pizza" value="Mushroom" [(ngModel)]="ingredient" inputId="ingredient2" />
             <label for="ingredient2" class="ml-2">
                 Mushroom
             </label>
         </div>
-        
+
         <div class="flex align-items-center">
-            <p-radioButton 
-                name="pizza" 
-                value="Pepper" 
-                [(ngModel)]="ingredient" 
-                inputId="ingredient3" />
+            <p-radioButton name="pizza" value="Pepper" [(ngModel)]="ingredient" inputId="ingredient3" />
             <label for="ingredient3" class="ml-2">
                 Pepper
             </label>
         </div>
-        
+
         <div class="flex align-items-center">
-            <p-radioButton 
-                name="pizza" 
-                value="Onion" 
-                [(ngModel)]="ingredient" 
-                inputId="ingredient4" />
+            <p-radioButton name="pizza" value="Onion" [(ngModel)]="ingredient" inputId="ingredient4" />
             <label for="ingredient4" class="ml-2">
                 Onion
             </label>
@@ -60,27 +38,25 @@
 
 <label for="password">Password</label>
 <div class="card flex justify-content-center">
-    <p-password [(ngModel)]="password" [feedback]="false" inputId="password"/>
+    <p-password [(ngModel)]="password" [feedback]="false" inputId="password" />
 </div>
 
 <h3>Selecione a cidade</h3>
 <div class="card flex justify-content-center">
-    <p-dropdown 
-        [options]="cities" 
-        [(ngModel)]="selectedCity" 
-        optionLabel="name"
-        placeholder="Select a City" />
+    <p-dropdown [options]="cities" [(ngModel)]="selectedCity" optionLabel="name" placeholder="Select a City" />
 </div>
 
 <!-- Criando if para verificar se a cidade selecionada existe, e caso sim, mostrar ela -->
 @if(selectedCity){
-    {{selectedCity.name}}
+{{selectedCity.name}}
 }
 
 <h3>Selecione a data</h3>
 <div class="card flex justify-content-center">
-    <p-calendar [(ngModel)]="date"
-    dateFormat="dd/mm/yy" />
+    <p-calendar [(ngModel)]="date" dateFormat="dd/mm/yy" />
 </div>
 
-    
+<h3>Selecione algo</h3>
+<div class="card flex justify-content-center">
+    <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary" label="Algo"/>
+</div>
