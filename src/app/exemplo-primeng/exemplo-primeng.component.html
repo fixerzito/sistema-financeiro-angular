@@ -58,12 +58,13 @@
 
 <h3>Selecione algo</h3>
 <div class="card flex justify-content-center">
-    <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary" label="Algo"/>
+    <p-checkbox [(ngModel)]="checked" [binary]="true" inputId="binary" label="Algo" />
 </div>
 
 <label for="CEP">CEP</label>
-<p-inputMask 
-    mask="99.999-999" 
-    [(ngModel)]="cep" 
-    placeholder="99.999-999" 
-    inputId="CEP"/>
+<p-inputMask mask="99.999-999" [(ngModel)]="cep" placeholder="99.999-999" inputId="CEP" />
+
+<label for="nome">Nome</label>
+<div class="card flex justify-content-center">
+    <input type="text" pInputText [(ngModel)]="nome" id="nome"/>
+</div>

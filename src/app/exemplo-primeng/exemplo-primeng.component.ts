@@ -4,6 +4,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputMaskModule } from 'primeng/inputmask';
+import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PasswordModule } from 'primeng/password';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -25,7 +26,8 @@ interface City {
     DropdownModule,
     CalendarModule,
     CheckboxModule,
-    InputMaskModule 
+    InputMaskModule,
+    InputTextModule 
   ],
   templateUrl: './exemplo-primeng.component.html',
   styleUrl: './exemplo-primeng.component.css'
@@ -37,6 +39,7 @@ export class ExemploPrimengComponent {
   date: Date | undefined;
   checked: boolean = false;
   cep!: string;
+  nome!: string;
 
   cities: City[] | undefined;
 
