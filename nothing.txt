@@ -1,0 +1,11 @@
+git branch -M "nome_branch" => altera o nome da branch atual
+github no lugar de origin
+git push github/origin <nome_branch>
+git checkout -b <nome_da branch> => cria uma nova branch e muda para ela
+git checkout <nome_da_branch> => altera para outra branch
+//ao alterar para a main, devemos procurar pelas alterações feitas no remoto
+git fetch - busca as alterações/diferencças do repositorio local e remoto
+git pull github <nome_da_branch> => trará as alterações feitas na branch selecionada
+git log trara um log do que foi feito
+
+git reset HEAD~1
