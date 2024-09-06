@@ -28,6 +28,7 @@
     </p-tabView>
 </div>
 
+<h3>Dialog</h3>
 <div class="card flex justify-content-center">
     <p-button (onClick)="showDialog()" label="Show" />
     <p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
@@ -45,4 +46,10 @@
             <p-button label="Save" (onClick)="visible = false" />
         </div>
     </p-dialog>
+</div>
+
+<h3>Toast</h3>
+<div class="card flex justify-content-center">
+    <p-toast />
+    <p-button (onClick)="show()" label="Show" />
 </div>
