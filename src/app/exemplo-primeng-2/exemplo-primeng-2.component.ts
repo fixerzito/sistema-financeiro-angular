@@ -10,6 +10,11 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 
+interface Car {
+  brand: string;
+  year: number;
+  color: string;
+}
 
 
 @Component({
@@ -41,4 +46,10 @@ export class ExemploPrimeng2Component {
     show() {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Message Content' });
     }
+
+    cars: Car[] = [
+      { brand: 'Toyota', year: 2015, color: 'White' },
+      { brand: 'Honda', year: 2018, color: 'Black' },
+      { brand: 'Ford', year: 2020, color: 'Blue' }
+    ];
 }
