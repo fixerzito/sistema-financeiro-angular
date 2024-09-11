@@ -34,12 +34,20 @@ label {
     width: 1900px;
 }
 
-.buttons {
+.buttons-div{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
-    gap: 10px;
+}
+
+.buttons {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    gap: 1px;
 }
 
 .buttons p-button {
-    flex: 1;
     min-width: 0;
 }
