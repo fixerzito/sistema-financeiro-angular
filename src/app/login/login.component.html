@@ -1,15 +1,20 @@
-<div>
-    <label for="email">Login</label>
-    <input type="email" name="" id="email">
-</div>
+<div class="login">
+    <div class="email">
+        <label for="email">Login</label>
+        <input type="text" pInputText id="email" placeholder="Digite seu email" />
+    </div>
 
-<div>
-    <label for="password">Password</label>
-    <input type="password" name="" id="password">
-</div>
+    <div class="password">
+        <label for="password">Password</label>
+        <p-password id="password" [feedback]="false" placeholder="Digite sua senha"></p-password>
+    </div>
 
 <div>
     <a href="/">Login</a>
     <a href="">Cadastro usúario</a>
     <a href="">Alterar senha</a>
+</div>
+
+<div class="card flex justify-content-center">
+    <p-button label="Check" icon="pi pi-check" (onClick)="minhaFuncao()"></p-button>
 </div>
