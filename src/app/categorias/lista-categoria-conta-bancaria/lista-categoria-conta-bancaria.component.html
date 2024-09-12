@@ -1,4 +1,8 @@
-<button (click)="consultar()">consultar</button>
+<div class="card flex justify-content-end">
+    <a routerLink="/categorias/cadastro" class="p-button font-bold">
+        Cadastro 
+    </a>
+</div>
 
 <div class="card">
     <p-table [value]="categorias" [tableStyle]="{ 'min-width': '50rem' }">
