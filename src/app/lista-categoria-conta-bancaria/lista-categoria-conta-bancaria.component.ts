@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
-interface Option {
-  name: string;
+interface Categoria {
+  id: number;
+  nome: string;
 }
 
 @Component({
@@ -11,19 +14,27 @@ interface Option {
   standalone: true,
   imports: [
     DropdownModule,
-    FormsModule
+    FormsModule,
+    TableModule
   ],
   templateUrl: './lista-categoria-conta-bancaria.component.html',
   styleUrl: './lista-categoria-conta-bancaria.component.css'
 })
 export class ListaCategoriaContaBancariaComponent {
-  options: Option[] | undefined;
-  selectedOption: Option | undefined;
+  categorias: Categoria[] = []
 
-  ngOnInit() {
-    this.options = [
-      { name: 'Option' },
-      { name: 'Option' },
-    ];
+  constructor(
+    private httpClient: HttpClient) {
+  }
+
+  ngOnInit(){
+    this.consultar()
+  }
+
+  consultar() {
+    this.httpClient.get<Array<Categoria>>("http://localhost:3000/categorias")
+      .subscribe(x => {
+        this.categorias = x;
+      });
   }
 }
