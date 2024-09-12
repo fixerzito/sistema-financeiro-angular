@@ -8,8 +8,8 @@ import { CadastroCartoesCreditoComponent } from './cadastro-cartoes-credito/cada
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: 'cad-cat-conta-bancaria', component: CadCatContaBancariaComponent },
-    { path: 'conta-bancaria', component: PageCadContaBancariaComponent },
-    { path: 'lista-categoria-conta-bancaria', component: ListaCategoriaContaBancariaComponent },
+    { path: 'categorias/cadastro', component: CadCatContaBancariaComponent },
+    { path: 'contas', component: PageCadContaBancariaComponent },
+    { path: 'categorias', component: ListaCategoriaContaBancariaComponent },
     { path: 'cad-cartao-credito', component: CadastroCartoesCreditoComponent }
 ];
