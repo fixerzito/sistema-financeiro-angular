@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 
 interface Option {
@@ -15,8 +17,11 @@ interface Option {
     FormsModule,
     ButtonModule,
     InputTextModule,
-    DropdownModule
+    DropdownModule,
+    InputGroupAddonModule,
+    InputGroupModule,
   ],
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './page-cad-conta-bancaria.component.html',
   styleUrl: './page-cad-conta-bancaria.component.css'
 })

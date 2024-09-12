@@ -7,6 +7,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 interface Option {
   name: string;
@@ -23,7 +25,9 @@ interface Option {
     DropdownModule,
     InputTextModule,
     CalendarModule,
-    CommonModule
+    CommonModule,
+    InputGroupModule,
+    InputGroupAddonModule
   ],
   templateUrl: './cadastro-cartoes-credito.component.html',
   styleUrl: './cadastro-cartoes-credito.component.css'

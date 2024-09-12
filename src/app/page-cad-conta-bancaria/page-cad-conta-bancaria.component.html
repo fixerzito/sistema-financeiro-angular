@@ -6,16 +6,18 @@
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label for="email" class="font-semibold w-6rem">Categoria</label>
-        <p-dropdown [options]="options" [(ngModel)]="selectedOption" optionLabel="name"
-            placeholder="Escolha a categoria" />
-            <p-button label="+" />
+        <p-inputGroup>
+            <p-dropdown [options]="options" [(ngModel)]="selectedOption" optionLabel="name"
+                placeholder="Escolha a categoria" class="p-dropdown-lucas" />
+            <button type="button" pButton icon="pi pi-plus" class="p-button-primary"></button>
+        </p-inputGroup>
         <label for="email" class="font-semibold w-2rem">Ícone</label>
         <p-dropdown [options]="options" [(ngModel)]="selectedOption" optionLabel="name"
             placeholder="Escolha a categoria" class="flex-auto" autocomplete="off" />
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label for="saldo" class="font-semibold w-8rem">Saldo da conta</label>
-        <input pInputText id="saldo" class="flex-auto" autocomplete="off" placeholder="R$"/>
+        <input pInputText id="saldo" class="flex-auto" autocomplete="off" placeholder="R$" />
         <p-button label="Cancelar" severity="secondary" />
         <p-button label="Salvar" />
     </div>
