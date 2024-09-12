@@ -1,0 +1,43 @@
+<div class="main" [style]="{ width: '50rem' }">
+    <span class="p-text-secondary block mb-5">Cadastrar novo Cartão</span>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="nomeCartao" class="font-semibold w-6rem">Nome do Cartão</label>
+        <input pInputText id="nomeCartao" class="flex-auto" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="limiteCartao" class="font-semibold w-6rem">Limite</label>
+        <input pInputText id="limiteCartao" class="flex-auto" autocomplete="off" placeholder="R$" />
+        <label for="bandeira" class="font-semibold w-4rem">Bandeira</label>
+        <p-dropdown [options]="options" [(ngModel)]="selectedOption" optionLabel="name"
+            placeholder="Escolha a bandeira" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label class="font-semibold w-6rem">Data de Fechamento</label>
+        <p-calendar [(ngModel)]="date" dateFormat="dd.mm" />
+        <label class="font-semibold w-6rem">Data de Vencimento</label>
+        <p-calendar [(ngModel)]="date" dateFormat="dd.mm" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="saldoCartao" class="font-semibold w-6rem">Saldo disponível</label>
+        <input pInputText id="saldoCartao" class="flex-auto" autocomplete="off" placeholder="R$" />
+        <label for="ultimosQuatroDigitos" class="font-semibold w-6rem">Últimos 4 dígitos do Cartão</label>
+        <p-inputMask mask="9999" id="ultimosQuatroDigitos" placeholder="****" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="validContaBancaria">Deseja vincular a uma conta existente? </label>
+        <div class="flex align-items-center">
+            <p-radioButton value="true" [(ngModel)]="stringValidaConta" inputId="sim" (ngModelChange)="validarConta()" />
+            <label for="sim" class="ml-2">Sim</label>
+        </div>
+        <div class="flex align-items-center">
+            <p-radioButton value="false" [(ngModel)]="stringValidaConta" inputId="nao" (ngModelChange)="validarConta()" />
+            <label for="nao" class="ml-2">Não</label>
+        </div>
+        <p-dropdown *ngIf="validaConta" [options]="options" [(ngModel)]="selectedOption" optionLabel="name" placeholder="Escolha a conta a ser vinculada" />
+    </div>
+    
+    <div class="flex align-items-center gap-3 mb-3">
+        <p-button label="Cancelar" severity="secondary" />
+        <p-button label="Salvar" />
+    </div>
+</div>
