@@ -1,0 +1,27 @@
+<p-toast />
+<p-confirmDialog />
+<div class="card flex justify-content-end">
+    <p-button routerLink="/categorias/cadastro" label="Cadastrar" icon="pi pi-plus"/>
+</div>
+
+<div class="card">
+    <p-table [value]="categorias" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-categoria>
+            <tr>
+                <td>{{ categoria.id }}</td>
+                <td>{{ categoria.nome }}</td>
+                <td>
+                    <p-button label="Editar" (onClick)="editar(categoria.id)" icon="pi pi-pencil" />
+                    <p-button label="Apagar" (onClick)="confirmacaoApagar($event ,categoria.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
