@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -27,26 +27,25 @@ interface Categoria {
     ToastModule
   ],
   templateUrl: './lista-categoria-conta-bancaria.component.html',
-  styleUrl: './lista-categoria-conta-bancaria.component.css',
+  styleUrls: ['./lista-categoria-conta-bancaria.component.css'],
   providers: [ConfirmationService, MessageService]
 })
-export class ListaCategoriaContaBancariaComponent {
-  categorias: Categoria[] = []
+export class ListaCategoriaContaBancariaComponent implements OnInit {
+  categorias: Categoria[] = [];
+  categoriaEditar!: Categoria;
 
   constructor(
     private httpClient: HttpClient,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
-  ) {
-
-  }
+    private messageService: MessageService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.consultar()
+    this.consultar();
   }
 
   confirmacaoApagar(event: Event, id: number) {
-
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       message: 'Deseja realmente apagar?',
@@ -56,7 +55,6 @@ export class ListaCategoriaContaBancariaComponent {
       rejectButtonStyleClass: "p-button-text p-button-text",
       acceptIcon: "none",
       rejectIcon: "none",
-
       accept: () => {
         this.apagar(id);
       }
@@ -65,21 +63,20 @@ export class ListaCategoriaContaBancariaComponent {
 
   apagar(id: number) {
     this.httpClient.delete(`http://localhost:3000/categorias/${id}`)
-      .subscribe(x => {
+      .subscribe(() => {
         this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
-        this.consultar()
-      })
+        this.consultar();
+      });
   }
-
-  editar(id: number) {
-
-  }
-
 
   consultar() {
     this.httpClient.get<Array<Categoria>>("http://localhost:3000/categorias")
       .subscribe(x => {
         this.categorias = x;
       });
+  }
+
+  editar(id: number) {
+    this.router.navigate(['categorias/editar-categoria', id]);
   }
 }

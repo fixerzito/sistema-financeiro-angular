@@ -5,13 +5,13 @@ import { PageCadContaBancariaComponent } from './page-cad-conta-bancaria/page-ca
 import { ListaCategoriaContaBancariaComponent } from './categorias/lista-categoria-conta-bancaria/lista-categoria-conta-bancaria.component';
 import { CadastroCartoesCreditoComponent } from './cadastro-cartoes-credito/cadastro-cartoes-credito.component';
 import { CadastroCategoriaContaBancariaComponent } from './categorias/cadastro-categoria-conta-bancaria/cadastro-categoria-conta-bancaria.component';
-
+import { EditarCategoriaComponent } from './categorias/editar-categoria/editar-categoria.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'categorias/cadastro', component: CadastroCategoriaContaBancariaComponent },
-    // { path: 'categorias/cadastro', component: CadCatContaBancariaComponent },
     { path: 'contas', component: PageCadContaBancariaComponent },
     { path: 'categorias', component: ListaCategoriaContaBancariaComponent },
-    { path: 'cad-cartao-credito', component: CadastroCartoesCreditoComponent }
+    { path: 'cad-cartao-credito', component: CadastroCartoesCreditoComponent },
+    { path: 'categorias/editar-categoria/:id', component: EditarCategoriaComponent }
 ];
