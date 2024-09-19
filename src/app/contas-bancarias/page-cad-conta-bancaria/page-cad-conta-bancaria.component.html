@@ -8,12 +8,27 @@
         <label for="email" class="font-semibold w-6rem">Categoria</label>
         <p-inputGroup>
             <p-dropdown [options]="options" [(ngModel)]="selectedOption" optionLabel="name"
-                placeholder="Escolha a categoria" class="p-dropdown-lucas" />
+                placeholder="Escolha a categoria" class="p-dropdown-lucas">
+                <ng-template let-option pTemplate="item">
+                    {{option.nome}}
+                </ng-template>
+            </p-dropdown>
             <button type="button" pButton icon="pi pi-plus" class="p-button-primary"></button>
         </p-inputGroup>
         <label for="email" class="font-semibold w-2rem">Ícone</label>
-        <p-dropdown [options]="options" [(ngModel)]="selectedOption" optionLabel="name"
-            placeholder="Escolha a categoria" class="flex-auto" autocomplete="off" />
+
+        <p-dropdown [options]="icons" [(ngModel)]="selectedIcon" optionLabel="name" placeholder="Escolha um ícone"
+            class="flex-auto" autocomplete="off">
+            <!-- Utilizado ng-template para definir um template para cada item do dropdown -->
+            <ng-template let-icon pTemplate="item">
+                <div>
+                    <!-- tag i que recebe a string do icon para mostra-lo -->
+                    <i [ngClass]="icon.name"></i>
+                </div>
+            </ng-template>
+
+        </p-dropdown>
+
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label for="saldo" class="font-semibold w-8rem">Saldo da conta</label>

@@ -62,15 +62,15 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   }
 
   apagar(id: number) {
-    this.httpClient.delete(`http://localhost:3000/categorias/${id}`)
+    this.httpClient.delete(`http://localhost:3001/categorias/${id}`)
       .subscribe(() => {
         this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
         this.consultar();
       });
   }
 
-  consultar() {
-    this.httpClient.get<Array<Categoria>>("http://localhost:3000/categorias")
+consultar() {
+  this.httpClient.get<Array<Categoria>>("http://localhost:3001/categorias")
       .subscribe(x => {
         this.categorias = x;
       });
