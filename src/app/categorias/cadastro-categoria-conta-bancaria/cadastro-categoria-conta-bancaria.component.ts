@@ -34,7 +34,7 @@ export class CadastroCategoriaContaBancariaComponent {
     let dados = {
       nome: this.nome
     }
-    this.httpClient.post('http://localhost:3001/categorias', dados).subscribe(x => this.router.navigate(['/categorias'])
+    this.httpClient.post('http://localhost:3000/categorias', dados).subscribe(x => this.router.navigate(['/categorias'])
     )
   }
 }

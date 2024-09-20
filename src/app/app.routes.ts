@@ -19,3 +19,4 @@ export const routes: Routes = [
     { path: 'categorias/editar-categoria/:id', component: EditarCategoriaComponent },
     { path: 'contas/editar/:id', component: EditarContaBancariaComponent }
 ];
+

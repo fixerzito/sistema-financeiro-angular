@@ -62,7 +62,7 @@ export class ListarContasBancariasComponent {
   consultarCatPorId(id: number) {
     // Verifica se a categoria já foi carregada
     if (!this.categorias[id]) {
-      this.httpClient.get<any>(`http://localhost:3001/categorias/${id}`)
+      this.httpClient.get<any>(`http://localhost:3000/categorias/${id}`)
         .subscribe(categoria => {
           this.categorias[id] = categoria.nome; // Armazena a categoria
         });

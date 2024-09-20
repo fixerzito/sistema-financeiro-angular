@@ -90,7 +90,7 @@ export class PageCadContaBancariaComponent {
   }
 
   buscarCategorias(){
-  this.httpClient.get<Array<Categoria>>('http://localhost:3001/categorias').subscribe(x => {
+  this.httpClient.get<Array<Categoria>>('http://localhost:3000/categorias').subscribe(x => {
     this.categorias = x
   });
   }
