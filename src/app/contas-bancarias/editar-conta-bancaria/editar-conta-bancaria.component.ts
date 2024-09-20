@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
+
 
 interface Categoria {
   id: number,
@@ -19,6 +20,7 @@ interface Icon {
 }
 
 interface Conta {
+  id: number
   nome: string,
   saldo?: number | null,
   icon: string,
@@ -26,7 +28,7 @@ interface Conta {
 };
 
 @Component({
-  selector: 'app-page-cad-conta-bancaria',
+  selector: 'app-editar-conta-bancaria',
   standalone: true,
   imports: [
     CommonModule,
@@ -35,15 +37,16 @@ interface Conta {
     InputTextModule,
     DropdownModule,
     InputGroupAddonModule,
-    InputGroupModule,
+    InputGroupModule
   ],
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './page-cad-conta-bancaria.component.html',
-  styleUrl: './page-cad-conta-bancaria.component.css'
+  templateUrl: './editar-conta-bancaria.component.html',
+  styleUrl: './editar-conta-bancaria.component.css'
 })
-export class PageCadContaBancariaComponent {
+export class EditarContaBancariaComponent {
   //form
   contaCriada: Conta = {
+    id: -1,
     nome: '',
     saldo: null,
     icon: '',
@@ -68,10 +71,11 @@ export class PageCadContaBancariaComponent {
     nome: ''
   };
 
-    constructor(
-      private httpClient: HttpClient,
-      private router: Router
-    ){}
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.buscarCategorias();
@@ -87,25 +91,44 @@ export class PageCadContaBancariaComponent {
       { nome: "pi pi-home" },
       { nome: "pi pi-credit-card" }
     ];
-  }
 
-  buscarCategorias(){
-  this.httpClient.get<Array<Categoria>>('http://localhost:3001/categorias').subscribe(x => {
-    this.categorias = x
-  });
-  }
-
-  salvar(){
-    this.contaCriada.idCategoria = this.categoria.id; 
-    this.contaCriada.icon = this.icon.nome;
+    this.route.paramMap.subscribe(params => {
+      const id = +params.get('id')!;
+      this.httpClient.get<Conta>(`http://localhost:3000/contas/${id}`)
+        .subscribe(contaRecebida => {
+          this.contaCriada = contaRecebida;
+          this.icon = this.icons.find(icon => icon.nome === contaRecebida.icon) || { nome: '' };
+          this.buscarCategoriaPorId(contaRecebida.idCategoria)
+          console.log(this.categoria);
+        });
+    });
     
-    this.httpClient.post('http://localhost:3000/contas', this.contaCriada).subscribe(x => {
+  }
+
+  buscarCategorias() {
+    this.httpClient.get<Array<Categoria>>('http://localhost:3001/categorias').subscribe(x => {
+      this.categorias = x
+    });
+  }
+
+  buscarCategoriaPorId(id: number) {
+  this.httpClient.get<Categoria>(`http://localhost:3001/categorias/${id}`).subscribe(x => {
+      this.categoria = x
+    });
+  }
+
+  salvar() {
+    this.contaCriada.idCategoria = this.categoria.id;
+    this.contaCriada.icon = this.icon.nome;
+
+    this.httpClient.put<Conta>(`http://localhost:3000/contas/${this.contaCriada.id}`, this.contaCriada).subscribe(() => {
       this.router.navigate(['/contas'])
     })
-    
+
   }
 
-  cancelar(){
-    this.router.navigate(['/contas'])
+  cancelar() {
+    this.router.navigate(['contas'])
   }
+
 }

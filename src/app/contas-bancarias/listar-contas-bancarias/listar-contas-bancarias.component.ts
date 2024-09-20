@@ -11,6 +11,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 
 interface Conta {
+  id: number,
   nome: string,
   saldo: number,
   icon: string,
@@ -66,6 +67,34 @@ export class ListarContasBancariasComponent {
           this.categorias[id] = categoria.nome; // Armazena a categoria
         });
     }
+  }
+
+  apagar(id: number) {
+    this.httpClient.delete(`http://localhost:3000/contas/${id}`)
+      .subscribe(() => {
+        this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
+        this.consultar();
+      });
+  }
+
+  confirmacaoApagar(event: Event, id: number) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Deseja realmente apagar?',
+      header: 'Confirmação de exclusão',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: "p-button-danger p-button-text",
+      rejectButtonStyleClass: "p-button-text p-button-text",
+      acceptIcon: "none",
+      rejectIcon: "none",
+      accept: () => {
+        this.apagar(id);
+      }
+    });
+  }
+
+  editar(id:number){
+    this.router.navigate(['contas/editar', id]);
   }
   
 }
