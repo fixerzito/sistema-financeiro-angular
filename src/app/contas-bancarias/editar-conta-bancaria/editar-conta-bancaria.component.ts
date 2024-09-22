@@ -15,10 +15,6 @@ interface Categoria {
   nome: string;
 }
 
-interface Icon {
-  nome: string
-}
-
 interface Conta {
   id: number
   nome: string,
@@ -61,15 +57,9 @@ export class EditarContaBancariaComponent {
   }
 
   categorias: Categoria[] = [];
-  categoria: Categoria = {
-    id: 0,
-    nome: ''
-  };
+  categoriaExistente?: Categoria;
 
-  icons: Icon[] = [];
-  icon: Icon = {
-    nome: ''
-  };
+  icons: string[] = [];
 
   constructor(
     private httpClient: HttpClient,
@@ -81,15 +71,15 @@ export class EditarContaBancariaComponent {
     this.buscarCategorias();
 
     this.icons = [
-      { nome: "pi pi-wallet" },
-      { nome: "pi pi-money-bill" },
-      { nome: "pi pi-chart-line" },
-      { nome: "pi pi-briefcase" },
-      { nome: "pi pi-check" },
-      { nome: "pi pi-times" },
-      { nome: "pi pi-user" },
-      { nome: "pi pi-home" },
-      { nome: "pi pi-credit-card" }
+       "pi pi-wallet",
+       "pi pi-money-bill",
+       "pi pi-chart-line",
+       "pi pi-briefcase",
+       "pi pi-check",
+       "pi pi-times",
+       "pi pi-user",
+       "pi pi-home",
+       "pi pi-credit-card"
     ];
 
     this.route.paramMap.subscribe(params => {
@@ -97,12 +87,12 @@ export class EditarContaBancariaComponent {
       this.httpClient.get<Conta>(`http://localhost:3000/contas/${id}`)
         .subscribe(contaRecebida => {
           this.contaCriada = contaRecebida;
-          this.icon = this.icons.find(icon => icon.nome === contaRecebida.icon) || { nome: '' };
-          this.buscarCategoriaPorId(contaRecebida.idCategoria)
-          console.log(this.categoria);
+          debugger;
+          this.categoriaExistente = this.filterCategoriaPorId(this.contaCriada.idCategoria);
+          // this.buscarCategoriaPorId(contaRecebida.idCategoria)
+          console.log(this.contaCriada);         
         });
     });
-    
   }
 
   buscarCategorias() {
@@ -111,15 +101,7 @@ export class EditarContaBancariaComponent {
     });
   }
 
-  buscarCategoriaPorId(id: number) {
-  this.httpClient.get<Categoria>(`http://localhost:3000/categorias/${id}`).subscribe(x => {
-      this.categoria = x
-    });
-  }
-
   salvar() {
-    this.contaCriada.idCategoria = this.categoria.id;
-    this.contaCriada.icon = this.icon.nome;
 
     this.httpClient.put<Conta>(`http://localhost:3000/contas/${this.contaCriada.id}`, this.contaCriada).subscribe(() => {
       this.router.navigate(['/contas'])
@@ -129,6 +111,10 @@ export class EditarContaBancariaComponent {
 
   cancelar() {
     this.router.navigate(['contas'])
+  }
+
+  filterCategoriaPorId(idCategoria: number): Categoria | undefined{ 
+    return this.categorias.find(x => x.id == idCategoria);
   }
 
 }
