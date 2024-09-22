@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-cadastro-categoria-conta-bancaria',
@@ -34,7 +35,7 @@ export class CadastroCategoriaContaBancariaComponent {
     let dados = {
       nome: this.nome
     }
-    this.httpClient.post('http://localhost:3000/categorias', dados).subscribe(x => this.router.navigate(['/categorias'])
+    this.httpClient.post(`${environment.apiUrl}/categorias`, dados).subscribe(x => this.router.navigate(['/categorias'])
     )
   }
 }

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { environment } from '../../../environments/environment';
 
 interface Categoria {
   id: number;
@@ -33,7 +34,7 @@ export class EditarCategoriaComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id = +params.get('id')!;
-      this.httpClient.get<Categoria>(`http://localhost:3000/categorias/${id}`)
+      this.httpClient.get<Categoria>(`${environment.apiUrl}/categorias/${id}`)
         .subscribe(categoria => {
           this.categoria = categoria;
         });
@@ -41,7 +42,7 @@ export class EditarCategoriaComponent implements OnInit {
   }
 
   salvar() {
-    this.httpClient.put<Categoria>(`http://localhost:3000/categorias/${this.categoria.id}`, this.categoria)
+    this.httpClient.put<Categoria>(`${environment.apiUrl}/categorias/${this.categoria.id}`, this.categoria)
       .subscribe(() => {
         this.router.navigate(['categorias']);
       });
