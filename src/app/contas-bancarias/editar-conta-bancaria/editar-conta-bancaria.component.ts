@@ -8,6 +8,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
+import { environment } from '../../../environments/environment';
 
 
 interface Categoria {
@@ -84,7 +85,7 @@ export class EditarContaBancariaComponent {
 
     this.route.paramMap.subscribe(params => {
       const id = +params.get('id')!;
-      this.httpClient.get<Conta>(`http://localhost:3000/contas/${id}`)
+      this.httpClient.get<Conta>(`${environment.apiUrl}/contas/${id}`)
         .subscribe(contaRecebida => {
           this.contaCriada = contaRecebida;
           debugger;
@@ -96,14 +97,14 @@ export class EditarContaBancariaComponent {
   }
 
   buscarCategorias() {
-    this.httpClient.get<Array<Categoria>>('http://localhost:3000/categorias').subscribe(x => {
+    this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`).subscribe(x => {
       this.categorias = x
     });
   }
 
   salvar() {
 
-    this.httpClient.put<Conta>(`http://localhost:3000/contas/${this.contaCriada.id}`, this.contaCriada).subscribe(() => {
+    this.httpClient.put<Conta>(`${environment.apiUrl}/contas/${this.contaCriada.id}`, this.contaCriada).subscribe(() => {
       this.router.navigate(['/contas'])
     })
 

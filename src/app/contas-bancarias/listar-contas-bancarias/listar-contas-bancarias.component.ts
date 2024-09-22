@@ -9,6 +9,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { environment } from '../../../environments/environment';
 
 interface Conta {
   id: number,
@@ -52,7 +53,7 @@ export class ListarContasBancariasComponent {
   }
 
   consultar() {
-    this.httpClient.get<Array<Conta>>('http://localhost:3000/contas')
+    this.httpClient.get<Array<Conta>>(`${environment.apiUrl}/contas`)
       .subscribe(contas => {
         this.contas = contas;
         contas.forEach(conta => this.consultarCatPorId(conta.idCategoria));
@@ -62,7 +63,7 @@ export class ListarContasBancariasComponent {
   consultarCatPorId(id: number) {
     // Verifica se a categoria já foi carregada
     if (!this.categorias[id]) {
-      this.httpClient.get<any>(`http://localhost:3000/categorias/${id}`)
+      this.httpClient.get<any>(`${environment.apiUrl}/categorias/${id}`)
         .subscribe(categoria => {
           this.categorias[id] = categoria.nome; // Armazena a categoria
         });
@@ -70,7 +71,7 @@ export class ListarContasBancariasComponent {
   }
 
   apagar(id: number) {
-    this.httpClient.delete(`http://localhost:3000/contas/${id}`)
+    this.httpClient.delete(`${environment.apiUrl}/contas/${id}`)
       .subscribe(() => {
         this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
         this.consultar();

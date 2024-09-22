@@ -7,7 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { environment } from '../../../environments/environment';
 
 interface Categoria {
   id: number,
@@ -36,6 +38,7 @@ interface Conta {
     DropdownModule,
     InputGroupAddonModule,
     InputGroupModule,
+    InputNumberModule,
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './page-cad-conta-bancaria.component.html',
@@ -90,7 +93,7 @@ export class PageCadContaBancariaComponent {
   }
 
   buscarCategorias(){
-  this.httpClient.get<Array<Categoria>>('http://localhost:3000/categorias').subscribe(x => {
+  this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`).subscribe(x => {
     this.categorias = x
   });
   }
@@ -99,7 +102,7 @@ export class PageCadContaBancariaComponent {
     this.contaCriada.idCategoria = this.categoria.id; 
     this.contaCriada.icon = this.icon.nome;
     
-    this.httpClient.post('http://localhost:3000/contas', this.contaCriada).subscribe(x => {
+    this.httpClient.post(`${environment.apiUrl}/contas`, this.contaCriada).subscribe(x => {
       this.router.navigate(['/contas'])
     })
     

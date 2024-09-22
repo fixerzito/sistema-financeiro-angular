@@ -8,6 +8,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
+import { environment } from '../../../environments/environment';
 
 interface Categoria {
   id: number;
@@ -62,7 +63,7 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   }
 
   apagar(id: number) {
-    this.httpClient.delete(`http://localhost:3000/categorias/${id}`)
+    this.httpClient.delete(`${environment.apiUrl}/categorias/${id}`)
       .subscribe(() => {
         this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
         this.consultar();
@@ -70,7 +71,7 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   }
 
 consultar() {
-  this.httpClient.get<Array<Categoria>>("http://localhost:3000/categorias")
+  this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`)
       .subscribe(x => {
         this.categorias = x;
       });
