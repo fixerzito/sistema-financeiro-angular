@@ -88,7 +88,6 @@ export class EditarContaBancariaComponent {
       this.httpClient.get<Conta>(`${environment.apiUrl}/contas/${id}`)
         .subscribe(contaRecebida => {
           this.contaCriada = contaRecebida;
-          debugger;
           this.categoriaExistente = this.filterCategoriaPorId(this.contaCriada.idCategoria);
           // this.buscarCategoriaPorId(contaRecebida.idCategoria)
           console.log(this.contaCriada);         

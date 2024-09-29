@@ -9,7 +9,7 @@
         <label for="email" class="font-semibold w-6rem">Categoria</label>
         <p-inputGroup>
             <p-dropdown [options]="categorias" [(ngModel)]="categoria" optionLabel="name"
-                placeholder="Escolha a categoria" class="p-dropdown-lucas">
+                placeholder="Escolha a categoria" class="p-dropdown-lucas" [filter]="true" filterBy="nome">
                 <ng-template let-categoria pTemplate="item">
                     {{categoria.nome}}
                 </ng-template>
@@ -18,12 +18,12 @@
                 </ng-template>
             </p-dropdown>
             <!-- VER A CRIAÇÃO DA CATEGORIA AO CLICKAR NO BOTAO COM O PROFESSOR (duvida referente ao caminho de volta para o cadastro) -->
-            <button type="button" pButton icon="pi pi-plus" class="p-button-primary" ></button>
+            <button type="button" pButton icon="pi pi-plus" class="p-button-primary"></button>
         </p-inputGroup>
 
         <label for="email" class="font-semibold w-2rem">Ícone</label>
         <p-dropdown [options]="icons" [(ngModel)]="icon" optionLabel="name" placeholder="Escolha um ícone"
-            class="flex-auto" autocomplete="off">
+            class="flex-auto" autocomplete="off" [filter]="true" filterBy="nome">
             <!-- Utilizado ng-template para definir um template para cada item do dropdown -->
             <ng-template let-icon pTemplate="item">
                 <div>
@@ -43,7 +43,7 @@
     <div class="flex align-items-center gap-3 mb-3">
 
         <label for="saldo" class="font-semibold w-8rem">Saldo da conta</label>
-        <input pInputText id="saldo" class="flex-auto" autocomplete="off"  [(ngModel)]="contaCriada.saldo"/>
+        <input pInputText id="saldo" class="flex-auto" autocomplete="off" [(ngModel)]="contaCriada.saldo" />
         <!-- <p-inputNumber 
         [(ngModel)]="contaCriada.saldo" 
         mode="currency"
@@ -54,7 +54,7 @@
         [minFractionDigits]="2"
         [maxFractionDigits]="2"/> -->
 
-        <p-button label="Cancelar" severity="secondary" (onClick)="cancelar()"/>
+        <p-button label="Cancelar" severity="secondary" (onClick)="cancelar()" />
         <p-button label="Salvar" (onClick)="salvar()" />
     </div>
 </div>
