@@ -40,7 +40,7 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.consultar();
@@ -65,13 +65,13 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   apagar(id: number) {
     this.httpClient.delete(`${environment.apiUrl}/categorias/${id}`)
       .subscribe(() => {
-        this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'info', summary: 'Cartão apagado com sucesso', detail: 'Record deleted' });
         this.consultar();
       });
   }
 
-consultar() {
-  this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`)
+  consultar() {
+    this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`)
       .subscribe(x => {
         this.categorias = x;
       });

@@ -48,7 +48,7 @@ export class NavbarComponent {
       {
         label: 'Cartão de crédito',
         icon: 'pi pi-credit-card',
-        routerLink: 'cad-cartao-credito'
+        routerLink: 'cartoes'
       }
     ]
   }

@@ -1,0 +1,58 @@
+<div class="main" style="width: 60rem;">
+  <span class="p-text-secondary block mb-5">Editar Cartão</span>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="nomeCartao" class="font-semibold w-6rem">Nome do Cartão</label>
+    <input pInputText id="nomeCartao" class="flex-auto" [(ngModel)]="cartaoEditado.nome"
+      placeholder="Ex: Cartão de crédito pessoal" autocomplete="off" />
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="primeiroSeisDigitos" class="font-semibold w-6rem">Primeiros 6 dígitos do Cartão</label>
+    <p-inputMask mask="999999" id="primeiroSeisDigitos" [(ngModel)]="cartaoEditado.digBandeira" placeholder="******"
+      (onComplete)="preencherBandeiraCartao()"></p-inputMask>
+    <span>
+      <img [src]="bandeira.link" alt="{{ bandeira.nome }}" *ngIf="bandeira.link">
+    </span>
+    <label for="limiteCartao" class="font-semibold w-6rem">Limite</label>
+    <input pInputText id="limiteCartao" class="flex-auto" [(ngModel)]="cartaoEditado.limite" autocomplete="off"
+      placeholder="R$" />
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label class="font-semibold w-6rem">Dia de Fechamento</label>
+    <p-inputMask mask="99" placeholder="Ex: 12" [(ngModel)]="cartaoEditado.diaFechamento"
+      class="flex-auto"></p-inputMask>
+    <label class="font-semibold w-6rem">Dia de Vencimento</label>
+    <p-inputMask mask="99" placeholder="Ex: 12" [(ngModel)]="cartaoEditado.diaVencimento"
+      class="flex-auto"></p-inputMask>
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="saldoCartao" class="font-semibold w-6rem">Saldo disponível</label>
+    <input pInputText id="saldoCartao" class="flex-auto" [(ngModel)]="cartaoEditado.saldo" autocomplete="off"
+      placeholder="R$" />
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <label for="validContaBancaria">Deseja vincular a uma conta existente? </label>
+    <div class="flex align-items-center">
+      <p-radioButton name="validaConta" [value]="true" [(ngModel)]="stringValidaConta" inputId="sim"
+        (ngModelChange)="validarConta()"></p-radioButton>
+      <label for="sim" class="ml-2">Sim</label>
+    </div>
+    <div class="flex align-items-center">
+      <p-radioButton name="validaConta" [value]="false" [(ngModel)]="stringValidaConta" inputId="nao"
+        (ngModelChange)="validarConta()"></p-radioButton>
+      <label for="nao" class="ml-2">Não</label>
+    </div>
+    <p-dropdown *ngIf="validaConta" [options]="contasDropdown" [(ngModel)]="cartaoEditado.idContaVinculada"
+      optionLabel="name" optionValue="id" placeholder="Escolha a conta a ser vinculada">
+      <ng-template let-cartao pTemplate="item">
+        {{cartao.nome}}
+      </ng-template>
+      <ng-template let-cartao pTemplate="selectedItem">
+        {{cartao.nome}}
+      </ng-template>
+    </p-dropdown>
+  </div>
+  <div class="flex align-items-center gap-3 mb-3">
+    <p-button label="Salvar" (onClick)="salvar(idParaEditar, cartaoEditado)"></p-button>
+    <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary"></p-button>
+  </div>
+</div>
