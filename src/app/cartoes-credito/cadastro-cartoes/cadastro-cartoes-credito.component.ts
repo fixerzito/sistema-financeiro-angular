@@ -9,13 +9,15 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Cartao } from '../models/cartao.component';
-import { environment } from '../../../environments/environment';
-import { Conta } from '../../contas-bancarias/models/conta.component';
-import { Observable, of } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { ContaService } from '../../services/conta.service';
+import { ContaDropdown } from '../../models/dropdowns/conta-dropdown';
+import { CartaoCreditoService } from '../../services/cartao-credito.service';
+import { CartaoCreditoFormInsert } from '../../models/forms/insert/cartao-credito-form-insert';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { Bandeira } from '../../models/tables/bandeira.component';
+import { obterBandeiraCartao } from '../../helpers/bandeira.helper';
 
 @Component({
   selector: 'app-cadastro-cartoes-credito',
@@ -30,105 +32,76 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
     CalendarModule,
     CommonModule,
     InputGroupModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
+    ToastModule,
   ],
   templateUrl: './cadastro-cartoes-credito.component.html',
-  styleUrls: ['./cadastro-cartoes-credito.component.css']
+  styleUrls: ['./cadastro-cartoes-credito.component.css'],
+  providers: [ MessageService]
 })
 export class CadastroCartoesCreditoComponent implements OnInit {
-  cartaoCriado: Cartao = {
-    id: -1,
+  cartaoCriado: CartaoCreditoFormInsert = {
     nome: '',
     digBandeira: ''
   };
 
-  bandeira: any = {
+  bandeira: Bandeira = {
     nome: '',
     link: ''
   };
 
   visible: boolean = false;
-  stringValidaConta: string = "";
+  stringValidaConta: boolean = false;
   validaConta: boolean = false;
-  contasDropdown!: Conta[];
-  contaSelecionada!: Conta;
+  contasDropdown!: ContaDropdown[];
+  contaSelecionada!: ContaDropdown;;
+
+  constructor(
+    private router: Router,
+    private contaService: ContaService, 
+    private cartaoCreditoService: CartaoCreditoService,
+    private messageService: MessageService,
+  ) { }
+  
+  ngOnInit() {
+    this.stringValidaConta = false;
+    this.contaService.getAllDropdown()
+    .subscribe(contas => {
+      this.contasDropdown = contas;
+    });
+  }
 
   validarConta() {
-    this.validaConta = this.stringValidaConta === "true";
+    if(this.validaConta){
+      this.validaConta = false
+    } else {
+      this.validaConta = true
+    }
   }
 
   showDialog() {
     this.visible = true;
   }
-
-  constructor(
-    private httpClient: HttpClient,
-    private router: Router
-  ) { }
-
-  ngOnInit() {
-    this.stringValidaConta = "false";
-    this.buscarContasBancarias()
-      .subscribe(contas => {
-        this.contasDropdown = contas;
-      });
-  }
-
+  
   cancelar() {
     this.router.navigate(['cartoes']);
   }
 
-  buscarContasBancarias(): Observable<Conta[]> {
-    return this.httpClient.get<Array<Conta>>(`${environment.apiUrl}/contas`)
-      .pipe(
-        catchError(error => {
-          console.error('Erro ao buscar contas bancárias', error);
-          return of([]);
-        })
-      );
-  }
-
   salvar() {
-    this.httpClient.post<Cartao>(`${environment.apiUrl}/cartoes`, this.cartaoCriado)
-      .pipe(
-        catchError(error => {
-          console.error('Erro ao salvar o cartão', error);
-          return of(null);
-        })
-      )
-      .subscribe(x => {
-        if (x) {
-          this.router.navigate(['cartoes']);
-        }
+   this.cartaoCreditoService.insert(this.cartaoCriado)
+      .subscribe({
+        next: () => { 
+          this.router.navigate(['cartoes'], {state: {"cadastrou": true}});
+         },
+        error: (error: Error) => { this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Não foi possível cadastrar o seu cartão' }) }
       });
   }
 
-  atribuirIdConta(id: number) {
+  atribuirIdConta(id: number | undefined) {
     this.cartaoCriado.idContaVinculada = id;
   }
 
-  obterBandeiraCartao(digitos: string) {
-    if (/^4/.test(digitos)) {
-      this.bandeira.nome = "Visa";
-      this.bandeira.link = 'assets/flags-icon/visa.png';
-    } else if (/^51|52|53|54|55/.test(digitos)) {
-      this.bandeira.nome = "MasterCard";
-      this.bandeira.link = 'assets/flags-icon/mastercard.png';
-    } else if (/^34|37/.test(digitos)) {
-      this.bandeira.nome = "American Express";
-      this.bandeira.link = 'assets/flags-icon/american.png';
-    } else if (/^6011|622|64|65/.test(digitos)) {
-      this.bandeira.nome = "Discover";
-      this.bandeira.link = 'assets/flags-icon/discover.png';
-    } else if (/^35/.test(digitos)) {
-      this.bandeira.nome = "JCB";
-      this.bandeira.link = 'assets/flags-icon/jcb.png';
-    } else if (/^60/.test(digitos)) {
-      this.bandeira.nome = "Diners Club";
-      this.bandeira.link = 'assets/flags-icon/diners.png';
-    } else {
-      this.bandeira.nome = "";
-      this.bandeira.link = '';
-    }
+  preencherBandeiraCartao(){
+    obterBandeiraCartao(this.cartaoCriado.digBandeira, this.bandeira)
   }
 }

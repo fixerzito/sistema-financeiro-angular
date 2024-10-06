@@ -11,9 +11,12 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Cartao } from '../models/cartao.component';
-import { environment } from '../../../environments/environment';
-import { Conta } from '../../contas-bancarias/models/conta.component';
+import { CartaoCreditoFormInsert } from '../../models/forms/insert/cartao-credito-form-insert';
+import { ContaDropdown } from '../../models/dropdowns/conta-dropdown';
+import { Bandeira } from '../../models/tables/bandeira.component';
+import { CartaoCreditoService } from '../../services/cartao-credito.service';
+import { ContaService } from '../../services/conta.service';
+import { obterBandeiraCartao } from '../../helpers/bandeira.helper';
 
 @Component({
   selector: 'app-editar-cartoes',
@@ -33,156 +36,94 @@ import { Conta } from '../../contas-bancarias/models/conta.component';
   templateUrl: './editar-cartoes.component.html',
   styleUrl: './editar-cartoes.component.css'
 })
+
 export class EditarCartoesComponent implements OnInit {
-  cartaoEditado: Cartao = {
-    id: -1,
+  cartaoEditado: CartaoCreditoFormInsert = {
     nome: '',
     digBandeira: ''
   };
 
-  cartaoRecebidoParaEditar: Cartao = {
-    id: -1,
+  cartaoRecebidoParaEditar: CartaoCreditoFormInsert = {
     nome: '',
     digBandeira: ''
   };
 
-  bandeira: any = {
+  bandeira: Bandeira = {
     nome: '',
     link: ''
   };
 
+  idParaEditar!: number;
   visible: boolean = false;
-  stringValidaConta: string = "";
+  stringValidaConta: boolean = false;
   validaConta: boolean = false;
-
-  contaSelecionada: Conta = {
-    id: -1,
-    nome: '',
-    saldo: 0,
-    icon: '',
-    idCategoria: -1
-  };
-
-  contaRecebida: Conta = {
-    id: -1,
-    nome: '',
-    saldo: 0,
-    icon: '',
-    idCategoria: -1
-  };
-
-  contasDropdown: Conta[] = [
-    {
-      id: -1,
-      nome: '',
-      saldo: 0,
-      icon: '',
-      idCategoria: -1
-    }
-  ];
-
-
-  validarConta() {
-    this.validaConta = this.stringValidaConta === "true";
-    if(this.stringValidaConta != "true"){
-      this.cartaoEditado.idContaVinculada = undefined;
-    }
-  }
-
-
-  showDialog() {
-    this.visible = true;
-  }
+  contasDropdown!: ContaDropdown[];
 
   constructor(
     private httpClient: HttpClient,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public cartaoCreditoService: CartaoCreditoService,
+    private contaService: ContaService,
   ) { }
-
+  
   ngOnInit() {
     this.buscarContasBancarias();
 
     this.route.paramMap.subscribe(params => {
-      const id = +params.get('id')!;
-      this.httpClient.get<any>(`${environment.apiUrl}/cartoes/${id}`)
+      this.idParaEditar = +params.get('id')!
+      this.cartaoCreditoService.buscarCartaoEditar(this.idParaEditar)
         .subscribe(response => {
-          // Verifica se a resposta é um array contendo o objeto
           if (Array.isArray(response)) {
-            this.cartaoRecebidoParaEditar = response[0]; // Obtém o primeiro objeto do array
+            this.cartaoRecebidoParaEditar = response[0];
           } else {
             this.cartaoRecebidoParaEditar = response;
           }
 
           if (this.cartaoRecebidoParaEditar.idContaVinculada != undefined) {
-            this.stringValidaConta = "true";
+            this.stringValidaConta = true;
             this.validarConta();
-            // this.contaRecebida = this.filterContaPorId(this.cartaoRecebidoParaEditar.idContaVinculada);
           }
 
           this.cartaoEditado = this.cartaoRecebidoParaEditar;
+          
+          this.preencherBandeiraCartao()
         });
     });
-
-    this.contaSelecionada = this.contaRecebida;
   }
 
-  // filterContaPorId(idConta: number): Conta {
-  //   const conta = this.contasDropdown.find(x => x.id === idConta);
-  //   return conta ? conta : {
-  //     id: -1,
-  //     nome: '',
-  //     saldo: 0,
-  //     icon: ''
-  //   };
-  // }
+  validarConta() {
+    this.validaConta = this.stringValidaConta === true;
+    if(this.stringValidaConta != true){
+      this.cartaoEditado.idContaVinculada = undefined;
+    }
+  }
+  
+  showDialog() {
+    this.visible = true;
+  }
 
   cancelar() {
     this.router.navigate(['cartoes']);
   }
 
   buscarContasBancarias() {
-    this.httpClient.get<Array<Conta>>(`${environment.apiUrl}/contas`)
+    this.contaService.getAllDropdown()
       .subscribe(contas => {
         this.contasDropdown = contas;
+
       });
   }
 
-  salvar(id: number) {
-    console.log(this.cartaoEditado);
-    this.httpClient.put<Cartao>(`${environment.apiUrl}/cartoes/${id}`, this.cartaoEditado)
+  salvar(id: number, cartao: CartaoCreditoFormInsert ) {
+    this.cartaoCreditoService.salvar(id, cartao)
       .subscribe(x => {
         this.router.navigate(['cartoes']);
       });
   }
 
-  atribuirIdConta(id: number) {
-    this.cartaoEditado.idContaVinculada = id;
+  preencherBandeiraCartao(){
+    obterBandeiraCartao(this.cartaoEditado.digBandeira, this.bandeira)
   }
-
-  obterBandeiraCartao(digitos: string) {
-    // Verifica a bandeira com base nos 6 primeiros dígitos
-    if (/^4/.test(digitos)) {
-      this.bandeira.nome = "Visa";
-      this.bandeira.link = 'assets/flags-icon/visa.png';
-    } else if (/^51|52|53|54|55/.test(digitos)) {
-      this.bandeira.nome = "MasterCard";
-      this.bandeira.link = 'assets/flags-icon/mastercard.png';
-    } else if (/^34|37/.test(digitos)) {
-      this.bandeira.nome = "American Express";
-      this.bandeira.link = 'assets/flags-icon/american.png';
-    } else if (/^6011|622|64|65/.test(digitos)) {
-      this.bandeira.nome = "Discover";
-      this.bandeira.link = 'assets/flags-icon/discover.png';
-    } else if (/^35/.test(digitos)) {
-      this.bandeira.nome = "JCB";
-      this.bandeira.link = 'assets/flags-icon/jcb.png';
-    } else if (/^60/.test(digitos)) {
-      this.bandeira.nome = "Diners Club";
-      this.bandeira.link = 'assets/flags-icon/diners.png';
-    } else {
-      this.bandeira.nome = "";
-      this.bandeira.link = '';
-    };
-  }
+  
 }

@@ -19,11 +19,6 @@ import { environment } from '../../../environments/environment';
 })
 export class CadastroCategoriaContaBancariaComponent {
   nome: string = "";
-  // httpClient!: HttpClient;
-
-  // constructor(httpClient: HttpClient) {
-  //   this.httpClient = httpClient;
-  // }
 
   constructor(
     private httpClient: HttpClient,

@@ -41,7 +41,7 @@ interface Conta {
   styleUrl: './editar-conta-bancaria.component.css'
 })
 export class EditarContaBancariaComponent {
-  //form
+
   contaCriada: Conta = {
     id: -1,
     nome: '',
@@ -49,8 +49,6 @@ export class EditarContaBancariaComponent {
     icon: '',
     idCategoria: 0
   };
-
-  //
 
   visible: boolean = false;
   showDialog() {
@@ -88,9 +86,7 @@ export class EditarContaBancariaComponent {
       this.httpClient.get<Conta>(`${environment.apiUrl}/contas/${id}`)
         .subscribe(contaRecebida => {
           this.contaCriada = contaRecebida;
-          this.categoriaExistente = this.filterCategoriaPorId(this.contaCriada.idCategoria);
-          // this.buscarCategoriaPorId(contaRecebida.idCategoria)
-          console.log(this.contaCriada);         
+          this.categoriaExistente = this.filterCategoriaPorId(this.contaCriada.idCategoria);      
         });
     });
   }

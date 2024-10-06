@@ -45,15 +45,12 @@ interface Conta {
   styleUrl: './page-cad-conta-bancaria.component.css'
 })
 export class PageCadContaBancariaComponent {
-  //form
   contaCriada: Conta = {
     nome: '',
     saldo: null,
     icon: '',
     idCategoria: 0
   };
-
-  //
 
   visible: boolean = false;
   showDialog() {
@@ -71,10 +68,10 @@ export class PageCadContaBancariaComponent {
     nome: ''
   };
 
-    constructor(
-      private httpClient: HttpClient,
-      private router: Router
-    ){}
+  constructor(
+    private httpClient: HttpClient,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.buscarCategorias();
@@ -92,23 +89,23 @@ export class PageCadContaBancariaComponent {
     ];
   }
 
-  buscarCategorias(){
-  this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`).subscribe(x => {
-    this.categorias = x
-  });
+  buscarCategorias() {
+    this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`).subscribe(x => {
+      this.categorias = x
+    });
   }
 
-  salvar(){
-    this.contaCriada.idCategoria = this.categoria.id; 
+  salvar() {
+    this.contaCriada.idCategoria = this.categoria.id;
     this.contaCriada.icon = this.icon.nome;
-    
+
     this.httpClient.post(`${environment.apiUrl}/contas`, this.contaCriada).subscribe(x => {
       this.router.navigate(['/contas'])
     })
-    
+
   }
 
-  cancelar(){
+  cancelar() {
     this.router.navigate(['/contas'])
   }
 }

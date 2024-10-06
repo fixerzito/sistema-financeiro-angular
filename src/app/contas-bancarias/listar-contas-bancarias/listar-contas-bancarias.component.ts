@@ -38,7 +38,6 @@ interface Conta {
 })
 export class ListarContasBancariasComponent {
   contas: Conta[] = [];
-  // objeto de chave/valor, onde o id representa a string
   categorias: { [id: number]: string } = {};
 
   constructor(
@@ -59,13 +58,12 @@ export class ListarContasBancariasComponent {
         contas.forEach(conta => this.consultarCatPorId(conta.idCategoria));
       });
   }
-  
+
   consultarCatPorId(id: number) {
-    // Verifica se a categoria já foi carregada
     if (!this.categorias[id]) {
       this.httpClient.get<any>(`${environment.apiUrl}/categorias/${id}`)
         .subscribe(categoria => {
-          this.categorias[id] = categoria.nome; // Armazena a categoria
+          this.categorias[id] = categoria.nome;
         });
     }
   }
@@ -94,8 +92,8 @@ export class ListarContasBancariasComponent {
     });
   }
 
-  editar(id:number){
+  editar(id: number) {
     this.router.navigate(['contas/editar', id]);
   }
-  
+
 }

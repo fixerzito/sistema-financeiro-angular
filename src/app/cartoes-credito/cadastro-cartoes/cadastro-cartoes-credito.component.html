@@ -1,3 +1,4 @@
+<p-toast />
 <div class="main" [style]="{ width: '60rem' }">
     <span class="p-text-secondary block mb-5">Cadastrar novo Cartão</span>
     <div class="flex align-items-center gap-3 mb-3">
@@ -8,9 +9,8 @@
     <div class="flex align-items-center gap-3 mb-3">
         <label for="primeiroSeisDigitos" class="font-semibold w-6rem">Primeiros 6 dígitos do Cartão</label>
         <p-inputMask mask="999999" id="primeiroSeisDigitos" [(ngModel)]="cartaoCriado.digBandeira"
-            placeholder="******" />
+            placeholder="******" (onComplete)="preencherBandeiraCartao()"/>
         <span>
-            {{ obterBandeiraCartao(cartaoCriado.digBandeira) }}
             <img [src]="bandeira.link" alt="{{ bandeira.nome }}" *ngIf="bandeira.link">
         </span>
         <label for="limiteCartao" class="font-semibold w-6rem">Limite</label>
@@ -31,12 +31,12 @@
     <div class="flex align-items-center gap-3 mb-3">
         <label for="validContaBancaria">Deseja vincular a uma conta existente? </label>
         <div class="flex align-items-center">
-            <p-radioButton value="true" [(ngModel)]="stringValidaConta" inputId="sim"
-                (ngModelChange)="validarConta()" />
+            <p-radioButton [value]="true" [(ngModel)]="stringValidaConta" inputId="sim"
+                (ngModelChange)="validarConta()"/>
             <label for="sim" class="ml-2">Sim</label>
         </div>
         <div class="flex align-items-center">
-            <p-radioButton value="false" [(ngModel)]="stringValidaConta" inputId="nao"
+            <p-radioButton [value]="false" [(ngModel)]="stringValidaConta" inputId="nao"
                 (ngModelChange)="validarConta()" />
             <label for="nao" class="ml-2">Não</label>
         </div>
