@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { environment } from '../../../environments/environment';
+import { CategoriaContaBancariaFormInsert } from '../../models/forms/insert/categoria-conta-bancaria-form-insert';
+import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
 
 @Component({
   selector: 'app-cadastro-categoria-conta-bancaria',
@@ -18,19 +19,19 @@ import { environment } from '../../../environments/environment';
   styleUrl: './cadastro-categoria-conta-bancaria.component.css'
 })
 export class CadastroCategoriaContaBancariaComponent {
-  nome: string = "";
+  categoria: CategoriaContaBancariaFormInsert = {
+    nome: ''
+  };
 
   constructor(
-    private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private categoriaContaBancariaService: CategoriaContaBancariaService,
   ) {
 
   }
   salvar() {
-    let dados = {
-      nome: this.nome
-    }
-    this.httpClient.post(`${environment.apiUrl}/categorias`, dados).subscribe(x => this.router.navigate(['/categorias'])
-    )
+    this.categoriaContaBancariaService.salvar(this.categoria)
+      .subscribe(x => this.router.navigate(['/categorias-contas-bancarias'])
+      )
   }
 }

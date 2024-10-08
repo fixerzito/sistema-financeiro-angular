@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,23 +8,11 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { environment } from '../../../environments/environment';
-
-interface Categoria {
-  id: number,
-  nome: string;
-}
-
-interface Icon {
-  nome: string
-}
-
-interface Conta {
-  nome: string,
-  saldo?: number | null,
-  icon: string,
-  idCategoria: number
-};
+import { ContaBancariaFormInsert } from '../../models/forms/insert/conta-bancaria-form-insert';
+import { IconFormInsert } from '../../models/forms/insert/icon-form-insert';
+import { CategoriaContaBancariaDropDown } from '../../models/dropdowns/categoria-conta-bancaria-dropdown';
+import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
+import { ContaBancariaService } from '../../services/conta-bancaria.service';
 
 @Component({
   selector: 'app-page-cad-conta-bancaria',
@@ -45,7 +32,7 @@ interface Conta {
   styleUrl: './page-cad-conta-bancaria.component.css'
 })
 export class PageCadContaBancariaComponent {
-  contaCriada: Conta = {
+  contaCriada: ContaBancariaFormInsert = {
     nome: '',
     saldo: null,
     icon: '',
@@ -53,24 +40,22 @@ export class PageCadContaBancariaComponent {
   };
 
   visible: boolean = false;
-  showDialog() {
-    this.visible = true;
-  }
 
-  categorias: Categoria[] = [];
-  categoria: Categoria = {
+  categorias: CategoriaContaBancariaDropDown[] = [];
+  categoria: CategoriaContaBancariaDropDown = {
     id: 0,
     nome: ''
   };
 
-  icons: Icon[] = [];
-  icon: Icon = {
+  icons: IconFormInsert[] = [];
+  icon: IconFormInsert = {
     nome: ''
   };
 
   constructor(
-    private httpClient: HttpClient,
-    private router: Router
+    private router: Router,
+    private contaBancariaService: ContaBancariaService,
+    private categoriaContaBancariaService: CategoriaContaBancariaService,
   ) { }
 
   ngOnInit() {
@@ -89,19 +74,25 @@ export class PageCadContaBancariaComponent {
     ];
   }
 
+  showDialog() {
+    this.visible = true;
+  }
+
   buscarCategorias() {
-    this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`).subscribe(x => {
-      this.categorias = x
-    });
+    this.categoriaContaBancariaService.consultarDropDown()
+      .subscribe(x => {
+        this.categorias = x
+      });
   }
 
   salvar() {
     this.contaCriada.idCategoria = this.categoria.id;
     this.contaCriada.icon = this.icon.nome;
 
-    this.httpClient.post(`${environment.apiUrl}/contas`, this.contaCriada).subscribe(x => {
-      this.router.navigate(['/contas'])
-    })
+    this.contaBancariaService.salvar(this.contaCriada)
+      .subscribe(x => {
+        this.router.navigate(['/contas'])
+      })
 
   }
 

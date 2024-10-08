@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { environment } from '../../../environments/environment';
-
-interface Categoria {
-  id: number;
-  nome: string;
-}
+import { CategoriaContaBancariaFormUpdate } from '../../models/forms/update/categoria-conta-bancaria-form-update';
+import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
 
 @Component({
   selector: 'app-editar-categoria',
@@ -23,18 +18,18 @@ interface Categoria {
   styleUrls: ['./editar-categoria.component.css']
 })
 export class EditarCategoriaComponent implements OnInit {
-  categoria: Categoria = { id: 0, nome: '' };
+  categoria: CategoriaContaBancariaFormUpdate = { id: 0, nome: '' };
 
   constructor(
     private route: ActivatedRoute,
-    private httpClient: HttpClient,
-    private router: Router
-  ) {}
+    private router: Router,
+    private categoriaContaBancariaService: CategoriaContaBancariaService,
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id = +params.get('id')!;
-      this.httpClient.get<Categoria>(`${environment.apiUrl}/categorias/${id}`)
+      this.categoriaContaBancariaService.consultarPorId(id)
         .subscribe(categoria => {
           this.categoria = categoria;
         });
@@ -42,9 +37,9 @@ export class EditarCategoriaComponent implements OnInit {
   }
 
   salvar() {
-    this.httpClient.put<Categoria>(`${environment.apiUrl}/categorias/${this.categoria.id}`, this.categoria)
+    this.categoriaContaBancariaService.atualizar(this.categoria)
       .subscribe(() => {
-        this.router.navigate(['categorias']);
+        this.router.navigate(['categorias-contas-bancarias']);
       });
   }
 }

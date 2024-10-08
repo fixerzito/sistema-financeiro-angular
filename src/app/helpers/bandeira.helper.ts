@@ -1,4 +1,4 @@
-import { Bandeira } from '../models/tables/bandeira.component';
+import { Bandeira } from '../models/view/bandeira';
 
 export function obterStringBandeiraCartao(digitos: string): string {
     let bandeiraCartao: string;

@@ -1,4 +1,5 @@
-export interface CartaoCreditoFormInsert {
+export interface CartaoCreditoFormUpdate {
+    id?: number,
     nome?: string,
     digBandeira: string,
     saldo?: number,

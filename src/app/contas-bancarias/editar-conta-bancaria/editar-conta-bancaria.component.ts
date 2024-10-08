@@ -1,28 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-import { environment } from '../../../environments/environment';
-
-
-interface Categoria {
-  id: number,
-  nome: string;
-}
-
-interface Conta {
-  id: number
-  nome: string,
-  saldo?: number | null,
-  icon: string,
-  idCategoria: number
-};
+import { ContaBancariaFormUpdate } from '../../models/forms/update/conta-bancaria-form-update';
+import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
+import { CategoriaContaBancariaDropDown } from '../../models/dropdowns/categoria-conta-bancaria-dropdown';
+import { ContaBancariaService } from '../../services/conta-bancaria.service';
 
 @Component({
   selector: 'app-editar-conta-bancaria',
@@ -42,7 +30,7 @@ interface Conta {
 })
 export class EditarContaBancariaComponent {
 
-  contaCriada: Conta = {
+  contaCriada: ContaBancariaFormUpdate = {
     id: -1,
     nome: '',
     saldo: null,
@@ -55,15 +43,16 @@ export class EditarContaBancariaComponent {
     this.visible = true;
   }
 
-  categorias: Categoria[] = [];
-  categoriaExistente?: Categoria;
+  categorias: CategoriaContaBancariaDropDown[] = [];
+  categoriaExistente?: CategoriaContaBancariaDropDown;
 
   icons: string[] = [];
 
   constructor(
-    private httpClient: HttpClient,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private categoriaContaBancariaService: CategoriaContaBancariaService,
+    private contaBancariaService: ContaBancariaService
   ) { }
 
   ngOnInit() {
@@ -78,12 +67,13 @@ export class EditarContaBancariaComponent {
        "pi pi-times",
        "pi pi-user",
        "pi pi-home",
-       "pi pi-credit-card"
+       "pi pi-credit-card",
+       "pi pi-sun",
     ];
 
     this.route.paramMap.subscribe(params => {
       const id = +params.get('id')!;
-      this.httpClient.get<Conta>(`${environment.apiUrl}/contas/${id}`)
+      this.contaBancariaService.consultarPorId(id)
         .subscribe(contaRecebida => {
           this.contaCriada = contaRecebida;
           this.categoriaExistente = this.filterCategoriaPorId(this.contaCriada.idCategoria);      
@@ -92,14 +82,14 @@ export class EditarContaBancariaComponent {
   }
 
   buscarCategorias() {
-    this.httpClient.get<Array<Categoria>>(`${environment.apiUrl}/categorias`).subscribe(x => {
+    this.categoriaContaBancariaService.consultarDropDown()
+    .subscribe(x => {
       this.categorias = x
     });
   }
 
   salvar() {
-
-    this.httpClient.put<Conta>(`${environment.apiUrl}/contas/${this.contaCriada.id}`, this.contaCriada).subscribe(() => {
+    this.contaBancariaService.atualizar(this.contaCriada).subscribe(() => {
       this.router.navigate(['/contas'])
     })
 
@@ -109,7 +99,7 @@ export class EditarContaBancariaComponent {
     this.router.navigate(['contas'])
   }
 
-  filterCategoriaPorId(idCategoria: number): Categoria | undefined{ 
+  filterCategoriaPorId(idCategoria: number): CategoriaContaBancariaDropDown | undefined{ 
     return this.categorias.find(x => x.id == idCategoria);
   }
 

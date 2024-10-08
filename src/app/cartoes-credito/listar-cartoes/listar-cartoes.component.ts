@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { CartaoCreditoFormInsert } from '../../models/forms/insert/cartao-credito-form-insert';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Location } from '@angular/common';
 import { CartaoCreditoService } from '../../services/cartao-credito.service';
@@ -31,7 +30,6 @@ import { CartaoTable } from '../../models/tables/cartao-table';
 })
 
 export class ListarCartoesComponent implements OnInit {
-  cartao!: CartaoCreditoFormInsert;
   cartoesLista: CartaoTable[] = [];
 
   constructor(
@@ -47,7 +45,7 @@ export class ListarCartoesComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    const state = this.location.getState() as { [key: string]: any };
+    const state = this.location.getState() as { [key: string]: string };
     if (state && state['cadastrou']) {
       this.messageService.add({ severity: 'success', summary: 'Cartão criado com sucesso' });
     }
@@ -60,7 +58,7 @@ export class ListarCartoesComponent implements OnInit {
         this.cartoesLista.forEach(cartao => {
           cartao.bandeira = obterStringBandeiraCartao(cartao.digBandeira);
         })
-      });
+      }); 
   }
 
 

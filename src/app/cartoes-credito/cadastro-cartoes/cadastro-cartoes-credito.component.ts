@@ -10,13 +10,13 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { Router } from '@angular/router';
-import { ContaService } from '../../services/conta.service';
-import { ContaDropdown } from '../../models/dropdowns/conta-dropdown';
+import { ContaBancariaService } from '../../services/conta-bancaria.service';
+import { ContaBancariaDropdown } from '../../models/dropdowns/conta-bancaria-dropdown';
 import { CartaoCreditoService } from '../../services/cartao-credito.service';
 import { CartaoCreditoFormInsert } from '../../models/forms/insert/cartao-credito-form-insert';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { Bandeira } from '../../models/tables/bandeira.component';
+import { Bandeira } from '../../models/view/bandeira';
 import { obterBandeiraCartao } from '../../helpers/bandeira.helper';
 
 @Component({
@@ -53,19 +53,19 @@ export class CadastroCartoesCreditoComponent implements OnInit {
   visible: boolean = false;
   stringValidaConta: boolean = false;
   validaConta: boolean = false;
-  contasDropdown!: ContaDropdown[];
-  contaSelecionada!: ContaDropdown;;
+  contasDropdown!: ContaBancariaDropdown[];
+  contaSelecionada!: ContaBancariaDropdown;;
 
   constructor(
     private router: Router,
-    private contaService: ContaService, 
+    private contaBancariaService: ContaBancariaService, 
     private cartaoCreditoService: CartaoCreditoService,
     private messageService: MessageService,
-  ) { }
+  ) {}
   
   ngOnInit() {
     this.stringValidaConta = false;
-    this.contaService.getAllDropdown()
+    this.contaBancariaService.getAllDropdown()
     .subscribe(contas => {
       this.contasDropdown = contas;
     });

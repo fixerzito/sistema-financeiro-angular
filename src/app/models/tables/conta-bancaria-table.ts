@@ -1,4 +1,4 @@
-export interface ContaTable {
+export interface ContaBancariaTable {
     id?: number
     nome: string,
     saldo: number,

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { CadCatContaBancariaComponent } from './contas-bancarias/cad-cat-conta-bancaria/cad-cat-conta-bancaria.component';
 import { PageCadContaBancariaComponent } from './contas-bancarias/page-cad-conta-bancaria/page-cad-conta-bancaria.component';
 import { ListaCategoriaContaBancariaComponent } from './categorias/lista-categoria-conta-bancaria/lista-categoria-conta-bancaria.component';
 import { CadastroCartoesCreditoComponent } from './cartoes-credito/cadastro-cartoes/cadastro-cartoes-credito.component';
@@ -14,11 +13,11 @@ import { EditarCartoesComponent } from './cartoes-credito/editar-cartoes/editar-
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'contas', component: ListarContasBancariasComponent },
-    { path: 'contas/cad-contas', component: PageCadContaBancariaComponent },
+    { path: 'contas/cadastro', component: PageCadContaBancariaComponent },
     { path: 'contas/editar/:id', component: EditarContaBancariaComponent },
-    { path: 'categorias', component: ListaCategoriaContaBancariaComponent },
-    { path: 'categorias/editar-categoria/:id', component: EditarCategoriaComponent },
-    { path: 'categorias/cadastro', component: CadastroCategoriaContaBancariaComponent },
+    { path: 'categorias-contas-bancarias', component: ListaCategoriaContaBancariaComponent },
+    { path: 'categorias-contas-bancarias/editar/:id', component: EditarCategoriaComponent },
+    { path: 'categorias-contas-bancarias/cadastro', component: CadastroCategoriaContaBancariaComponent },
     { path: 'cartoes', component: ListarCartoesComponent },
     { path: 'cartoes/cadastro', component: CadastroCartoesCreditoComponent },
     { path: 'cartoes/editar/:id', component: EditarCartoesComponent  }

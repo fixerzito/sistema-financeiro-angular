@@ -1,5 +1,5 @@
 <div class="main" [style]="{ width: '50rem' }">
-    <span class="p-text-secondary block mb-5">Cadastrar uma nova conta bancária</span>
+    <span class="p-text-secondary block mb-5">Editar conta bancária</span>
     <div class="flex align-items-center gap-3 mb-3">
         <label for="username" class="font-semibold w-6rem">Nome da conta</label>
         <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="contaCriada.nome" />
@@ -18,14 +18,11 @@
         <label for="email" class="font-semibold w-2rem">Ícone</label>
         <p-dropdown [options]="icons" [(ngModel)]="contaCriada.icon" optionLabel="name" placeholder="Escolha um ícone"
             class="flex-auto" autocomplete="off">
-            <!-- Utilizado ng-template para definir um template para cada item do dropdown -->
             <ng-template let-icon pTemplate="item">
                 <div>
-                    <!-- tag i que recebe a string do icon para mostra-lo -->
                     <i [ngClass]="icon"></i>
                 </div>
             </ng-template>
-            <!-- selectedItem no pTemplate define que o item selecionado terá um template alterado, assim como cada opção tem ao utulizar 'item' -->
             <ng-template pTemplate="selectedItem">
                 <div>
                     <i [ngClass]="contaCriada.icon">

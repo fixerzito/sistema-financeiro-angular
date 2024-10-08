@@ -27,7 +27,7 @@
                 <td>{{ cartao.diaVencimento }}</td>
                 <td>
                     <p-button label="Editar" (onClick)="editar(cartao.id)" icon="pi pi-pencil" />
-                    <p-button label="Apagar" (onClick)="apagar(cartao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" />
+                    <p-button label="Apagar" (onClick)="confirmacaoApagar($event, cartao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" />
                 </td>
             </tr>
         </ng-template>

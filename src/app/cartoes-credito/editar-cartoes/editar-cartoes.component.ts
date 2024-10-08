@@ -9,14 +9,14 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartaoCreditoFormInsert } from '../../models/forms/insert/cartao-credito-form-insert';
-import { ContaDropdown } from '../../models/dropdowns/conta-dropdown';
-import { Bandeira } from '../../models/tables/bandeira.component';
+import { ContaBancariaDropdown } from '../../models/dropdowns/conta-bancaria-dropdown';
+import { Bandeira } from '../../models/view/bandeira';
 import { CartaoCreditoService } from '../../services/cartao-credito.service';
-import { ContaService } from '../../services/conta.service';
+import { ContaBancariaService } from '../../services/conta-bancaria.service';
 import { obterBandeiraCartao } from '../../helpers/bandeira.helper';
+import { CartaoCreditoFormUpdate } from '../../models/forms/update/cartao-credito-form-update';
 
 @Component({
   selector: 'app-editar-cartoes',
@@ -38,12 +38,12 @@ import { obterBandeiraCartao } from '../../helpers/bandeira.helper';
 })
 
 export class EditarCartoesComponent implements OnInit {
-  cartaoEditado: CartaoCreditoFormInsert = {
+  cartaoEditado: CartaoCreditoFormUpdate = {
     nome: '',
     digBandeira: ''
   };
 
-  cartaoRecebidoParaEditar: CartaoCreditoFormInsert = {
+  cartaoRecebidoParaEditar: CartaoCreditoFormUpdate = {   
     nome: '',
     digBandeira: ''
   };
@@ -53,26 +53,24 @@ export class EditarCartoesComponent implements OnInit {
     link: ''
   };
 
-  idParaEditar!: number;
   visible: boolean = false;
   stringValidaConta: boolean = false;
   validaConta: boolean = false;
-  contasDropdown!: ContaDropdown[];
+  contasDropdown!: ContaBancariaDropdown[];
 
   constructor(
-    private httpClient: HttpClient,
     private router: Router,
     private route: ActivatedRoute,
     public cartaoCreditoService: CartaoCreditoService,
-    private contaService: ContaService,
+    private contaBancariaService: ContaBancariaService,
   ) { }
   
   ngOnInit() {
     this.buscarContasBancarias();
 
     this.route.paramMap.subscribe(params => {
-      this.idParaEditar = +params.get('id')!
-      this.cartaoCreditoService.buscarCartaoEditar(this.idParaEditar)
+      let idParaEditar = +params.get('id')!
+      this.cartaoCreditoService.buscarCartaoEditar(idParaEditar)
         .subscribe(response => {
           if (Array.isArray(response)) {
             this.cartaoRecebidoParaEditar = response[0];
@@ -86,6 +84,7 @@ export class EditarCartoesComponent implements OnInit {
           }
 
           this.cartaoEditado = this.cartaoRecebidoParaEditar;
+          console.log(this.cartaoEditado.digBandeira);
           
           this.preencherBandeiraCartao()
         });
@@ -108,14 +107,14 @@ export class EditarCartoesComponent implements OnInit {
   }
 
   buscarContasBancarias() {
-    this.contaService.getAllDropdown()
+    this.contaBancariaService.getAllDropdown()
       .subscribe(contas => {
         this.contasDropdown = contas;
 
       });
   }
 
-  salvar(id: number, cartao: CartaoCreditoFormInsert ) {
+  salvar(id: number | undefined = -1 , cartao: CartaoCreditoFormInsert ) {
     this.cartaoCreditoService.salvar(id, cartao)
       .subscribe(x => {
         this.router.navigate(['cartoes']);

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -9,15 +8,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { environment } from '../../../environments/environment';
-
-interface Conta {
-  id: number,
-  nome: string,
-  saldo: number,
-  icon: string,
-  idCategoria: number
-};
+import { ContaBancariaTable } from '../../models/tables/conta-bancaria-table';
+import { ContaBancariaService } from '../../services/conta-bancaria.service';
+import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
 
 @Component({
   selector: 'app-listar-contas-bancarias',
@@ -37,14 +30,15 @@ interface Conta {
   providers: [ConfirmationService, MessageService]
 })
 export class ListarContasBancariasComponent {
-  contas: Conta[] = [];
+  contas: ContaBancariaTable[] = [];
   categorias: { [id: number]: string } = {};
 
   constructor(
-    private httpClient: HttpClient,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private contaBancariaService: ContaBancariaService,
+    private categoriaContaBancariaService: CategoriaContaBancariaService,
   ) { }
 
   ngOnInit() {
@@ -52,7 +46,7 @@ export class ListarContasBancariasComponent {
   }
 
   consultar() {
-    this.httpClient.get<Array<Conta>>(`${environment.apiUrl}/contas`)
+    this.contaBancariaService.consultar()
       .subscribe(contas => {
         this.contas = contas;
         contas.forEach(conta => this.consultarCatPorId(conta.idCategoria));
@@ -61,7 +55,7 @@ export class ListarContasBancariasComponent {
 
   consultarCatPorId(id: number) {
     if (!this.categorias[id]) {
-      this.httpClient.get<any>(`${environment.apiUrl}/categorias/${id}`)
+      this.categoriaContaBancariaService.consultarPorId(id)
         .subscribe(categoria => {
           this.categorias[id] = categoria.nome;
         });
@@ -69,7 +63,7 @@ export class ListarContasBancariasComponent {
   }
 
   apagar(id: number) {
-    this.httpClient.delete(`${environment.apiUrl}/contas/${id}`)
+    this.contaBancariaService.apagar(id)
       .subscribe(() => {
         this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
         this.consultar();

@@ -3,8 +3,8 @@ export interface CartaoTable {
     nome: string,
     digBandeira: string,
     bandeira?: string,
-    diaFechamento: Date,
-    diaVencimento: Date,
+    diaFechamento: number,
+    diaVencimento: number,
     saldo: number,
     contaVinculada?: string
 }

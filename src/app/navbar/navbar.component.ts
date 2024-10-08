@@ -36,7 +36,7 @@ export class NavbarComponent {
           {
             label: 'Categorias',
             icon: 'pi pi-bolt',
-            routerLink: 'categorias'
+            routerLink: 'categorias-contas-bancarias'
           },
           {
             label: 'Contas bancárias',
@@ -46,7 +46,7 @@ export class NavbarComponent {
         ]
       },
       {
-        label: 'Cartão de crédito',
+        label: 'Cartões de crédito',
         icon: 'pi pi-credit-card',
         routerLink: 'cartoes'
       }
