@@ -34,22 +34,44 @@ export class NavbarComponent {
         icon: 'pi pi-building-columns',
         items: [
           {
-            label: 'Categorias',
-            icon: 'pi pi-bolt',
-            routerLink: 'categorias-contas-bancarias'
+            label: 'Contas bancárias',
+            icon: 'pi pi-list',
+            routerLink: 'contas'
           },
           {
-            label: 'Contas bancárias',
-            icon: 'pi pi-building-columns',
-            routerLink: 'contas'
-          }
+            label: 'Categorias',
+            icon: 'pi pi-tags',
+            routerLink: 'categorias-contas-bancarias'
+          },
         ]
       },
       {
         label: 'Cartões de crédito',
         icon: 'pi pi-credit-card',
         routerLink: 'cartoes'
+      },
+      {
+        label: 'Transações',
+        icon: 'pi pi-arrow-right-arrow-left',
+        items: [
+          {
+            label: 'Transações',
+            icon: 'pi pi-list',
+            routerLink: 'transacoes'
+          },
+          {
+            label: 'Categorias',
+            icon: 'pi pi-tags',
+            routerLink: 'categorias-transacao'
+          },
+          {
+            label: 'Subcategorias',
+            icon: 'pi pi-tag',
+            routerLink: 'subcategorias-transacao'
+          }
+        ]
       }
+
     ]
   }
 }
