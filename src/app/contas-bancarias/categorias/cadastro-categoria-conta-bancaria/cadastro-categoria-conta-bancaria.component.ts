@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { CategoriaContaBancariaFormInsert } from '../../models/forms/insert/categoria-conta-bancaria-form-insert';
-import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
+import { CategoriaContaBancariaFormInsert } from '../../../models/forms/insert/categoria-conta-bancaria-form-insert';
+import { CategoriaContaBancariaService } from '../../../services/categoria-conta-bancaria.service';
 
 @Component({
   selector: 'app-cadastro-categoria-conta-bancaria',

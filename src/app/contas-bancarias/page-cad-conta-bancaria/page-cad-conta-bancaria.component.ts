@@ -34,7 +34,7 @@ import { ContaBancariaService } from '../../services/conta-bancaria.service';
 export class PageCadContaBancariaComponent {
   contaCriada: ContaBancariaFormInsert = {
     nome: '',
-    saldo: null,
+    saldo: 0,
     icon: '',
     idCategoria: 0
   };

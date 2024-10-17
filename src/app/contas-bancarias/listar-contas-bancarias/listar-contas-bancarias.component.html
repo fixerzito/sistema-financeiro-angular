@@ -5,7 +5,7 @@
 </div>
 
 <div class="card">
-    <p-table [value]="contas" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="contas" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
             <tr>
                 <th>Conta</th>
@@ -17,7 +17,7 @@
         <ng-template pTemplate="body" let-conta>
             <tr>
                 <td>{{ conta.nome }}</td>
-                <td>{{ categorias[conta.idCategoria] }}<i [ngClass]="conta.icon"></i></td>
+                <td>{{ categorias[conta.idCategoria] }} <i [ngClass]="conta.icon"></i></td>
                 <td>R$ {{ conta.saldo | number: '1.2-2' }}</td>
                 <td>
                     <p-button label="Editar" icon="pi pi-pencil" (click)="editar(conta.id)"/>

@@ -33,7 +33,7 @@ export class EditarContaBancariaComponent {
   contaCriada: ContaBancariaFormUpdate = {
     id: -1,
     nome: '',
-    saldo: null,
+    saldo: 0,
     icon: '',
     idCategoria: 0
   };

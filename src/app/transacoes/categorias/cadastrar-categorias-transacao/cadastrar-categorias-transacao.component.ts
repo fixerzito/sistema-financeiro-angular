@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { CategoriaTransacoesInsert } from '../../../models/forms/insert/categoria-transacoes-insert';
-import { CategoriasTransacoesService } from '../../../services/categorias-transacao.service';
+import { CategoriaTransacaoFormInsert } from '../../../models/forms/insert/categoria-transacao-form-insert';
+import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
 
 @Component({
   selector: 'app-cadastrar-categorias-transacao',
@@ -18,18 +18,18 @@ import { CategoriasTransacoesService } from '../../../services/categorias-transa
   styleUrl: './cadastrar-categorias-transacao.component.css'
 })
 export class CadastrarCategoriasTransacaoComponent {
-  categoria: CategoriaTransacoesInsert = {
+  categoria: CategoriaTransacaoFormInsert = {
     nome: ''
   };
 
   constructor(
     private router: Router,
-    private categoriasTransacoesService: CategoriasTransacoesService,
+    private categoriaTransacaoService: CategoriaTransacaoService,
   ) {
 
   }
   salvar() {
-    this.categoriasTransacoesService.salvar(this.categoria)
+    this.categoriaTransacaoService.salvar(this.categoria)
       .subscribe(x => this.router.navigate(['/categorias-transacao'])
       )
   }

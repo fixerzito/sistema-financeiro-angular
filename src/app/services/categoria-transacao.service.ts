@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CategoriaTransacoesDropdown } from '../models/dropdowns/categoria-transacoes-dropdown';
-import { CategoriaTransacoesInsert } from '../models/forms/insert/categoria-transacoes-insert';
-import { CategoriaTransacoesUpdate } from '../models/forms/update/categoria-transacoes-form-update';
+import { CategoriaTransacaoFormInsert } from '../models/forms/insert/categoria-transacao-form-insert';
+import { CategoriaTransacaoFormUpdate } from '../models/forms/update/categoria-transacao-form-update';
 import { CategoriaTransacaoTable } from '../models/tables/categoria-transacao-table';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriasTransacoesService {
+export class CategoriaTransacaoService {
   constructor(
     private httpClient: HttpClient
   ) { }
@@ -31,11 +31,11 @@ export class CategoriasTransacoesService {
     return this.httpClient.get<CategoriaTransacaoTable>(`${environment.apiUrl}/categorias-transacao/${id}`)
   }
 
-  salvar(categoria: CategoriaTransacoesInsert): Observable<CategoriaTransacoesInsert> {
-    return this.httpClient.post<CategoriaTransacoesInsert>(`${environment.apiUrl}/categorias-transacao`, categoria)
+  salvar(categoria: CategoriaTransacaoFormInsert): Observable<CategoriaTransacaoFormInsert> {
+    return this.httpClient.post<CategoriaTransacaoFormInsert>(`${environment.apiUrl}/categorias-transacao`, categoria)
   }
 
-  atualizar(categoria: CategoriaTransacoesUpdate): Observable<CategoriaTransacoesUpdate> {
-    return this.httpClient.put<CategoriaTransacoesUpdate>(`${environment.apiUrl}/categorias-transacao/${categoria.id}`, categoria)
+  atualizar(categoria: CategoriaTransacaoFormUpdate): Observable<CategoriaTransacaoFormUpdate> {
+    return this.httpClient.put<CategoriaTransacaoFormUpdate>(`${environment.apiUrl}/categorias-transacao/${categoria.id}`, categoria)
   }
 }

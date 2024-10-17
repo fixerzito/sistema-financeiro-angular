@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { PageCadContaBancariaComponent } from './contas-bancarias/page-cad-conta-bancaria/page-cad-conta-bancaria.component';
-import { ListaCategoriaContaBancariaComponent } from './categorias/lista-categoria-conta-bancaria/lista-categoria-conta-bancaria.component';
+import { ListaCategoriaContaBancariaComponent } from './contas-bancarias/categorias/lista-categoria-conta-bancaria/lista-categoria-conta-bancaria.component';
 import { CadastroCartoesCreditoComponent } from './cartoes-credito/cadastro-cartoes/cadastro-cartoes-credito.component';
-import { CadastroCategoriaContaBancariaComponent } from './categorias/cadastro-categoria-conta-bancaria/cadastro-categoria-conta-bancaria.component';
-import { EditarCategoriaComponent } from './categorias/editar-categoria/editar-categoria.component';
+import { CadastroCategoriaContaBancariaComponent } from './contas-bancarias/categorias/cadastro-categoria-conta-bancaria/cadastro-categoria-conta-bancaria.component';
+import { EditarCategoriaComponent } from './contas-bancarias/categorias/editar-categoria/editar-categoria.component';
 import { ListarContasBancariasComponent } from './contas-bancarias/listar-contas-bancarias/listar-contas-bancarias.component';
 import { EditarContaBancariaComponent } from './contas-bancarias/editar-conta-bancaria/editar-conta-bancaria.component';
 import { ListarCartoesComponent } from './cartoes-credito/listar-cartoes/listar-cartoes.component';

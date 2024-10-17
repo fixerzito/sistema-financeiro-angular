@@ -1,6 +1,6 @@
 export interface ContaBancariaFormInsert {
     nome: string,
-    saldo?: number | null,
+    saldo?: number,
     icon: string,
     idCategoria: number
   };

@@ -65,7 +65,7 @@ export class ListarContasBancariasComponent {
   apagar(id: number) {
     this.contaBancariaService.apagar(id)
       .subscribe(() => {
-        this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'info', summary: 'Conta bancária apagada com sucesso', detail: 'Record deleted' });
         this.consultar();
       });
   }

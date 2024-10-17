@@ -11,7 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { SubcategoriaTransacaoFormInsert } from '../../../models/forms/insert/subcategoria-transacao-insert';
 import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
-import { CategoriasTransacoesService } from '../../../services/categorias-transacao.service';
+import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
 
 @Component({
   selector: 'app-cadastrar-subcategorias-transacao',
@@ -44,11 +44,11 @@ export class CadastrarSubcategoriasTransacaoComponent implements OnInit {
   constructor(
     private router: Router,
     private subcategoriaTransacaoService: SubcategoriaTransacaoService,
-    private categoriasTransacoesService: CategoriasTransacoesService,
+    private categoriaTransacaoService: CategoriaTransacaoService,
   ) { }
 
   ngOnInit() {
-    this.categoriasTransacoesService.consultarDropdown()
+    this.categoriaTransacaoService.consultarDropdown()
     .subscribe(categorias => 
       this.categorias = categorias
     );

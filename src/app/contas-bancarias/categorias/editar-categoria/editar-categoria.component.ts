@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { CategoriaContaBancariaFormUpdate } from '../../models/forms/update/categoria-conta-bancaria-form-update';
-import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
+import { CategoriaContaBancariaFormUpdate } from '../../../models/forms/update/categoria-conta-bancaria-form-update';
+import { CategoriaContaBancariaService } from '../../../services/categoria-conta-bancaria.service';
 
 @Component({
   selector: 'app-editar-categoria',

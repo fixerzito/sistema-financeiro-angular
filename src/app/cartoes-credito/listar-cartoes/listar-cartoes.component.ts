@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { CartaoCreditoService } from '../../services/cartao-credito.service';
 import { obterStringBandeiraCartao } from '../../helpers/bandeira.helper';
 import { CartaoTable } from '../../models/tables/cartao-table';
+import { ContaBancariaService } from '../../services/conta-bancaria.service';
 
 @Component({
   selector: 'app-listar-cartoes',
@@ -38,6 +39,7 @@ export class ListarCartoesComponent implements OnInit {
     private router: Router,
     private location: Location,
     private cartaoCreditoService: CartaoCreditoService,
+    private contaBancariaService: ContaBancariaService
   ) { }
 
   ngOnInit(): void {
@@ -56,7 +58,9 @@ export class ListarCartoesComponent implements OnInit {
       .subscribe(cartoesRecebidos => {
         this.cartoesLista = cartoesRecebidos;
         this.cartoesLista.forEach(cartao => {
-          cartao.bandeira = obterStringBandeiraCartao(cartao.digBandeira);
+          cartao.bandeira = obterStringBandeiraCartao(cartao.digBandeira)
+          console.log(this.cartoesLista);
+          
         })
       }); 
   }

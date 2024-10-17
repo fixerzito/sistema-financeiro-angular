@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { TableModule } from 'primeng/table';
+import { Table, TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { CategoriaContaBancariaTable } from '../../models/tables/categoria-conta-bancaria-table';
-import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
+import { CategoriaContaBancariaTable } from '../../../models/tables/categoria-conta-bancaria-table';
+import { CategoriaContaBancariaService } from '../../../services/categoria-conta-bancaria.service';
 
 @Component({
   selector: 'app-lista-categoria-conta-bancaria',
@@ -29,6 +29,8 @@ import { CategoriaContaBancariaService } from '../../services/categoria-conta-ba
 export class ListaCategoriaContaBancariaComponent implements OnInit {
   categorias: CategoriaContaBancariaTable[] = [];
   categoriaEditar!: CategoriaContaBancariaTable;
+
+  @ViewChild('dt') dt: Table | undefined;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -60,7 +62,7 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   apagar(id: number) {
     this.categoriaContaBancariaService.apagar(id)
       .subscribe(() => {
-        this.messageService.add({ severity: 'info', summary: 'Cartão apagado com sucesso', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: '' });
         this.consultar();
       });
   }
@@ -74,5 +76,9 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
 
   editar(id: number) {
     this.router.navigate(['categorias-contas-bancarias/editar', id]);
+  }
+
+  applyFilterGlobal($event: any, stringVal: any) {
+    this.dt?.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 }

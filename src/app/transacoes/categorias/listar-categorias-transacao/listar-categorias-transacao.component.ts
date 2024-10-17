@@ -8,7 +8,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { CategoriaTransacaoTable } from '../../../models/tables/categoria-transacao-table';
-import { CategoriasTransacoesService } from '../../../services/categorias-transacao.service';
+import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class ListarCategoriasTransacaoComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private categoriasTransacoesService: CategoriasTransacoesService,
+    private categoriaTransacaoService: CategoriaTransacaoService,
 
   ) { }
 
@@ -61,15 +61,15 @@ export class ListarCategoriasTransacaoComponent {
   }
 
   apagar(id: number) {
-    this.categoriasTransacoesService.apagar(id)
+    this.categoriaTransacaoService.apagar(id)
       .subscribe(() => {
-        this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: '' });
         this.consultar();
       });
   }
 
   consultar() {
-  this.categoriasTransacoesService.consultar()
+  this.categoriaTransacaoService.consultar()
       .subscribe(x => {
         this.categorias = x;
       });
