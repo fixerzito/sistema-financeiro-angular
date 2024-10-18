@@ -8,11 +8,11 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { ContaBancariaFormInsert } from '../../models/forms/insert/conta-bancaria-form-insert';
-import { IconFormInsert } from '../../models/forms/insert/icon-form-insert';
-import { CategoriaContaBancariaDropDown } from '../../models/dropdowns/categoria-conta-bancaria-dropdown';
-import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
-import { ContaBancariaService } from '../../services/conta-bancaria.service';
+import { ContaBancariaFormInsert } from '../../../models/forms/insert/conta-bancaria-form-insert';
+import { IconFormInsert } from '../../../models/forms/insert/icon-form-insert';
+import { CategoriaContaBancariaDropDown } from '../../../models/dropdowns/categoria-conta-bancaria-dropdown';
+import { CategoriaContaBancariaService } from '../../../services/categoria-conta-bancaria.service';
+import { ContaBancariaService } from '../../../services/conta-bancaria.service';
 
 @Component({
   selector: 'app-page-cad-conta-bancaria',

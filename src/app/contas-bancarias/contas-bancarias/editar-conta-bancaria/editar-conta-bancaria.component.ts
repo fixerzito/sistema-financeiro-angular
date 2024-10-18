@@ -7,10 +7,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
-import { ContaBancariaFormUpdate } from '../../models/forms/update/conta-bancaria-form-update';
-import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
-import { CategoriaContaBancariaDropDown } from '../../models/dropdowns/categoria-conta-bancaria-dropdown';
-import { ContaBancariaService } from '../../services/conta-bancaria.service';
+import { ContaBancariaFormUpdate } from '../../../models/forms/update/conta-bancaria-form-update';
+import { CategoriaContaBancariaService } from '../../../services/categoria-conta-bancaria.service';
+import { CategoriaContaBancariaDropDown } from '../../../models/dropdowns/categoria-conta-bancaria-dropdown';
+import { ContaBancariaService } from '../../../services/conta-bancaria.service';
 
 @Component({
   selector: 'app-editar-conta-bancaria',

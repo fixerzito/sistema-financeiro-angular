@@ -8,9 +8,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
-import { ContaBancariaTable } from '../../models/tables/conta-bancaria-table';
-import { ContaBancariaService } from '../../services/conta-bancaria.service';
-import { CategoriaContaBancariaService } from '../../services/categoria-conta-bancaria.service';
+import { ContaBancariaTable } from '../../../models/tables/conta-bancaria-table';
+import { ContaBancariaService } from '../../../services/conta-bancaria.service';
+import { CategoriaContaBancariaService } from '../../../services/categoria-conta-bancaria.service';
 
 @Component({
   selector: 'app-listar-contas-bancarias',
