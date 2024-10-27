@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, LazyLoadEvent, MessageService, SortEvent } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { Table, TableModule } from 'primeng/table';
@@ -29,9 +29,13 @@ import { CategoriaContaBancariaService } from '../../../services/categoria-conta
 export class ListaCategoriaContaBancariaComponent implements OnInit {
   categorias: CategoriaContaBancariaTable[] = [];
   categoriaEditar!: CategoriaContaBancariaTable;
+  ordenacaoColuna: string = "nome";
+  ordenacao: number = 1;
+  page = 0;
+  totalRecords!: number;
+  loading: boolean = false;
 
-  @ViewChild('dt') dt: Table | undefined;
-
+  rows = 10;
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
@@ -40,7 +44,7 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.consultar();
+    
   }
 
   confirmacaoApagar(event: Event, id: number) {
@@ -68,9 +72,13 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   }
 
   consultar() {
-  this.categoriaContaBancariaService.consultar()
+    this.loading = true;
+    debugger
+    this.categoriaContaBancariaService.consultar(this.page, this.rows, this.ordenacaoColuna, this.ordenacao)
       .subscribe(x => {
-        this.categorias = x;
+        this.categorias = x.dados;
+        this.totalRecords = x.quantidadeRegistros;
+        this.loading = false;
       });
   }
 
@@ -78,7 +86,14 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
     this.router.navigate(['categorias-contas-bancarias/editar', id]);
   }
 
-  applyFilterGlobal($event: any, stringVal: any) {
-    this.dt?.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
+
+  loadCategories(event: any) {
+    debugger
+    this.page = event.first! / event.rows!;
+    this.rows = event.rows!;
+    this.ordenacao = event.sortOrder ? event.sortOrder : 1
+    this.ordenacaoColuna = event.sortField ? event.SortEvent : "nome"
+
+    this.consultar()
   }
 }

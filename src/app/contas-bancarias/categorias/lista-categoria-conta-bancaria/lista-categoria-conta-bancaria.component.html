@@ -13,11 +13,33 @@
         <input pInputText type="text" placeholder="Buscar por Id ou Nome" (input)="applyFilterGlobal($event, 'contains')"/>
       </span>
     </div> -->
-    <p-table #dt [value]="categorias" [globalFilterFields]="['id', 'nome']" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
-      <ng-template pTemplate="header">
+    <p-table
+      [value]="categorias"
+      [scrollable]="true" 
+      scrollHeight="400px" 
+      [rows]="100"
+      [virtualScroll]="true" 
+      [virtualScrollItemSize]="46" 
+      [lazy]="true" 
+      (onLazyLoad)="loadCategories($event)"
+
+
+
+        
+
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [rowsPerPageOptions]="[10, 25, 50]"
+     
+      [totalRecords]="totalRecords"
+      [loading]="loading">
+        <ng-template pTemplate="header">
         <tr>
-          <th>Código</th>
-          <th>Nome</th>
+          <th pSortableColumn="id">
+            Código <p-sortIcon field="id" />
+        </th>
+        <th pSortableColumn="nome">
+            Nome <p-sortIcon field="nome" />
+        </th>
           <th>Ações</th>
         </tr>
       </ng-template>
