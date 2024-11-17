@@ -33,4 +33,8 @@ export class CadastrarCategoriasTransacaoComponent {
       .subscribe(x => this.router.navigate(['/categorias-transacao'])
       )
   }
+
+  cancelar() {
+    this.router.navigate(['/categorias-transacao'])
+  }
 }

@@ -31,7 +31,7 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   categoriaEditar!: CategoriaContaBancariaTable;
   ordenacaoColuna: string = "nome";
   ordenacao: number = 1;
-  page = 0;
+  page:number = 0;
   totalRecords!: number;
   loading: boolean = false;
 
@@ -44,7 +44,7 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+    this.consultar();
   }
 
   confirmacaoApagar(event: Event, id: number) {
@@ -72,13 +72,9 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
   }
 
   consultar() {
-    this.loading = true;
-    debugger
-    this.categoriaContaBancariaService.consultar(this.page, this.rows, this.ordenacaoColuna, this.ordenacao)
+    this.categoriaContaBancariaService.consultar()
       .subscribe(x => {
-        this.categorias = x.dados;
-        this.totalRecords = x.quantidadeRegistros;
-        this.loading = false;
+        this.categorias = x;
       });
   }
 
@@ -88,12 +84,22 @@ export class ListaCategoriaContaBancariaComponent implements OnInit {
 
 
   loadCategories(event: any) {
-    debugger
-    this.page = event.first! / event.rows!;
-    this.rows = event.rows!;
-    this.ordenacao = event.sortOrder ? event.sortOrder : 1
-    this.ordenacaoColuna = event.sortField ? event.SortEvent : "nome"
+    console.log('Event:', event); // Log do evento completo para verificação
 
-    this.consultar()
+    const pageNumber = event.first / event.rows + 1;
+    const rows = event.rows;
+
+    if (!isNaN(pageNumber) && pageNumber > 0 && !isNaN(rows) && rows > 0) {
+        this.page = pageNumber;
+        this.rows = rows;
+    } else {
+        console.error('Invalid pagination parameters', { pageNumber, rows });
+        return;
+    }
+
+    this.ordenacao = event.sortOrder !== undefined ? event.sortOrder : 1;
+    this.ordenacaoColuna = event.sortField ? event.sortField : "nome";
+
+    this.consultar();
   }
 }

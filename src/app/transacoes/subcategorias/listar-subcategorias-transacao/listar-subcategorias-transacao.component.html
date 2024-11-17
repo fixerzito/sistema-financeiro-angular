@@ -9,16 +9,16 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>Código</th>
-                <th>Nome</th>
                 <th>Categoria relacionada</th>
+                <th>Nome</th>
                 <th>Ações</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-subcategoria>
             <tr>
                 <td>{{ subcategoria.id }}</td>
-                <td>{{ subcategoria.nome }}</td>
                 <td>{{ subcategoria.categoria }}</td>
+                <td>{{ subcategoria.nome }}</td>
                 <td>
                     <p-button label="Editar" (click)="editar(subcategoria.id)" icon="pi pi-pencil" />
                     <p-button label="Apagar" (click)="confirmacaoApagar($event, subcategoria.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>

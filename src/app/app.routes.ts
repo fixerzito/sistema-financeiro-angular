@@ -15,6 +15,9 @@ import { EditarSubcategoriasTransacaoComponent } from './transacoes/subcategoria
 import { EditarContaBancariaComponent } from './contas-bancarias/contas-bancarias/editar-conta-bancaria/editar-conta-bancaria.component';
 import { ListarContasBancariasComponent } from './contas-bancarias/contas-bancarias/listar-contas-bancarias/listar-contas-bancarias.component';
 import { PageCadContaBancariaComponent } from './contas-bancarias/contas-bancarias/page-cad-conta-bancaria/page-cad-conta-bancaria.component';
+import { CadastrarTransacaoComponent } from './transacoes/transacoes/cadastrar-transacao/cadastrar-transacao.component';
+import { ListarTransacaoComponent } from './transacoes/transacoes/listar-transacao/listar-transacao.component';
+import { EditarTransacaoComponent } from './transacoes/transacoes/editar-transacao/editar-transacao.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -38,5 +41,9 @@ export const routes: Routes = [
     { path: 'subcategorias-transacao', component: ListarSubcategoriasTransacaoComponent  },
     { path: 'subcategorias-transacao/cadastro', component: CadastrarSubcategoriasTransacaoComponent  },
     { path: 'subcategorias-transacao/editar/:id', component: EditarSubcategoriasTransacaoComponent  },
+
+    { path: 'transacoes', component: ListarTransacaoComponent  },
+    { path: 'transacoes/cadastro', component: CadastrarTransacaoComponent  },
+    { path: 'transacoes/editar/:id', component: EditarTransacaoComponent  },
 ];
 

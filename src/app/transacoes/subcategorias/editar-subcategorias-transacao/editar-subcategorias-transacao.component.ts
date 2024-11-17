@@ -75,7 +75,7 @@ export class EditarSubcategoriasTransacaoComponent implements OnInit{
   }
 
   cancelar() {
-    this.router.navigate(['subcategoria-transacoes']);
+    this.router.navigate(['subcategorias-transacao']);
   }
 
   buscarCategorias() {

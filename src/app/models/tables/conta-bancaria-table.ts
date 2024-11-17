@@ -1,5 +1,5 @@
 export interface ContaBancariaTable {
-    id?: number
+    id: number
     nome: string,
     saldo: number,
     icon: string,

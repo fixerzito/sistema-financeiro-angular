@@ -59,10 +59,8 @@ export class CadastrarSubcategoriasTransacaoComponent implements OnInit {
       .subscribe(x => this.router.navigate(['/subcategorias-transacao'])
       )
   }
-
-  atribuirIdCategoria(id: number) {
-    
-    this.subcategoria.categoria = id;
-    console.log(this.subcategoria.categoria);
+ 
+  cancelar() {
+    this.router.navigate(['/subcategorias-transacao'])
   }
 }

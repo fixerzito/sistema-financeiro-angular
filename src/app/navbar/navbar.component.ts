@@ -35,7 +35,7 @@ export class NavbarComponent {
         items: [
           {
             label: 'Contas bancárias',
-            icon: 'pi pi-list',
+            icon: 'pi pi-building-columns',
             routerLink: 'contas'
           },
           {
@@ -56,7 +56,7 @@ export class NavbarComponent {
         items: [
           {
             label: 'Transações',
-            icon: 'pi pi-list',
+            icon: 'pi pi-arrow-right-arrow-left',
             routerLink: 'transacoes'
           },
           {

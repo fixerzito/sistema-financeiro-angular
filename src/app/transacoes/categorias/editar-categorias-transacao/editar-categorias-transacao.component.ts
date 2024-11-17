@@ -43,4 +43,8 @@ export class EditarCategoriasTransacaoComponent {
       });
   }
 
+  cancelar() {
+    this.router.navigate(['/categorias-transacao'])
+  }
+
 }

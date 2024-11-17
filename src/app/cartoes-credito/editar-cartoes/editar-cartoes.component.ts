@@ -84,7 +84,6 @@ export class EditarCartoesComponent implements OnInit {
           }
 
           this.cartaoEditado = this.cartaoRecebidoParaEditar;
-          console.log(this.cartaoEditado.digBandeira);
           
           this.preencherBandeiraCartao()
         });

@@ -1,0 +1,78 @@
+<div class="main">
+    <div class="form-container">
+        <div class="input-group">
+            <label for="username" class="form-label">Nome da Transação</label>
+            <input pInputText id="username" [(ngModel)]="transacao.nome" class="form-input" autocomplete="off" />
+        </div>
+
+        <div class="radio-group">
+            <label for="validContaBancaria" class="form-label">Deseja vincular a uma conta existente?</label>
+            <div class="radio-options">
+                <p-radioButton [value]="true" [(ngModel)]="stringValidaConta" inputId="sim"
+                    (ngModelChange)="validarConta()" class="radio-btn" />
+                <label for="sim" class="radio-label">Sim</label>
+
+                <p-radioButton [value]="false" [(ngModel)]="stringValidaConta" inputId="nao"
+                    (ngModelChange)="validarConta()" class="radio-btn" />
+                <label for="nao" class="radio-label">Não</label>
+            </div>
+
+            <p-dropdown [options]="contasDropdown" [(ngModel)]="transacao.idContaBancaria" optionLabel="name"
+                (onShow)="carregarContasBancarias()" optionValue="id" placeholder="Escolha a conta a ser vinculada"
+                (onChange)="atribuirIdConta(transacao.idContaBancaria!)" [disabled]="!stringValidaConta">
+                <ng-template let-cartao pTemplate="item">
+                    {{cartao.nome}}
+                </ng-template>
+                <ng-template let-cartao pTemplate="selectedItem">
+                    {{cartao.nome}}
+                </ng-template>
+            </p-dropdown>
+        </div>
+
+        <div class="input-group">
+            <label class="form-label">Categoria</label>
+            <p-dropdown [options]="categorias" [(ngModel)]="categoriaId" optionLabel="name" optionValue="id"
+                (onShow)="carregarCategorias()" placeholder="Escolha a categoria à ser vinculada"
+                (onChange)="onCategoriaChange()">
+                <ng-template let-categoria pTemplate="item">
+                    {{categoria.nome}}
+                </ng-template>
+                <ng-template let-categoria pTemplate="selectedItem">
+                    {{categoria.nome}}
+                </ng-template>
+            </p-dropdown>
+            <label class="form-label">Subcategoria</label>
+            <p-dropdown [options]="subcategorias" [(ngModel)]="transacao.idSubcategoriaTransacao" optionLabel="name"
+                optionValue="id" [loading]="carregandoSubcategoriasDropdown"
+                placeholder="Escolha a categoria à ser vinculada" [disabled]="desabilitadoSubcategoriaDropdown">
+                <ng-template let-categoria pTemplate="item">
+                    {{categoria.nome}}
+                </ng-template>
+                <ng-template let-categoria pTemplate="selectedItem">
+                    {{categoria.nome}}
+                </ng-template>
+            </p-dropdown>
+        </div>
+
+        <label for="validContaBancaria" class="form-label">Tipo de Transação</label>
+            <div class="radio-options">
+                <p-radioButton [value]="true" [(ngModel)]="tipoTransacao" inputId="entrada" class="radio-btn" />
+                <label for="entrada" class="radio-label">Entrada</label>
+
+                <p-radioButton [value]="false" [(ngModel)]="tipoTransacao" inputId="saida" class="radio-btn" />
+                <label for="saida" class="radio-label">Saída</label>
+            </div>
+
+        <div class="input-group">
+            <label for="valorTransacao" class="form-label">Valor da Transação</label>
+            <input pInputText id="valorTransacao" [(ngModel)]="transacao.valor" class="form-input" autocomplete="off"
+                placeholder="R$" />
+
+            <div class="button-group">
+                <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true"
+                    icon="pi pi-undo" class="button cancel" />
+                <p-button label="Salvar" (onClick)="salvar()" icon="pi pi-save" class="button save" />
+            </div>
+        </div>
+    </div>
+</div>

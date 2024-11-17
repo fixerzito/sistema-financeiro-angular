@@ -11,42 +11,45 @@ import { ContaBancariaFormUpdate } from '../models/forms/update/conta-bancaria-f
   providedIn: 'root'
 })
 export class ContaBancariaService {
+  private url: string;
 
   constructor(
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+  ) { 
+    this.url = `${environment.apiUrl}/api/contas`;
+  }
 
   getAll(): Observable<ContaBancariaTable[]> {
-    return this.httpClient.get<ContaBancariaTable[]>(`${environment.apiUrl}/contas`);
+    return this.httpClient.get<ContaBancariaTable[]>(`${this.url}`);
   }
 
   getAllDropdown(): Observable<ContaBancariaDropdown[]> {
     return this.getAll()
       .pipe(
         map(response => response.map(conta => ({
-          id: conta.id,
+          id: conta.id!,
           nome: conta.nome
         })))
       );
   }
 
   consultar(): Observable<ContaBancariaTable[]> {
-    return this.httpClient.get<ContaBancariaTable[]>(`${environment.apiUrl}/contas`)
+    return this.httpClient.get<ContaBancariaTable[]>(`${this.url}`)
   }
 
   apagar(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/contas/${id}`)
+    return this.httpClient.patch<void>(`${this.url}/${id}`, {})
   }
 
   salvar(contaCriada: ContaBancariaFormInsert): Observable<ContaBancariaFormInsert> {
-    return this.httpClient.post<ContaBancariaFormInsert>(`${environment.apiUrl}/contas`, contaCriada)
+    return this.httpClient.post<ContaBancariaFormInsert>(`${this.url}`, contaCriada)
   }
 
   consultarPorId(id: number): Observable<ContaBancariaFormUpdate> {
-    return this.httpClient.get<ContaBancariaFormUpdate>(`${environment.apiUrl}/contas/${id}`)
+    return this.httpClient.get<ContaBancariaFormUpdate>(`${this.url}/${id}`)
   }
 
   atualizar(conta: ContaBancariaFormUpdate): Observable<ContaBancariaFormUpdate> {
-    return this.httpClient.put<ContaBancariaFormUpdate>(`${environment.apiUrl}/contas/${conta.id}`, conta)
+    return this.httpClient.put<ContaBancariaFormUpdate>(`${this.url}/${conta.id}`, conta)
   }
 }

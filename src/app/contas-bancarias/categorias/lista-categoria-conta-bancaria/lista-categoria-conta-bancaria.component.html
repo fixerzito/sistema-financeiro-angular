@@ -1,59 +1,42 @@
 <p-toast />
 <p-confirmDialog />
 <div class="card flex justify-content-end">
-    <p-button routerLink="/categorias-contas-bancarias/cadastro" label="Cadastrar" icon="pi pi-plus"/>
+  <p-button routerLink="/categorias-contas-bancarias/cadastro" label="Cadastrar" icon="pi pi-plus" />
 </div>
-
-<div class="card">
-    <!-- <div class="p-d-flex p-jc-between p-ai-center p-mb-2">
-      <span class="p-input-icon-left">
-        <div>
-            <i class="pi pi-search"></i>
-        </div>
-        <input pInputText type="text" placeholder="Buscar por Id ou Nome" (input)="applyFilterGlobal($event, 'contains')"/>
-      </span>
-    </div> -->
-    <p-table
-      [value]="categorias"
-      [scrollable]="true" 
-      scrollHeight="400px" 
-      [rows]="100"
-      [virtualScroll]="true" 
-      [virtualScrollItemSize]="46" 
-      [lazy]="true" 
-      (onLazyLoad)="loadCategories($event)"
-
-
-
-        
-
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [rowsPerPageOptions]="[10, 25, 50]"
-     
-      [totalRecords]="totalRecords"
-      [loading]="loading">
-        <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="id">
-            Código <p-sortIcon field="id" />
-        </th>
-        <th pSortableColumn="nome">
-            Nome <p-sortIcon field="nome" />
-        </th>
-          <th>Ações</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-categoria>
-        <tr>
-          <td>{{ categoria.id }}</td>
-          <td>{{ categoria.nome }}</td>
-          <td>
-            <p-button label="Editar" (click)="editar(categoria.id)" icon="pi pi-pencil"></p-button>
-            <p-button label="Apagar" (click)="confirmacaoApagar($event, categoria.id)" severity="danger" icon="pi pi-trash" [outlined]="true"></p-button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-  
-
+<!--
+  [scrollable]="true"
+  scrollHeight="10000px"
+  [virtualScroll]="true"
+  [virtualScrollItemSize]="46"
+  [lazy]="true" (onLazyLoad)="loadCategories($event)"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [totalRecords]="totalRecords" 
+  [loading]="loading" -->
+<p-table
+  [value]="categorias"
+  [paginator]="true"
+  [rows]="10">  
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="id">
+        Código <p-sortIcon field="id" />
+      </th>
+      <th pSortableColumn="nome">
+        Nome <p-sortIcon field="nome" />
+      </th>
+      <th>Ações</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-categoria>
+    <tr>
+      <td>{{ categoria.id }}</td>
+      <td>{{ categoria.nome }}</td>
+      <td>
+        <p-button label="Editar" (click)="editar(categoria.id)" icon="pi pi-pencil"></p-button>
+        <p-button label="Apagar" (click)="confirmacaoApagar($event, categoria.id)" severity="danger" icon="pi pi-trash"
+          [outlined]="true"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

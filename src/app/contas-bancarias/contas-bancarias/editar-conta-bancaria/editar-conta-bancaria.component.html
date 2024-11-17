@@ -35,7 +35,7 @@
         <label for="saldo" class="font-semibold w-8rem">Saldo da conta</label>
         <input pInputText id="saldo" class="flex-auto" autocomplete="off" placeholder="R$"
             [(ngModel)]="contaCriada.saldo" />
-        <p-button label="Cancelar" severity="secondary" (onClick)="cancelar()" />
-        <p-button label="Salvar" (onClick)="salvar()" />
+        <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true" icon="pi pi-undo" />
+        <p-button label="Salvar" (onClick)="salvar()" icon="pi pi-save" />
     </div>
 </div>

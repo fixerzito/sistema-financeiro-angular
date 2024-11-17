@@ -41,8 +41,8 @@
         (ngModelChange)="validarConta()"></p-radioButton>
       <label for="nao" class="ml-2">Não</label>
     </div>
-    <p-dropdown *ngIf="validaConta" [options]="contasDropdown" [(ngModel)]="cartaoEditado.idContaVinculada"
-      optionLabel="name" optionValue="id" placeholder="Escolha a conta a ser vinculada">
+    <p-dropdown [options]="contasDropdown" [(ngModel)]="cartaoEditado.idContaVinculada"
+      optionLabel="name" optionValue="id" placeholder="Escolha a conta a ser vinculada" [disabled]="!stringValidaConta">
       <ng-template let-cartao pTemplate="item">
         {{cartao.nome}}
       </ng-template>
@@ -50,9 +50,9 @@
         {{cartao.nome}}
       </ng-template>
     </p-dropdown>
-  </div>
-  <div class="flex align-items-center gap-3 mb-3">
-    <p-button label="Salvar" (onClick)="salvar(cartaoEditado.id, cartaoEditado)"></p-button>
-    <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary"></p-button>
+    <div class="flex align-items-center gap-3">
+      <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true" icon="pi pi-undo"></p-button>
+      <p-button label="Salvar" (onClick)="salvar(cartaoEditado.id, cartaoEditado)" icon="pi pi-save"></p-button>
+    </div>
   </div>
 </div>

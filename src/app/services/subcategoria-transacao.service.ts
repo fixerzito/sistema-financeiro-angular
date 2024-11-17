@@ -11,25 +11,24 @@ import { SubcategoriaTransacaoFormUpdate } from '../models/forms/update/subcateg
   providedIn: 'root'
 })
 export class SubcategoriaTransacaoService {
-
   private url: string;
 
   constructor(
     private httpClient: HttpClient,
   ) { 
-    this.url = `${environment.apiUrl}/subcategorias-transacao`;
+    this.url = `${environment.apiUrl}/api/subcategorias-transacao`;
   }
 
   apagar(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${this.url}/${id}`)
+    return this.httpClient.patch<void>(`${this.url}/${id}`, {})
   }
 
   consultar(): Observable<SubcategoriaTransacaoTable[]> {
     return this.httpClient.get<SubcategoriaTransacaoTable[]>(this.url)
   }
 
-  consultarDropDown(): Observable<SubcategoriaTransacaoDropdown[]> {
-    return this.httpClient.get<SubcategoriaTransacaoDropdown[]>(this.url)
+  consultarDropdown(categoriaId: number): Observable<SubcategoriaTransacaoDropdown[]> {
+    return this.httpClient.get<SubcategoriaTransacaoDropdown[]>(`${this.url}/dropdown/${categoriaId}`)
   }
 
   consultarPorId(id: number): Observable<SubcategoriaTransacaoFormUpdate> {

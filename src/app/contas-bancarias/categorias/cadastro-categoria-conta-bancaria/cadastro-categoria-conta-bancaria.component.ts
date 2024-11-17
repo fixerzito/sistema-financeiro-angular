@@ -33,4 +33,8 @@ export class CadastroCategoriaContaBancariaComponent {
       .subscribe(x => this.router.navigate(['/categorias-contas-bancarias'])
       )
   }
+
+  cancelar() {
+    this.router.navigate(['/categorias-contas-bancarias'])
+  }
 }

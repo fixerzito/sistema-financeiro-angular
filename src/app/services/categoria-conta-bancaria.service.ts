@@ -13,39 +13,41 @@ import { TableModel } from '../models/tables/table';
   providedIn: 'root'
 })
 export class CategoriaContaBancariaService {
+  private url: string;
 
   constructor(
-    private httpClient: HttpClient
-  ) { }
-
-  apagar(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/categorias-contas-bancarias/${id}`)
+    private httpClient: HttpClient,
+  ) {
+    this.url = `${environment.apiUrl}/api/categorias-contas-bancarias`;
   }
 
-  consultar(page: number, rows: number, ordenacaoColuna: string, ordenacao: number): Observable<TableModel> {
+  apagar(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.url}/${id}`)
+  }
+  consultar(): Observable<CategoriaContaBancariaTable[]> {
+    // consultar(page: number, rows: number, ordenacaoColuna: string, ordenacao: number): Observable<TableModel> {
+    // let params = new HttpParams() 
+    //   .set('Quantidade', rows.toString())
+    //   .set('pagina', page.toString())
+    //   .set('ordenacaoColuna', ordenacaoColuna.toString())
+    //   .set('ordenacao', ordenacao.toString());
 
-    let params = new HttpParams() 
-      .set('Quantidade', rows.toString())
-      .set('pagina', page.toString())
-      .set('ordenacaoColuna', ordenacaoColuna.toString())
-      .set('ordenacao', ordenacao.toString());
-
-    return this.httpClient.get<TableModel>(`${environment.apiUrl}/categorias-contas-bancarias`, {params})
+    return this.httpClient.get<CategoriaContaBancariaTable[]>(`${this.url}`)
   }
 
   consultarDropDown(): Observable<CategoriaContaBancariaDropDown[]> {
-    return this.httpClient.get<CategoriaContaBancariaDropDown[]>(`${environment.apiUrl}/categorias-contas-bancarias`)
+    return this.httpClient.get<CategoriaContaBancariaDropDown[]>(`${this.url}`)
   }
 
   consultarPorId(id: number): Observable<CategoriaContaBancariaTable> {
-    return this.httpClient.get<CategoriaContaBancariaTable>(`${environment.apiUrl}/categorias-contas-bancarias/${id}`)
+    return this.httpClient.get<CategoriaContaBancariaTable>(`${this.url}/${id}`)
   }
 
   salvar(categoria: CategoriaContaBancariaFormInsert): Observable<CategoriaContaBancariaFormInsert> {
-    return this.httpClient.post<CategoriaContaBancariaFormInsert>(`${environment.apiUrl}/categorias-contas-bancarias`, categoria)
+    return this.httpClient.post<CategoriaContaBancariaFormInsert>(`${this.url}`, categoria)
   }
 
   atualizar(categoria: CategoriaContaBancariaFormUpdate): Observable<CategoriaContaBancariaFormUpdate> {
-    return this.httpClient.put<CategoriaContaBancariaFormUpdate>(`${environment.apiUrl}/categorias-contas-bancarias/${categoria.id}`, categoria)
+    return this.httpClient.put<CategoriaContaBancariaFormUpdate>(`${this.url}/${categoria.id}`, categoria)
   }
 }

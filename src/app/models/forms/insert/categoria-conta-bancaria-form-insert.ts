@@ -1,3 +1,4 @@
 export interface CategoriaContaBancariaFormInsert {
-    nome: string
+    id?: number,
+    nome?: string
 }

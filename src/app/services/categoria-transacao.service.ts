@@ -11,31 +11,35 @@ import { CategoriaTransacaoTable } from '../models/tables/categoria-transacao-ta
   providedIn: 'root'
 })
 export class CategoriaTransacaoService {
+  private url: string;
+
   constructor(
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+  ) { 
+    this.url = `${environment.apiUrl}/api/categorias-transacao`;
+  }
 
   apagar(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/categorias-transacao/${id}`)
+    return this.httpClient.patch<void>(`${this.url}/${id}`, {})
   }
 
   consultar(): Observable<CategoriaTransacaoTable[]> {
-    return this.httpClient.get<CategoriaTransacaoTable[]>(`${environment.apiUrl}/categorias-transacao`)
+    return this.httpClient.get<CategoriaTransacaoTable[]>(`${this.url}`)
   }
 
   consultarDropdown(): Observable<CategoriaTransacoesDropdown[]> {
-    return this.httpClient.get<CategoriaTransacoesDropdown[]>(`${environment.apiUrl}/categorias-transacao`)
+    return this.httpClient.get<CategoriaTransacoesDropdown[]>(`${this.url}`)
   }
 
   consultarPorId(id: number): Observable<CategoriaTransacaoTable> {
-    return this.httpClient.get<CategoriaTransacaoTable>(`${environment.apiUrl}/categorias-transacao/${id}`)
+    return this.httpClient.get<CategoriaTransacaoTable>(`${this.url}/${id}`)
   }
 
   salvar(categoria: CategoriaTransacaoFormInsert): Observable<CategoriaTransacaoFormInsert> {
-    return this.httpClient.post<CategoriaTransacaoFormInsert>(`${environment.apiUrl}/categorias-transacao`, categoria)
+    return this.httpClient.post<CategoriaTransacaoFormInsert>(`${this.url}`, categoria)
   }
 
   atualizar(categoria: CategoriaTransacaoFormUpdate): Observable<CategoriaTransacaoFormUpdate> {
-    return this.httpClient.put<CategoriaTransacaoFormUpdate>(`${environment.apiUrl}/categorias-transacao/${categoria.id}`, categoria)
+    return this.httpClient.put<CategoriaTransacaoFormUpdate>(`${this.url}/${categoria.id}`, categoria)
   }
 }

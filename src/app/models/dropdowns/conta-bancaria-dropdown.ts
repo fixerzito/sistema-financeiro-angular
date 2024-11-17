@@ -1,4 +1,4 @@
 export interface ContaBancariaDropdown {
-    id?: number
+    id: number
     nome: string
 };

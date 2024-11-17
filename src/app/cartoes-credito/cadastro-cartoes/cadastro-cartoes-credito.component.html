@@ -40,8 +40,8 @@
                 (ngModelChange)="validarConta()" />
             <label for="nao" class="ml-2">Não</label>
         </div>
-        <p-dropdown *ngIf="validaConta" [options]="contasDropdown" [(ngModel)]="contaSelecionada" optionLabel="name"
-            placeholder="Escolha a conta a ser vinculada" (onChange)="atribuirIdConta(contaSelecionada.id)">
+        <p-dropdown [options]="contasDropdown" [(ngModel)]="contaSelecionada" optionLabel="name"
+            placeholder="Escolha a conta a ser vinculada" (onChange)="atribuirIdConta(contaSelecionada.id)" [disabled]="!stringValidaConta">
         <ng-template let-cartao pTemplate="item">
             {{cartao.nome}}
         </ng-template>
@@ -49,10 +49,10 @@
             {{cartao.nome}}
         </ng-template>
         </p-dropdown>
+        <div class="flex align-items-center gap-3">
+            <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true" icon="pi pi-undo"/>
+            <p-button label="Salvar" (onClick)="salvar()" icon="pi pi-save"/>
+        </div>
 
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <p-button label="Salvar" (onClick)="salvar()"/>
-        <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" />
     </div>
 </div>

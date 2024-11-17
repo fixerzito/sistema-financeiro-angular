@@ -21,7 +21,6 @@
                 <td>R$ {{ conta.saldo | number: '1.2-2' }}</td>
                 <td>
                     <p-button label="Editar" icon="pi pi-pencil" (click)="editar(conta.id)"/>
-
                     <p-button label="Apagar" (click)="confirmacaoApagar($event, conta.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>
                 </td>
             </tr>

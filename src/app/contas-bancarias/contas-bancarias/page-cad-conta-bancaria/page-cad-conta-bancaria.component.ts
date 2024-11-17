@@ -13,6 +13,8 @@ import { IconFormInsert } from '../../../models/forms/insert/icon-form-insert';
 import { CategoriaContaBancariaDropDown } from '../../../models/dropdowns/categoria-conta-bancaria-dropdown';
 import { CategoriaContaBancariaService } from '../../../services/categoria-conta-bancaria.service';
 import { ContaBancariaService } from '../../../services/conta-bancaria.service';
+import { DialogModule } from 'primeng/dialog';
+import { CategoriaContaBancariaFormInsert } from '../../../models/forms/insert/categoria-conta-bancaria-form-insert';
 
 @Component({
   selector: 'app-page-cad-conta-bancaria',
@@ -26,12 +28,16 @@ import { ContaBancariaService } from '../../../services/conta-bancaria.service';
     InputGroupAddonModule,
     InputGroupModule,
     InputNumberModule,
+    DialogModule,
+
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './page-cad-conta-bancaria.component.html',
   styleUrl: './page-cad-conta-bancaria.component.css'
 })
 export class PageCadContaBancariaComponent {
+  visibleCadastroCategoria: boolean = false;
+  categoriaCadastro: CategoriaContaBancariaFormInsert;
   contaCriada: ContaBancariaFormInsert = {
     nome: '',
     saldo: 0,
@@ -56,7 +62,11 @@ export class PageCadContaBancariaComponent {
     private router: Router,
     private contaBancariaService: ContaBancariaService,
     private categoriaContaBancariaService: CategoriaContaBancariaService,
-  ) { }
+  ) { 
+    this.categoriaCadastro = {
+
+    }
+  }
 
   ngOnInit() {
     this.buscarCategorias();
@@ -86,7 +96,6 @@ export class PageCadContaBancariaComponent {
   }
 
   salvar() {
-    this.contaCriada.idCategoria = this.categoria.id;
     this.contaCriada.icon = this.icon.nome;
 
     this.contaBancariaService.salvar(this.contaCriada)
@@ -97,6 +106,16 @@ export class PageCadContaBancariaComponent {
   }
 
   cancelar() {
-    this.router.navigate(['/contas'])
+    // this.router.navigate(['/contas'])
+    this.visibleCadastroCategoria = true;
+  }
+
+  criarCategoria(){
+    this.categoriaContaBancariaService.salvar(this.categoriaCadastro)
+      .subscribe(x => {
+        this.visibleCadastroCategoria = false
+        this.buscarCategorias();
+        this.contaCriada.idCategoria = x.id!
+      })
   }
 }

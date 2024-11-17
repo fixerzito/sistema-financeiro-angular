@@ -1,9 +1,9 @@
 <div class="main card flex justify-content-center">
     <div class="flex align-items-center gap-3 mb-3">
-        <label for="username" class="font-semibold w-10rem">Nome da Subcategoria</label>
-        <input pInputText id="username" [(ngModel)]="subcategoriaEditada.nome" class="flex-auto" autocomplete="off" />
-        <p-dropdown [options]="categorias" [(ngModel)]="subcategoriaEditada.categoria" optionLabel="name" optionValue="id"
-            placeholder="Escolha a categoria à ser vinculada" (onChange)="atribuirIdCategoria(subcategoriaEditada.categoria)">
+        <label class="font-semibold">Categoria</label>
+        <p-dropdown [options]="categorias" [(ngModel)]="subcategoriaEditada.categoria" optionLabel="name"
+            optionValue="id" placeholder="Escolha a categoria à ser vinculada"
+            (onChange)="atribuirIdCategoria(subcategoriaEditada.categoria)">
             <ng-template let-categoria pTemplate="item">
                 {{categoria.nome}}
             </ng-template>
@@ -11,8 +11,12 @@
                 {{categoria.nome}}
             </ng-template>
         </p-dropdown>
+        <label for="username" class="font-semibold">Nome da Subcategoria</label>
+        <input pInputText id="username" [(ngModel)]="subcategoriaEditada.nome" class="flex-auto" autocomplete="off" />
     </div>
     <div class="flex justify-content-end gap-2">
-        <p-button label="Salvar" (onClick)="salvar(subcategoriaEditada.id, subcategoriaEditada)" icon="pi pi-save" severity="success" />
+        <p-button label="Cancelar" severity="secondary" (onClick)="cancelar()" [outlined]="true" icon="pi pi-undo" />
+        <p-button label="Salvar" (onClick)="salvar(subcategoriaEditada.id, subcategoriaEditada)" icon="pi pi-save"
+            severity="success" icon="pi pi-save"/>
     </div>
 </div>

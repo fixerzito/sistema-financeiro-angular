@@ -42,4 +42,8 @@ export class EditarCategoriaComponent implements OnInit {
         this.router.navigate(['categorias-contas-bancarias']);
       });
   }
+
+  cancelar() {
+    this.router.navigate(['/categorias-contas-bancarias'])
+  }
 }
