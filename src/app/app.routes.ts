@@ -18,9 +18,11 @@ import { PageCadContaBancariaComponent } from './contas-bancarias/contas-bancari
 import { CadastrarTransacaoComponent } from './transacoes/transacoes/cadastrar-transacao/cadastrar-transacao.component';
 import { ListarTransacaoComponent } from './transacoes/transacoes/listar-transacao/listar-transacao.component';
 import { EditarTransacaoComponent } from './transacoes/transacoes/editar-transacao/editar-transacao.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
+    {path: 'home', component: HomeComponent },
 
     { path: 'contas', component: ListarContasBancariasComponent },
     { path: 'contas/cadastro', component: PageCadContaBancariaComponent },

@@ -1,5 +1,8 @@
 export interface TransacaoFormUpdate {
     id?: number,
+    status?: boolean,
+    dataPrevista?: Date | null,
+    dataEfetivacao?: Date | null,
     idContaBancaria?: number,
     idSubcategoriaTransacao?: number,
     idCategoriaTransacao?: number,

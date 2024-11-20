@@ -1,0 +1,17 @@
+Lista de transações permitir filtrar por
+Data de Vencimento
+Contas Pendentes
+Tipo (entrada, saída)
+Conta Bancária (Escolher a conta ou todas (x do dropdown))
+Categoria
+SubCategoria8
+
+Cadastro da transação:
+data de prevista
+data de efetivação
+pendente
+
+Lista de tranasçãogit permitir o usuario efetivar uma conta
+Lista de tranasção permitir o usuario colocar pendente uma conta
+
+PREENCHER COM DADOS BASE (contas, categorias, SubCategoria, transacoes)

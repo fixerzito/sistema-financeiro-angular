@@ -52,6 +52,35 @@
             </p-dropdown>
         </div>
 
+        <div class="flex flex-row">
+            <div class="flex flex-column">
+                <label for="dataPrevista" class="form-label">Data prevista</label>
+                <p-calendar [(ngModel)]="transacao.dataPrevista" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="dataPrevista">
+                </p-calendar>
+            </div>
+
+            <div class="flex flex-column">
+                <label for="dataEfetivacao" class="form-label">Data efetivação</label>
+                <p-calendar [(ngModel)]="transacao.dataEfetivacao" [iconDisplay]="'input'" [showIcon]="true" [disabled]="habilitarCalendario(transacao.status!)"
+                    inputId="dataEfetivacao">
+                </p-calendar>
+            </div>
+        </div>
+
+        <label class="form-label">Status da transação</label>
+        <div class="radio-options">
+            <p-radioButton [value]="false" [(ngModel)]="transacao.status" inputId="pendente" />
+            <label for="pendente" class="ml-2">
+                Pendente
+            </label>
+
+            <p-radioButton [value]="true" [(ngModel)]="transacao.status" inputId="efetuada" />
+            <label for="efetuada" class="ml-2">
+                Efetuada
+            </label>
+        </div>
+
         <div class="radio-options">
             <p-radioButton [value]="true" [(ngModel)]="tipoTransacao" inputId="entrada" class="radio-btn" />
             <label for="entrada" class="radio-label">Entrada</label>

@@ -13,6 +13,7 @@ import { TransacaoService } from '../../../services/transacao.service';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ContaBancariaDropdown } from '../../../models/dropdowns/conta-bancaria-dropdown';
 import { ContaBancariaService } from '../../../services/conta-bancaria.service';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-cadastrar-transacao',
@@ -22,7 +23,8 @@ import { ContaBancariaService } from '../../../services/conta-bancaria.service';
     DropdownModule,
     InputTextModule,
     ButtonModule,
-    RadioButtonModule
+    RadioButtonModule,
+    CalendarModule
   ],
   templateUrl: './cadastrar-transacao.component.html',
   styleUrl: './cadastrar-transacao.component.css'
@@ -37,6 +39,7 @@ export class CadastrarTransacaoComponent {
   stringValidaConta: boolean = false;
   validaConta: boolean = false;
   contasDropdown!: ContaBancariaDropdown[];
+  texto: Date | null = null;
 
   //false = saida, true = entrada
   tipoTransacao: boolean = false;
@@ -54,7 +57,7 @@ export class CadastrarTransacaoComponent {
   }
 
   ngOnInit() {
-    
+      this.transacao.status = false;
   }
 
   carregarCategorias() {
@@ -118,10 +121,31 @@ export class CadastrarTransacaoComponent {
     } else {
       this.transacao.tipoTransacao = 1;
     }
+
+    if (!this.transacao.dataPrevista) {
+      this.transacao.dataPrevista = null;
+    }
+
+    if (!this.transacao.dataEfetivacao) {
+      this.transacao.dataEfetivacao = null;
+    }
+
+    if(this.transacao.status == true){
+      this.transacao.dataEfetivacao = new Date();
+    }
     
     this.transacaoService.salvar(this.transacao)
       .subscribe(x => this.router.navigate(['/transacoes'])
       )
+  }
+
+  habilitarCalendario(status: boolean) : boolean{
+    if(status === true){
+      this.transacao.dataEfetivacao = null;
+      return true
+    } 
+
+    return false
   }
  
   cancelar() {

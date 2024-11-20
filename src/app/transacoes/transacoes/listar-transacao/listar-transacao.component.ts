@@ -7,6 +7,7 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { TransacaoService } from '../../../services/transacao.service';
 import { TransacaoTable } from '../../../models/tables/transacao-table';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-listar-transacao',
@@ -16,7 +17,8 @@ import { TransacaoTable } from '../../../models/tables/transacao-table';
     ButtonModule,
     RouterModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    TagModule
   ],
   templateUrl: './listar-transacao.component.html',
   styleUrl: './listar-transacao.component.css',
@@ -25,6 +27,8 @@ import { TransacaoTable } from '../../../models/tables/transacao-table';
 export class ListarTransacaoComponent implements OnInit {
 
   transacoes: TransacaoTable[] = [];
+  statusString!: string;
+  statusSeverity!: string;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -37,7 +41,7 @@ export class ListarTransacaoComponent implements OnInit {
   consultar() {
     this.transacaoService.consultar()
       .subscribe(transacoesRecebidas => {
-        this.transacoes = transacoesRecebidas;
+        this.transacoes = transacoesRecebidas
       }); 
   }
 
@@ -66,6 +70,54 @@ export class ListarTransacaoComponent implements OnInit {
         this.apagar(id);
       }
     });
+  }
+
+  obterStatus(status: boolean): 'warning' | 'success' {
+    if (status)
+      return "success"
+    return "warning"
+  }
+
+  obterTexto(status: boolean): string {
+    if (status)
+      return "Recebido"
+    return "Pendente"
+  }
+
+  buttonTexto(status: boolean) : string{
+    if (status === true){
+      return "Tornar Pendente"
+    }
+
+    return "Efetuar Transação"
+  }
+
+  buttonSeverity(status: boolean) : 'success' | 'help' {
+    if (status)
+      return "help"
+    return "success"
+  }
+
+  alterarStatus(status: boolean, id: number) {
+    this.transacaoService.consultarPorId(id).subscribe(response => {
+      let transacao = response;
+      transacao.status = !status;
+      if(transacao.status === true){
+        transacao.dataEfetivacao = new Date();
+      } else {
+        transacao.dataEfetivacao = null
+      }
+      this.transacaoService.atualizar(transacao).subscribe(() => {
+        this.consultar();
+      });
+    });
+  }
+  
+
+  buttonIcon(status: boolean) : string {
+    if (status)
+      return "pi pi-arrow-right-arrow-left"
+    return "pi pi-dollar"
   }
 
   apagar(id: number) {

@@ -14,6 +14,9 @@
                 <th>Subcategoria</th>
                 <th>Valor</th>
                 <th>Tipo de transação</th>
+                <th>Previsão de efetivação</th>
+                <th>Data de efetivação</th>
+                <th>Status</th>
                 <th>Ações</th>
             </tr>
         </ng-template>
@@ -25,9 +28,15 @@
                 <td>{{ transacao.subcategoriaTransacao }}</td>
                 <td>R$ {{ transacao.valor }}</td>
                 <td> {{transacao.tipoTransacao}}</td>
+                <td>{{ transacao.dataPrevista }}</td>
+                <td>{{ transacao.dataEfetivacao }}</td>
+                <td>
+                    <p-tag [severity]="obterStatus(transacao.status)" [value]="obterTexto(transacao.status)"></p-tag>
+                </td>
                 <td>
                     <p-button label="Editar" (onClick)="editar(transacao.id)" icon="pi pi-pencil" />
                     <p-button label="Apagar" (onClick)="confirmacaoApagar($event, transacao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" />
+                    <p-button [label]="buttonTexto(transacao.status)" [icon]=" buttonIcon(transacao.status)" [severity]="buttonSeverity(transacao.status)" (onClick)="alterarStatus(transacao.status, transacao.id)"/>
                 </td>
             </tr>
         </ng-template>

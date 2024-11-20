@@ -22,7 +22,7 @@ export class NavbarComponent {
       {
         label: 'Home',
         icon: 'pi pi-home',
-        routerLink: '/'
+        routerLink: '/home'
       },
       {
         label: 'Login',

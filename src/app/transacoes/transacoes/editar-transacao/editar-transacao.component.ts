@@ -14,6 +14,7 @@ import { ContaBancariaService } from '../../../services/conta-bancaria.service';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { TransacaoService } from '../../../services/transacao.service';
 import { TransacaoFormUpdate } from '../../../models/forms/update/transacao-form-update';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-editar-transacao',
@@ -23,7 +24,8 @@ import { TransacaoFormUpdate } from '../../../models/forms/update/transacao-form
     DropdownModule,
     InputTextModule,
     ButtonModule,
-    RadioButtonModule
+    RadioButtonModule, 
+    CalendarModule,
   ],
   templateUrl: './editar-transacao.component.html',
   styleUrl: './editar-transacao.component.css'
@@ -61,6 +63,12 @@ export class EditarTransacaoComponent {
       this.transacaoService.consultarPorId(id)
         .subscribe(transacao => {
           this.transacao = transacao;
+          if(transacao.dataPrevista != null)
+            this.transacao.dataPrevista = new Date(transacao.dataPrevista)
+
+          if(transacao.dataEfetivacao != null)
+            this.transacao.dataEfetivacao = new Date(transacao.dataEfetivacao)
+          
           if (transacao.idContaBancaria != null) {
             this.stringValidaConta = true
             this.carregarContasBancarias();
@@ -84,6 +92,15 @@ export class EditarTransacaoComponent {
       );
 
     this.carregarSubcategorias()
+  }
+
+  habilitarCalendario(status: boolean) : boolean{
+    if(status === true){
+      this.transacao.dataEfetivacao = null;
+      return true
+    } 
+
+    return false
   }
 
   carregarContasBancarias() {
@@ -136,6 +153,19 @@ export class EditarTransacaoComponent {
     } else if (this.tipoTransacao == true){
       this.transacao.tipoTransacao = 1;
     }
+
+    if (!this.transacao.dataPrevista) {
+      this.transacao.dataPrevista = null;
+    }
+
+    if (!this.transacao.dataEfetivacao) {
+      this.transacao.dataEfetivacao = null;
+    }
+
+    if(this.transacao.status == true){
+      this.transacao.dataEfetivacao = new Date();
+    }
+
     this.transacaoService.atualizar(this.transacao)
       .subscribe(x => this.router.navigate(['/transacoes'])
       )

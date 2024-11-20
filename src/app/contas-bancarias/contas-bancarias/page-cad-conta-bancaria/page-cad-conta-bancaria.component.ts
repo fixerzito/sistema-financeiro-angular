@@ -85,7 +85,7 @@ export class PageCadContaBancariaComponent {
   }
 
   showDialog() {
-    this.visible = true;
+    this.visibleCadastroCategoria = true;
   }
 
   buscarCategorias() {
@@ -106,8 +106,7 @@ export class PageCadContaBancariaComponent {
   }
 
   cancelar() {
-    // this.router.navigate(['/contas'])
-    this.visibleCadastroCategoria = true;
+    this.router.navigate(['/contas'])
   }
 
   criarCategoria(){
