@@ -1,3 +1,3 @@
 export interface CategoriaTransacaoFormInsert {
-    nome: string
+    nome?: string
 }
