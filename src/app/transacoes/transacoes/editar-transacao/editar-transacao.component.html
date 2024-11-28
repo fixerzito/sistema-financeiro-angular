@@ -8,15 +8,18 @@
         <div class="radio-group">
             <label for="validContaBancaria" class="form-label">Deseja vincular a uma conta existente?</label>
             <div class="radio-options">
-                <p-radioButton [value]="true" [(ngModel)]="stringValidaConta" inputId="sim" (ngModelChange)="validarConta()" class="radio-btn" />
+                <p-radioButton [value]="true" [(ngModel)]="stringValidaConta" inputId="sim"
+                    (ngModelChange)="validarConta()" class="radio-btn" />
                 <label for="sim" class="radio-label">Sim</label>
-                
-                <p-radioButton [value]="false" [(ngModel)]="stringValidaConta" inputId="nao" (ngModelChange)="validarConta()" class="radio-btn" />
+
+                <p-radioButton [value]="false" [(ngModel)]="stringValidaConta" inputId="nao"
+                    (ngModelChange)="validarConta()" class="radio-btn" />
                 <label for="nao" class="radio-label">Não</label>
             </div>
 
             <p-dropdown [options]="contasDropdown" [(ngModel)]="transacao.idContaBancaria" optionLabel="name"
-                (onShow)="carregarContasBancarias()" optionValue="id" placeholder="Escolha a conta a ser vinculada" [disabled]="!stringValidaConta">
+                (onShow)="carregarContasBancarias()" optionValue="id" placeholder="Escolha a conta a ser vinculada"
+                [disabled]="!stringValidaConta">
                 <ng-template let-cartao pTemplate="item">
                     {{cartao.nome}}
                 </ng-template>
@@ -26,30 +29,31 @@
             </p-dropdown>
         </div>
 
-        <div class="input-group">
-            <label class="form-label">Categoria</label>
-            <p-dropdown [options]="categorias" [(ngModel)]="transacao.idCategoriaTransacao" optionLabel="name" optionValue="id"
-                placeholder="Escolha a categoria à ser vinculada" (onChange)="onCategoriaChange()">
-                <ng-template let-categoria pTemplate="item">
-                    {{categoria.nome}}
-                </ng-template>
-                <ng-template let-categoria pTemplate="selectedItem">
-                    {{categoria.nome}}
-                </ng-template>
-            </p-dropdown>
-        </div>
-
-        <div class="input-group">
-            <label class="form-label">Subcategoria</label>
-            <p-dropdown [options]="subcategorias" [(ngModel)]="transacao.idSubcategoriaTransacao" optionLabel="name"
-                optionValue="id" [loading]="carregandoSubcategoriasDropdown" placeholder="Escolha a subcategoria">
-                <ng-template let-categoria pTemplate="item">
-                    {{categoria.nome}}
-                </ng-template>
-                <ng-template let-categoria pTemplate="selectedItem">
-                    {{categoria.nome}}
-                </ng-template>
-            </p-dropdown>
+        <div class="input-group flex flex-row">
+            <div class="flex flex-column">
+                <label class="form-label">Categoria</label>
+                <p-dropdown [options]="categorias" [(ngModel)]="transacao.idCategoriaTransacao" optionLabel="name"
+                    optionValue="id" placeholder="Escolha a categoria à ser vinculada" (onChange)="onCategoriaChange()">
+                    <ng-template let-categoria pTemplate="item">
+                        {{categoria.nome}}
+                    </ng-template>
+                    <ng-template let-categoria pTemplate="selectedItem">
+                        {{categoria.nome}}
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="flex flex-column">
+                <label class="form-label">Subcategoria</label>
+                <p-dropdown [options]="subcategorias" [(ngModel)]="transacao.idSubcategoriaTransacao" optionLabel="name"
+                    optionValue="id" [loading]="carregandoSubcategoriasDropdown" placeholder="Escolha a subcategoria">
+                    <ng-template let-categoria pTemplate="item">
+                        {{categoria.nome}}
+                    </ng-template>
+                    <ng-template let-categoria pTemplate="selectedItem">
+                        {{categoria.nome}}
+                    </ng-template>
+                </p-dropdown>
+            </div>
         </div>
 
         <div class="flex flex-row">
@@ -62,8 +66,8 @@
 
             <div class="flex flex-column">
                 <label for="dataEfetivacao" class="form-label">Data efetivação</label>
-                <p-calendar [(ngModel)]="transacao.dataEfetivacao" [iconDisplay]="'input'" [showIcon]="true" [disabled]="habilitarCalendario(transacao.status!)"
-                    inputId="dataEfetivacao">
+                <p-calendar [(ngModel)]="transacao.dataEfetivacao" [iconDisplay]="'input'" [showIcon]="true"
+                    [disabled]="habilitarCalendario(transacao.status!)" inputId="dataEfetivacao">
                 </p-calendar>
             </div>
         </div>
@@ -96,7 +100,8 @@
         </div>
 
         <div class="button-group">
-            <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true" icon="pi pi-undo" class="button cancel" />
+            <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true" icon="pi pi-undo"
+                class="button cancel" />
             <p-button label="Salvar" (onClick)="salvar()" icon="pi pi-save" class="button save" />
         </div>
     </div>
