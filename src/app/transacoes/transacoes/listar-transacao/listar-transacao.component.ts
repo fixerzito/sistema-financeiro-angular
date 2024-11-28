@@ -8,6 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { TransacaoService } from '../../../services/transacao.service';
 import { TransacaoTable } from '../../../models/tables/transacao-table';
 import { TagModule } from 'primeng/tag';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-listar-transacao',
@@ -22,7 +23,7 @@ import { TagModule } from 'primeng/tag';
   ],
   templateUrl: './listar-transacao.component.html',
   styleUrl: './listar-transacao.component.css',
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService, MessageService, DatePipe]
 })
 export class ListarTransacaoComponent implements OnInit {
 
@@ -34,8 +35,8 @@ export class ListarTransacaoComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private transacaoService: TransacaoService
-
+    private transacaoService: TransacaoService,
+    private datePipe: DatePipe
   ) { }
 
   consultar() {
@@ -86,10 +87,10 @@ export class ListarTransacaoComponent implements OnInit {
 
   buttonTexto(status: boolean) : string{
     if (status === true){
-      return "Tornar Pendente"
+      return "Pendente"
     }
 
-    return "Efetuar Transação"
+    return "Efetivar"
   }
 
   buttonSeverity(status: boolean) : 'success' | 'help' {
@@ -112,6 +113,10 @@ export class ListarTransacaoComponent implements OnInit {
       });
     });
   }
+
+  formatarData(data: string ) : string {
+    return this.datePipe.transform(data, 'dd/MM/yyyy')!;
+  }
   
 
   buttonIcon(status: boolean) : string {
@@ -123,7 +128,7 @@ export class ListarTransacaoComponent implements OnInit {
   apagar(id: number) {
     this.transacaoService.apagar(id)
       .subscribe(() => {
-        this.messageService.add({ severity: 'info', summary: 'Transação apagado com sucesso', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'info', summary: 'Transação apagada com sucesso', detail: 'Record deleted' });
         this.consultar();
       });
   }

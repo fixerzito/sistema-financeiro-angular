@@ -1,7 +1,7 @@
 <p-toast />
 <p-confirmDialog />
 <div class="card flex justify-content-end">
-    <p-button routerLink="/transacoes/cadastro" label="Cadastrar" icon="pi pi-plus" />
+    <p-button routerLink="/transacoes/cadastro" icon="pi pi-plus" />
 </div>
 
 <div class="card">
@@ -28,15 +28,15 @@
                 <td>{{ transacao.subcategoriaTransacao }}</td>
                 <td>R$ {{ transacao.valor }}</td>
                 <td> {{transacao.tipoTransacao}}</td>
-                <td>{{ transacao.dataPrevista }}</td>
-                <td>{{ transacao.dataEfetivacao }}</td>
+                <td>{{ formatarData(transacao.dataPrevista) }} </td>
+                <td>{{ formatarData(transacao.dataEfetivacao) }} </td>
                 <td>
                     <p-tag [severity]="obterStatus(transacao.status)" [value]="obterTexto(transacao.status)"></p-tag>
                 </td>
-                <td class="flex align-items-center justify-content-start gap-3">
-                    <p-button (onClick)="editar(transacao.id)" icon="pi pi-pencil" />
-                    <p-button (onClick)="confirmacaoApagar($event, transacao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" />
-                    <p-button [label]="buttonTexto(transacao.status)" [icon]=" buttonIcon(transacao.status)" [severity]="buttonSeverity(transacao.status)" (onClick)="alterarStatus(transacao.status, transacao.id)"/>
+                <td class="flex align-items-center justify-content-start gap-2">
+                    <p-button (onClick)="editar(transacao.id)" icon="pi pi-pencil" [rounded]="true"/>
+                    <p-button (onClick)="confirmacaoApagar($event, transacao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" [rounded]="true" [rounded]="true"/>
+                    <p-button [label]="buttonTexto(transacao.status)" [icon]=" buttonIcon(transacao.status)" [severity]="buttonSeverity(transacao.status)" (onClick)="alterarStatus(transacao.status, transacao.id)" />
                 </td>
             </tr>
         </ng-template>
