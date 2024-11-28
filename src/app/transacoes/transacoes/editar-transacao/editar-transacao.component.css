@@ -18,6 +18,8 @@ body {
 .main {
     width: 50%;
     margin: 10% auto;
+    margin-top: 25px;
+    margin-bottom: 0px;
     padding: 20px;
     border: 1px solid #4f4f4f;
     border-radius: 8px;

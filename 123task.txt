@@ -1,17 +1,129 @@
-Lista de transações permitir filtrar por
-Data de Vencimento
-Contas Pendentes
-Tipo (entrada, saída)
-Conta Bancária (Escolher a conta ou todas (x do dropdown))
-Categoria
-SubCategoria8
+COISAS QUE EU NÃO SEI
+    - Login JWT
+    - Envio de Email
+    - Fluent Validation
+    - Paginação
+    - Agrupamento de dados no Back-end para gráficos / Relatórios
 
-Cadastro da transação:
-data de prevista
-data de efetivação
-pendente
+Criar issues no board do projeto, e trabalhar corretamente com as Branches!!!
+    - Verificar issues que já foram implementadas
+    - Criar issue para BUG's
 
-Lista de tranasçãogit permitir o usuario efetivar uma conta
-Lista de tranasção permitir o usuario colocar pendente uma conta
+ISSUES:
+    LATER
+    - fazer login - JWT 
+    - Fazer Refresh Token
+    - Login com Google Account
+    - Alterar todas as tabelas para fk usuario
+    - adicionar testes unitários e testes de integração
 
-PREENCHER COM DADOS BASE (contas, categorias, SubCategoria, transacoes)
+    SISTEMA FRONT-END
+    - Inputs obrigatórios devem possuir Labels com asterísco vermelho para identificar que são obrigatórias
+    - Utiliziar BREADCRUMBS
+    - Botões "Editar" e "Apagar" não precisam de texto, apenas Icons com ToolTips da operação
+    - Criar Speed Dial para cadastros "Cadastro de conta", "Cadastro de Categoria de conta", "Cadastro de Cartões", ... 
+    - Apresentar loading de tabelas 
+    - Apresentar loading de Dropdown (Carregar dados apenas quando o usuário clicar no Dropdown)
+    
+    LOGIN COM USUÁRIO - part.1
+    - Ajustar tela de Login
+    - Tela de login deve conter somente o campo de "Login" (Email/nome usuário)
+    - Se o usuário existir, deve redirecionar para a tela de senha, caso contrário, redirecionar para a tela de cadastro 
+    
+    LOGIN COM SENHA - part.2
+    - Colocar campo "Senha"
+    - Bloquear após 3 tentativas (adicionar cooldown)
+    - Adicionar Link "Esqueci minha senha"
+
+    NOVO USUARIO
+    - Criar tela de pré-cadastro contendo (Apoós "Salvar", enviar Email de confirmação com link para poder confirmar contendo expiração (1h) a conta e definir a senha/confirmação):
+        -   Nome
+        -   Email (Deve vir preenchido automaticamente do LOGIN COM USUÁRIO - part.1) 
+        -   Data de nascimento
+        -   CPF 
+
+    PÓS-CADASTRO
+    - Validar que o link não está expirado, permitir o usuário definir senha/confirmação de senha
+    - Popular base com itens pré estabelecidos para usuário recém cadastrado
+    
+    PÓS-CADASTRO (Link expirado)
+    - Caso o link esteja expirado, apresentar campo de Email para reenviar o email de confirmação com o novo link, (mostrar email parcialmente oculto, ex: g*********@outlook.com)
+    - Enviar email com o novo Link
+
+    ESQUECI MINHA SENHA 
+    - Captcha
+    - Solicitar Email e CPF
+    - Enviar Email com um link de alteração de senha
+    
+    ALTERAÇÃO DE SENHA
+    - Senha e confirmação de senha
+
+    CONTA BANCARIA
+    - Alterar formatação dos valores para pt-BR
+    - Listagem de contas permitir filtrar por "Nome"
+    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
+    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
+    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
+    - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
+
+    CATEGORIAS CONTA
+    - Listagem de contas permitir filtrar por "Nome"
+    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
+    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
+    - Remover Código da listagem
+    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
+    - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
+
+    CATEGORIAS TRANSAÇÃO
+    - Listagem de contas permitir filtrar por "Nome"
+    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
+    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
+    - Remover Código da listagem
+    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
+    - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
+
+    SUBCATEGORIAS TRANSAÇÃO
+    - Listagem de contas permitir filtrar por "Nome"
+    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
+    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
+    - "cadastrar" e "editar" devem ficar em linhas separadas
+    - "cadastrar" e "editar", alterar label para ser somente "Nome"
+    - Remover Código da listagem
+    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
+    - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
+
+    TRANSAÇÃO
+    - MIGRAR PARA MODAL DE CADASTRO DE DESPESA
+    - MIGRAR PARA MODAL DE CADASTRO DE ENTRADA
+    - Botão "Efetuar transação" deve ser apenas "Efetivar"
+    - Botão "Tornar pendente" deve ser apenas "Pendente"
+    - Trazer mensagem confirmando alterações efetivação ou pendência
+    - Apresentar feedback de conclusões de operação "Efetivar" e "Pendente"
+    - Alterar formatação de datas das transações para padrão pt-BR
+    - Alterar formatação dos valores para pt-BR
+    - permitir que o usuário possa definir a data de efetivação quando o Status for "Efetivado"
+    - ALterar Label do InputRadio "Efetuado" para "Efetivado" 
+    - Tornar obrigatório a escolha de conta bancária na transação / Remover InputRadio
+    - "Categoria" e "subcategoria" devem ficar na mesma linha
+    - adicionar funcionalidade "Salvar e Novo" a partir de um SplitButton, conforme o usuário escolher salvar deve definir
+        o título do botão "Salvar", caso escolher "Salvar e Novo", título deve ser "Salvar e Novo"
+    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
+    - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
+    - Permitir o usuário fazer upload de anexos
+    - Permitir o usuário fazer upload de recibos na efetivação
+    - Alterar posição de seleção de Status de transação para o topo da página
+    - Lista de transações permitir filtrar por
+        - Data de Vencimento
+        - Contas Pendentes
+        - Tipo (entrada, saída)
+        - Conta Bancária (Escolher a conta ou todas (x do dropdown))
+        - Categoria
+        - SubCategorias
+
+    REDEFINIR DADOS DE SISTEMA
+    - Apagar todos os dados referente ao usuário logado e repopular as tabelas com dados fictícios
+
+    AO CARREGAR O SISTEMA:  
+    - Apresentar Loading antes da tela ser carregada (https://loading.io)
+
+    

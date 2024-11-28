@@ -18,8 +18,8 @@
                 <td>{{ categoria.id }}</td>
                 <td>{{ categoria.nome }}</td>
                 <td>
-                    <p-button label="Editar" (click)="editar(categoria.id)" icon="pi pi-pencil" />
-                    <p-button label="Apagar" (click)="confirmacaoApagar($event, categoria.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>
+                    <p-button (click)="editar(categoria.id)" icon="pi pi-pencil" />
+                    <p-button (click)="confirmacaoApagar($event, categoria.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>
                 </td>
             </tr>
         </ng-template>
