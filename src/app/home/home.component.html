@@ -1,0 +1,28 @@
+<div class="flex gap-2 mt-2 justify-content-center mb-5">
+    <div class="card">
+        <p-card header="Entradas" styleClass="bg-green-500" [style]="{ width: '200px' }">
+            <p class="m-0">
+                R$ 20.03
+            </p>
+        </p-card>
+    </div>
+    <div class="card">
+        <p-card header="Saida" styleClass="bg-red-500" [style]="{ width: '200px' }">
+            <p class="m-0">
+                R$ 200.39
+            </p>
+        </p-card>
+    </div>
+</div>
+
+<div class="flex flex-column">
+    <div class="card flex flex-row gap-2">
+        <p-card [header]="contaBancaria.nome" subheader="Saldo: R$ {{contaBancaria.saldo}}" [style]="{ width: '360px' }" *ngFor="let contaBancaria of contasBancarias">
+            <ng-template pTemplate="footer">
+                <div class="flex gap-3 mt-1">
+                    <p-button label="Save" class="w-full" styleClass="w-full" />
+                </div>
+            </ng-template>
+        </p-card>
+    </div>
+</div>

@@ -7,37 +7,39 @@ import { SubcategoriaTransacaoDropdown } from '../models/dropdowns/subcategoria-
 import { SubcategoriaTransacaoFormInsert } from '../models/forms/insert/subcategoria-transacao-insert';
 import { SubcategoriaTransacaoFormUpdate } from '../models/forms/update/subcategoria-transacao-form-update';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class SubcategoriaTransacaoService {
+  private url: string;
 
   constructor(
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+  ) { 
+    this.url = `${environment.apiUrl}/api/subcategorias-transacao`;
+  }
 
   apagar(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/subcategorias-transacao/${id}`)
+    return this.httpClient.patch<void>(`${this.url}/${id}`, {})
   }
 
   consultar(): Observable<SubcategoriaTransacaoTable[]> {
-    return this.httpClient.get<SubcategoriaTransacaoTable[]>(`${environment.apiUrl}/subcategorias-transacao`)
+    return this.httpClient.get<SubcategoriaTransacaoTable[]>(this.url)
   }
 
-  consultarDropDown(): Observable<SubcategoriaTransacaoDropdown[]> {
-    return this.httpClient.get<SubcategoriaTransacaoDropdown[]>(`${environment.apiUrl}/subcategorias-transacao`)
+  consultarDropdown(categoriaId: number): Observable<SubcategoriaTransacaoDropdown[]> {
+    return this.httpClient.get<SubcategoriaTransacaoDropdown[]>(`${this.url}/dropdown/${categoriaId}`)
   }
 
   consultarPorId(id: number): Observable<SubcategoriaTransacaoFormUpdate> {
-    return this.httpClient.get<SubcategoriaTransacaoFormUpdate>(`${environment.apiUrl}/subcategorias-transacao/${id}`)
+    return this.httpClient.get<SubcategoriaTransacaoFormUpdate>(`${this.url}/${id}`)
   }
 
   salvar(subcategoria: SubcategoriaTransacaoFormInsert): Observable<SubcategoriaTransacaoFormInsert> {
-    return this.httpClient.post<SubcategoriaTransacaoFormInsert>(`${environment.apiUrl}/subcategorias-transacao`, subcategoria)
+    return this.httpClient.post<SubcategoriaTransacaoFormInsert>(this.url, subcategoria)
   }
 
   atualizar(id: number, subcategoria: SubcategoriaTransacaoFormInsert): Observable<SubcategoriaTransacaoFormInsert> {
-    return this.httpClient.put<SubcategoriaTransacaoFormInsert>(`${environment.apiUrl}/subcategorias-transacao/${id}`, subcategoria)
+    return this.httpClient.put<SubcategoriaTransacaoFormInsert>(`${this.url}/${id}`, subcategoria)
   }
 }

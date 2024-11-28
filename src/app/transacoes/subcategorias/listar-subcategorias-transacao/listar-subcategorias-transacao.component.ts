@@ -9,6 +9,8 @@ import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { SubcategoriaTransacaoTable } from '../../../models/tables/subcategoria-transacao-table';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
+import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
+import { CategoriaTransacaoTable } from '../../../models/tables/categoria-transacao-table';
 
 @Component({
   selector: 'app-listar-subcategorias-transacao',
@@ -35,6 +37,7 @@ export class ListarSubcategoriasTransacaoComponent {
     private messageService: MessageService,
     private router: Router,
     private subcategoriaTransacaoService: SubcategoriaTransacaoService ,
+    private categoriaTransacaoService: CategoriaTransacaoService,
 
   ) { }
 
@@ -61,17 +64,23 @@ export class ListarSubcategoriasTransacaoComponent {
   apagar(id: number) {
     this.subcategoriaTransacaoService.apagar(id)
       .subscribe(() => {
-        this.messageService.add({ severity: 'info', summary: 'Categoria apagada com sucesso', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'info', summary: 'Subategoria apagada com sucesso', detail: '' });
         this.consultar();
       });
   }
 
   consultar() {
-  this.subcategoriaTransacaoService.consultar()
-      .subscribe(x => {
-        this.subcategorias = x;
+    this.subcategoriaTransacaoService.consultar().subscribe(subcategorias => {
+      this.subcategorias = subcategorias;
+  
+      this.subcategorias.forEach(subcategoria => {
+        this.categoriaTransacaoService.consultarPorId(parseInt(subcategoria.categoria)).subscribe(categoria => {
+          subcategoria.categoria = categoria.nome;
+        });
       });
+    });
   }
+  
 
   editar(id: number) {
     this.router.navigate(['subcategorias-transacao/editar', id]);

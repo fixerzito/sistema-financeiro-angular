@@ -1,0 +1,42 @@
+<p-toast />
+<p-confirmDialog />
+<div class="card flex justify-content-end">
+  <p-button routerLink="/categorias-contas-bancarias/cadastro" label="Cadastrar" icon="pi pi-plus" />
+</div>
+<!--
+  [scrollable]="true"
+  scrollHeight="10000px"
+  [virtualScroll]="true"
+  [virtualScrollItemSize]="46"
+  [lazy]="true" (onLazyLoad)="loadCategories($event)"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [totalRecords]="totalRecords" 
+  [loading]="loading" -->
+<p-table
+  [value]="categorias"
+  [paginator]="true"
+  [rows]="10">  
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="id">
+        Código <p-sortIcon field="id" />
+      </th>
+      <th pSortableColumn="nome">
+        Nome <p-sortIcon field="nome" />
+      </th>
+      <th>Ações</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-categoria>
+    <tr>
+      <td>{{ categoria.id }}</td>
+      <td>{{ categoria.nome }}</td>
+      <td>
+        <p-button (click)="editar(categoria.id)" icon="pi pi-pencil"></p-button>
+        <p-button (click)="confirmacaoApagar($event, categoria.id)" severity="danger" icon="pi pi-trash"
+          [outlined]="true"></p-button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

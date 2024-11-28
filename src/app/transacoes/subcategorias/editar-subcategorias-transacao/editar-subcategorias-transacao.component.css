@@ -1,10 +1,10 @@
 .main {
-    width: 50%;
+    width: 59%;
     margin: 10% auto;
     padding: 20px;
     border: 1px solid #4f4f4f;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
-    background-color: #2a2a2a; 
-    color: #ffffff; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background-color: #2a2a2a;
+    color: #ffffff;
 }

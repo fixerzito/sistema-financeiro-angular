@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { CategoriasTransacoesService } from '../../../services/categorias-transacao.service';
-import { CategoriaTransacoesUpdate } from '../../../models/forms/update/categoria-transacoes-form-update';
+import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
+import { CategoriaTransacaoFormUpdate } from '../../../models/forms/update/categoria-transacao-form-update';
 
 @Component({
   selector: 'app-editar-categorias-transacao',
@@ -18,18 +18,18 @@ import { CategoriaTransacoesUpdate } from '../../../models/forms/update/categori
   styleUrl: './editar-categorias-transacao.component.css'
 })
 export class EditarCategoriasTransacaoComponent {
-  categoria: CategoriaTransacoesUpdate = { id: 0, nome: '' };
+  categoria: CategoriaTransacaoFormUpdate = { id: 0, nome: '' };
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private categoriasTransacoesService: CategoriasTransacoesService,
+    private categoriaTransacaoService: CategoriaTransacaoService,
   ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id = +params.get('id')!;
-      this.categoriasTransacoesService.consultarPorId(id)
+      this.categoriaTransacaoService.consultarPorId(id)
         .subscribe(categoria => {
           this.categoria = categoria;
         });
@@ -37,10 +37,14 @@ export class EditarCategoriasTransacaoComponent {
   }
 
   salvar() {
-    this.categoriasTransacoesService.atualizar(this.categoria)
+    this.categoriaTransacaoService.atualizar(this.categoria)
       .subscribe(() => {
         this.router.navigate(['categorias-transacao']);
       });
+  }
+
+  cancelar() {
+    this.router.navigate(['/categorias-transacao'])
   }
 
 }

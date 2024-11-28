@@ -7,7 +7,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { CategoriasTransacoesService } from '../../../services/categorias-transacao.service';
+import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { SubcategoriaTransacaoFormUpdate } from '../../../models/forms/update/subcategoria-transacao-form-update';
@@ -50,7 +50,7 @@ export class EditarSubcategoriasTransacaoComponent implements OnInit{
     private router: Router,
     private route: ActivatedRoute,
     private subcategoriaTransacaoService: SubcategoriaTransacaoService,
-    private categoriasTransacoesService: CategoriasTransacoesService,
+    private categoriaTransacaoService: CategoriaTransacaoService,
   ) { }
 
   ngOnInit() {
@@ -75,11 +75,11 @@ export class EditarSubcategoriasTransacaoComponent implements OnInit{
   }
 
   cancelar() {
-    this.router.navigate(['subcategoria-transacoes']);
+    this.router.navigate(['subcategorias-transacao']);
   }
 
   buscarCategorias() {
-    this.categoriasTransacoesService.consultarDropdown()
+    this.categoriaTransacaoService.consultarDropdown()
       .subscribe(categorias => {
         this.categorias = categorias;
 

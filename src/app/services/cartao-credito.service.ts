@@ -10,28 +10,31 @@ import { CartaoCreditoFormUpdate } from '../models/forms/update/cartao-credito-f
   providedIn: 'root'
 })
 export class CartaoCreditoService {
+  private url: string;
 
   constructor(
-    private httpClient: HttpClient
-  ) { }
+    private httpClient: HttpClient,
+  ) {
+    this.url = `${environment.apiUrl}/api/cartoes`;
+  }
 
   insert(form: CartaoCreditoFormInsert): Observable<void> {
-    return this.httpClient.post<void>(`${environment.apiUrl}/cartoes`, form)
+    return this.httpClient.post<void>(`${this.url}`, form)
   }
 
   apagar(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.apiUrl}/cartoes/${id}`)
+    return this.httpClient.patch<void>(`${this.url}/${id}`, {})
   }
 
   consultar(): Observable<CartaoTable[]> {
-    return this.httpClient.get<CartaoTable[]>(`${environment.apiUrl}/cartoes`)
+    return this.httpClient.get<CartaoTable[]>(`${this.url}`)
   }
 
   buscarCartaoEditar(idParaEditar: number): Observable<CartaoCreditoFormUpdate> {
-    return this.httpClient.get<CartaoCreditoFormUpdate>(`${environment.apiUrl}/cartoes/${idParaEditar}`)
+    return this.httpClient.get<CartaoCreditoFormUpdate>(`${this.url}/${idParaEditar}`)
   }
 
-  salvar(id: number, cartaoEditado: CartaoCreditoFormInsert): Observable<CartaoCreditoFormInsert> {
-    return this.httpClient.put<CartaoCreditoFormInsert>(`${environment.apiUrl}/cartoes/${id}`, cartaoEditado)
+  salvar(id: number, cartaoEditado: CartaoCreditoFormUpdate): Observable<CartaoCreditoFormInsert> {
+    return this.httpClient.put<CartaoCreditoFormInsert>(`${this.url}/${id}`, cartaoEditado)
   }
 }

@@ -5,7 +5,7 @@
 </div>
 
 <div class="card">
-    <p-table [value]="cartoesLista" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="cartoesLista" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
             <tr>
                 <th>Nome</th>
@@ -13,7 +13,7 @@
                 <th>Bandeira</th>
                 <th>Saldo</th>
                 <th>Dia de Fechamento</th>
-                <th>Data de Vencimento</th>
+                <th>Dia de Vencimento</th>
                 <th>Ações</th>
             </tr>
         </ng-template>
@@ -26,8 +26,8 @@
                 <td>{{ cartao.diaFechamento }}</td>
                 <td>{{ cartao.diaVencimento }}</td>
                 <td>
-                    <p-button label="Editar" (onClick)="editar(cartao.id)" icon="pi pi-pencil" />
-                    <p-button label="Apagar" (onClick)="confirmacaoApagar($event, cartao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" />
+                    <p-button (onClick)="editar(cartao.id)" icon="pi pi-pencil" />
+                    <p-button (onClick)="confirmacaoApagar($event, cartao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" />
                 </td>
             </tr>
         </ng-template>

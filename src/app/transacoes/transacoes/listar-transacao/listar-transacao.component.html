@@ -1,0 +1,44 @@
+<p-toast />
+<p-confirmDialog />
+<div class="card flex justify-content-end">
+    <p-button routerLink="/transacoes/cadastro" label="Cadastrar" icon="pi pi-plus" />
+</div>
+
+<div class="card">
+    <p-table [value]="transacoes" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nome</th>
+                <th>Conta vinculada</th>
+                <th>Categoria</th>
+                <th>Subcategoria</th>
+                <th>Valor</th>
+                <th>Tipo de transação</th>
+                <th>Previsão de efetivação</th>
+                <th>Data de efetivação</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-transacao>
+            <tr>
+                <td>{{ transacao.nome }}</td>
+                <td>{{ transacao.contaBancaria }}</td>
+                <td>{{ transacao.categoriaTransacao }}</td>
+                <td>{{ transacao.subcategoriaTransacao }}</td>
+                <td>R$ {{ transacao.valor }}</td>
+                <td> {{transacao.tipoTransacao}}</td>
+                <td>{{ transacao.dataPrevista }}</td>
+                <td>{{ transacao.dataEfetivacao }}</td>
+                <td>
+                    <p-tag [severity]="obterStatus(transacao.status)" [value]="obterTexto(transacao.status)"></p-tag>
+                </td>
+                <td class="flex align-items-center justify-content-start gap-3">
+                    <p-button (onClick)="editar(transacao.id)" icon="pi pi-pencil" />
+                    <p-button (onClick)="confirmacaoApagar($event, transacao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" />
+                    <p-button [label]="buttonTexto(transacao.status)" [icon]=" buttonIcon(transacao.status)" [severity]="buttonSeverity(transacao.status)" (onClick)="alterarStatus(transacao.status, transacao.id)"/>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

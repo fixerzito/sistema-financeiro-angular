@@ -5,23 +5,23 @@
 </div>
 
 <div class="card">
-    <p-table [value]="subcategorias" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="subcategorias" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10">
         <ng-template pTemplate="header">
             <tr>
                 <th>Código</th>
-                <th>Nome</th>
                 <th>Categoria relacionada</th>
+                <th>Nome</th>
                 <th>Ações</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-subcategoria>
             <tr>
                 <td>{{ subcategoria.id }}</td>
-                <td>{{ subcategoria.nome }}</td>
                 <td>{{ subcategoria.categoria }}</td>
+                <td>{{ subcategoria.nome }}</td>
                 <td>
-                    <p-button label="Editar" (click)="editar(subcategoria.id)" icon="pi pi-pencil" />
-                    <p-button label="Apagar" (click)="confirmacaoApagar($event, subcategoria.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>
+                    <p-button (click)="editar(subcategoria.id)" icon="pi pi-pencil" />
+                    <p-button (click)="confirmacaoApagar($event, subcategoria.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>
                 </td>
             </tr>
         </ng-template>
