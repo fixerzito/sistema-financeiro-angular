@@ -1,7 +1,7 @@
 <p-toast />
 <p-confirmDialog />
-<div class="card flex justify-content-end">
-    <p-button routerLink="/contas/cadastro" label="Cadastrar" icon="pi pi-plus"/>
+<div class="card flex justify-content-end gap-2">
+    <p-button routerLink="/contas/cadastro" icon="pi pi-plus"/>
 </div>
 
 <div class="card">
@@ -19,9 +19,9 @@
                 <td>{{ conta.nome }}</td>
                 <td>{{ categorias[conta.idCategoria] }} <i [ngClass]="conta.icon"></i></td>
                 <td>R$ {{ conta.saldo | number: '1.2-2' }}</td>
-                <td>
-                    <p-button icon="pi pi-pencil" (click)="editar(conta.id)"/>
-                    <p-button (click)="confirmacaoApagar($event, conta.id)" severity="danger" icon="pi pi-trash" [outlined]="true"/>
+                <td class="flex align-items-center justify-content-start gap-2">
+                    <p-button icon="pi pi-pencil" (click)="editar(conta.id)" [rounded]="true"/>
+                    <p-button (click)="confirmacaoApagar($event, conta.id)" severity="danger" icon="pi pi-trash" [outlined]="true" [rounded]="true"/>
                 </td>
             </tr>
         </ng-template>

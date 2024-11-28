@@ -20,7 +20,6 @@ ISSUES:
     SISTEMA FRONT-END
     - Inputs obrigatórios devem possuir Labels com asterísco vermelho para identificar que são obrigatórias
     - Utiliziar BREADCRUMBS
-    - Botões "Editar" e "Apagar" não precisam de texto, apenas Icons com ToolTips da operação
     - Criar Speed Dial para cadastros "Cadastro de conta", "Cadastro de Categoria de conta", "Cadastro de Cartões", ... 
     - Apresentar loading de tabelas 
     - Apresentar loading de Dropdown (Carregar dados apenas quando o usuário clicar no Dropdown)
