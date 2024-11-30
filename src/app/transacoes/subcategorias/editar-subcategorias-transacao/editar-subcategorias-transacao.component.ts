@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -12,7 +12,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { SubcategoriaTransacaoFormUpdate } from '../../../models/forms/update/subcategoria-transacao-form-update';
 import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
-import { SubcategoriaTransacaoFormInsert } from '../../../models/forms/insert/subcategoria-transacao-insert';
 
 @Component({
   selector: 'app-editar-subcategorias-transacao',
@@ -26,24 +25,16 @@ import { SubcategoriaTransacaoFormInsert } from '../../../models/forms/insert/su
     InputGroupModule,
     InputGroupAddonModule,
     ToastModule,
+    ReactiveFormsModule
   ],
   templateUrl: './editar-subcategorias-transacao.component.html',
   styleUrl: './editar-subcategorias-transacao.component.css'
 })
-export class EditarSubcategoriasTransacaoComponent implements OnInit{
-  subcategoriaEditada: SubcategoriaTransacaoFormUpdate = {
-    id: 0,
-    nome: '',
-    categoria: 0
-  };
-
-  subcategoriaRecebida: SubcategoriaTransacaoFormUpdate = {
-    id: 0,
-    nome: '',
-    categoria: 0
-  };
-
-
+export class EditarSubcategoriasTransacaoComponent implements OnInit {
+  formGroup!: FormGroup;
+  erroNome?: string;
+  erroCategoria?: string;
+  subcategoriaEditar: SubcategoriaTransacaoFormUpdate;
   categorias!: CategoriaTransacoesDropdown[];
 
   constructor(
@@ -51,25 +42,35 @@ export class EditarSubcategoriasTransacaoComponent implements OnInit{
     private route: ActivatedRoute,
     private subcategoriaTransacaoService: SubcategoriaTransacaoService,
     private categoriaTransacaoService: CategoriaTransacaoService,
-  ) { }
+  ) {
+    this.formGroup = new FormGroup({
+      nome: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      categoria: new FormControl('', [Validators.required])
+    });
+
+    this.subcategoriaEditar = {
+      id: 0,
+      nome: '',
+      categoria: 0
+    };
+  }
 
   ngOnInit() {
     this.buscarCategorias();
 
     this.route.paramMap.subscribe(params => {
-      let idParaEditar = +params.get('id')!
-      this.subcategoriaTransacaoService.consultarPorId(idParaEditar)
+      this.subcategoriaEditar.id = +params.get('id')!
+      this.subcategoriaTransacaoService.consultarPorId(this.subcategoriaEditar.id)
         .subscribe(response => {
           if (Array.isArray(response)) {
-            this.subcategoriaRecebida = response[0];
+            this.subcategoriaEditar = response[0];
           } else {
-            this.subcategoriaRecebida = response;
+            this.subcategoriaEditar = response;
           }
-
-          this.subcategoriaEditada = this.subcategoriaRecebida;
-          
-          console.log(this.subcategoriaEditada);
-          
+          this.formGroup.setValue({
+            nome: this.subcategoriaEditar.nome,
+            categoria: this.subcategoriaEditar.categoria,
+          });
         });
     });
   }
@@ -82,19 +83,38 @@ export class EditarSubcategoriasTransacaoComponent implements OnInit{
     this.categoriaTransacaoService.consultarDropdown()
       .subscribe(categorias => {
         this.categorias = categorias;
-
       });
   }
 
-  salvar(id: number, subcategoria: SubcategoriaTransacaoFormInsert ) {
-    this.subcategoriaTransacaoService.atualizar(id, subcategoria)
-      .subscribe(x => {
-        this.router.navigate(['subcategorias-transacao']);
-      });
+  salvar() {
+    if (this.formGroup.valid) {
+      this.subcategoriaEditar.nome = this.formGroup.get('nome')?.value
+      this.subcategoriaEditar.categoria = this.formGroup.get('categoria')?.value
+
+      this.subcategoriaTransacaoService.atualizar(this.subcategoriaEditar)
+        .subscribe(x => {
+          this.router.navigate(['subcategorias-transacao']);
+        });
+    }
   }
 
-  atribuirIdCategoria(id: number) {    
-    this.subcategoriaEditada.categoria = id;
+  obterMensagemErro() {
+    const nomeControl = this.formGroup.get('nome');
+    const cateogoriaControl = this.formGroup.get('categoria');
+
+    if (nomeControl?.hasError('maxlength')) {
+      this.erroNome = 'O nome da subcategoria deve ter no máximo 100 caracteres.';
+    } else if (nomeControl?.hasError('required')) {
+      this.erroNome = 'O nome da subcategoria é obrigatório.';
+    } else {
+      this.erroNome = '';
+    }
+
+    if (cateogoriaControl?.hasError('required')) {
+      this.erroCategoria = 'É necessário selecionar uma categoria';
+    } else {
+      this.erroCategoria = '';
+    }
   }
 
 }

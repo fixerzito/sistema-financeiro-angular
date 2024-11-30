@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -25,15 +25,15 @@ import { CategoriaTransacaoService } from '../../../services/categoria-transacao
     InputGroupModule,
     InputGroupAddonModule,
     ToastModule,
+    ReactiveFormsModule
   ],
   templateUrl: './cadastrar-subcategorias-transacao.component.html',
   styleUrl: './cadastrar-subcategorias-transacao.component.css'
 })
 export class CadastrarSubcategoriasTransacaoComponent implements OnInit {
-  subcategoria: SubcategoriaTransacaoFormInsert = {
-    nome: '',
-    categoria: 0
-  };
+  formGroup!: FormGroup;
+  erroNome?: string;
+  erroCategoria?: string;
 
   categorias!: CategoriaTransacoesDropdown[];
   categoriaSelecionada: CategoriaTransacoesDropdown = {
@@ -48,19 +48,49 @@ export class CadastrarSubcategoriasTransacaoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.formGroup = new FormGroup({
+      nome: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      categoria: new FormControl('', [Validators.required])
+    });
+
     this.categoriaTransacaoService.consultarDropdown()
-    .subscribe(categorias => 
-      this.categorias = categorias
-    );
+      .subscribe(categorias =>
+        this.categorias = categorias
+      );
   }
 
   salvar() {
-    this.subcategoriaTransacaoService.salvar(this.subcategoria)
-      .subscribe(x => this.router.navigate(['/subcategorias-transacao'])
-      )
+    if(this.formGroup.valid){
+      const subcategoria: SubcategoriaTransacaoFormInsert = {
+        nome: this.formGroup.get('nome')?.value,
+        categoria: this.formGroup.get('categoria')?.value
+      }
+      this.subcategoriaTransacaoService.salvar(subcategoria)
+        .subscribe(x => this.router.navigate(['/subcategorias-transacao'])
+        )
+    }
   }
- 
+
   cancelar() {
     this.router.navigate(['/subcategorias-transacao'])
+  }
+
+  obterMensagemErro() {
+    const nomeControl = this.formGroup.get('nome');
+    const cateogoriaControl = this.formGroup.get('categoria');
+    
+    if (nomeControl?.hasError('maxlength')) {
+      this.erroNome = 'O nome da subcategoria deve ter no máximo 100 caracteres.';
+    } else if (nomeControl?.hasError('required')) {
+      this.erroNome = 'O nome da subcategoria é obrigatório.';
+    } else {
+      this.erroNome = '';
+    }
+
+    if (cateogoriaControl?.hasError('required')) {
+      this.erroCategoria = 'É necessário selecionar uma categoria';
+    } else {
+      this.erroCategoria = '';
+    }
   }
 }

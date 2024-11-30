@@ -94,19 +94,9 @@ ISSUES:
     TRANSAÇÃO
     - MIGRAR PARA MODAL DE CADASTRO DE DESPESA
     - MIGRAR PARA MODAL DE CADASTRO DE ENTRADA
-    - Botão "Efetuar transação" deve ser apenas "Efetivar"
-    - Botão "Tornar pendente" deve ser apenas "Pendente"
     - Trazer mensagem confirmando alterações efetivação ou pendência
     - Apresentar feedback de conclusões de operação "Efetivar" e "Pendente"
-    - Alterar formatação de datas das transações para padrão pt-BR
-    - Alterar formatação dos valores para pt-BR
-    - permitir que o usuário possa definir a data de efetivação quando o Status for "Efetivado"
-    - ALterar Label do InputRadio "Efetuado" para "Efetivado" 
-    - Tornar obrigatório a escolha de conta bancária na transação / Remover InputRadio
-    - "Categoria" e "subcategoria" devem ficar na mesma linha
-    - adicionar funcionalidade "Salvar e Novo" a partir de um SplitButton, conforme o usuário escolher salvar deve definir
-        o título do botão "Salvar", caso escolher "Salvar e Novo", título deve ser "Salvar e Novo"
-    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
+    - Later: Migrar utilização de "ngModel" para "Reactive Forms", validando "required", "min/max length"
     - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
     - Permitir o usuário fazer upload de anexos
     - Permitir o usuário fazer upload de recibos na efetivação
