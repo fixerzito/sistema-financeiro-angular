@@ -39,7 +39,7 @@ export class SubcategoriaTransacaoService {
     return this.httpClient.post<SubcategoriaTransacaoFormInsert>(this.url, subcategoria)
   }
 
-  atualizar(id: number, subcategoria: SubcategoriaTransacaoFormInsert): Observable<SubcategoriaTransacaoFormInsert> {
-    return this.httpClient.put<SubcategoriaTransacaoFormInsert>(`${this.url}/${id}`, subcategoria)
+  atualizar(subcategoria: SubcategoriaTransacaoFormUpdate): Observable<SubcategoriaTransacaoFormUpdate> {
+    return this.httpClient.put<SubcategoriaTransacaoFormUpdate>(`${this.url}/${subcategoria.id}`, subcategoria)
   }
 }

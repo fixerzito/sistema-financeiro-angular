@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -8,13 +8,13 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
 import { ContaBancariaDropdown } from '../../../models/dropdowns/conta-bancaria-dropdown';
 import { SubcategoriaTransacaoDropdown } from '../../../models/dropdowns/subcategoria-transacao-dropdown';
-import { TransacaoFormInsert } from '../../../models/forms/insert/transacao-form-insert';
 import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
 import { ContaBancariaService } from '../../../services/conta-bancaria.service';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { TransacaoService } from '../../../services/transacao.service';
 import { TransacaoFormUpdate } from '../../../models/forms/update/transacao-form-update';
 import { CalendarModule } from 'primeng/calendar';
+import { ErrorMessages } from '../Models/errorMessages';
 
 @Component({
   selector: 'app-editar-transacao',
@@ -24,14 +24,16 @@ import { CalendarModule } from 'primeng/calendar';
     DropdownModule,
     InputTextModule,
     ButtonModule,
-    RadioButtonModule, 
+    RadioButtonModule,
     CalendarModule,
+    ReactiveFormsModule
   ],
   templateUrl: './editar-transacao.component.html',
   styleUrl: './editar-transacao.component.css'
 })
 export class EditarTransacaoComponent {
   transacao: TransacaoFormUpdate;
+  errorMessages: ErrorMessages;
   categoriaId?: number;
   categorias!: CategoriaTransacoesDropdown[]; // TODO: CategoriaTransacaoDropdown
   subcategorias!: SubcategoriaTransacaoDropdown[];
@@ -40,6 +42,7 @@ export class EditarTransacaoComponent {
   stringValidaConta: boolean = false;
   validaConta: boolean = false;
   contasDropdown!: ContaBancariaDropdown[];
+  formGroup!: FormGroup;
 
   //false = saida, true = entrada
   tipoTransacao: boolean = false;
@@ -52,31 +55,56 @@ export class EditarTransacaoComponent {
     private transacaoService: TransacaoService,
     private contaBancariaService: ContaBancariaService,
   ) {
-    this.transacao = {
-      nome: "",
-    }
+    this.transacao = {}
+    this.errorMessages = new ErrorMessages()
+
+    this.formGroup = new FormGroup({
+      nome: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      valor: new FormControl('', [Validators.required, Validators.pattern(/^[+]?\d+(\.\d+)?$/)]),
+      status: new FormControl(false),
+      tipoTransacao: new FormControl(''),
+      dataPrevista: new FormControl(null),
+      dataEfetivacao: new FormControl(null),
+      idSubcategoriaTransacao: new FormControl({ value: '', disabled: false }, [Validators.required]),
+      idCategoriaTransacao: new FormControl('', [Validators.required]),
+      idContaBancaria: new FormControl('', [Validators.required])
+    });
+
   }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      const id = +params.get('id')!;
-      this.transacaoService.consultarPorId(id)
+      this.transacao.id = +params.get('id')!;
+      console.log(this.transacao.id);
+      
+      this.transacaoService.consultarPorId(this.transacao.id)
         .subscribe(transacao => {
           this.transacao = transacao;
-          if(transacao.dataPrevista != null)
+          if (transacao.dataPrevista != null)
             this.transacao.dataPrevista = new Date(transacao.dataPrevista)
 
-          if(transacao.dataEfetivacao != null)
+          if (transacao.dataEfetivacao != null)
             this.transacao.dataEfetivacao = new Date(transacao.dataEfetivacao)
-          
-          if (transacao.idContaBancaria != null) {
-            this.stringValidaConta = true
-            this.carregarContasBancarias();
-          }
-          this.carregarCategorias();
-          if (transacao.tipoTransacao == 1){
+
+          if (transacao.tipoTransacao == 1) {
             this.tipoTransacao = true;
           }
+
+          this.carregarContasBancarias();
+          this.carregarCategorias();
+
+          console.log(this.transacao.id);
+          this.formGroup.setValue({
+            nome: transacao.nome,
+            valor: transacao.valor,
+            tipoTransacao: this.tipoTransacao,
+            idContaBancaria: transacao.idContaBancaria,
+            idCategoriaTransacao: transacao.idCategoriaTransacao,
+            idSubcategoriaTransacao: transacao.idSubcategoriaTransacao,
+            status: transacao.status,
+            dataPrevista: transacao.dataPrevista,
+            dataEfetivacao: transacao.dataEfetivacao,
+          })
         });
     });
   }
@@ -92,15 +120,6 @@ export class EditarTransacaoComponent {
       );
 
     this.carregarSubcategorias()
-  }
-
-  habilitarCalendario(status: boolean) : boolean{
-    if(status === true){
-      this.transacao.dataEfetivacao = null;
-      return true
-    } 
-
-    return false
   }
 
   carregarContasBancarias() {
@@ -147,31 +166,88 @@ export class EditarTransacaoComponent {
   }
 
   salvar() {
-    if(this.tipoTransacao == false){
-      //entrada = 1 | saida = 2o
-      this.transacao.tipoTransacao = 2;
-    } else if (this.tipoTransacao == true){
-      this.transacao.tipoTransacao = 1;
-    }
+    this.obterMensagemErro()
+    if(this.formGroup.valid){
+      if (this.formGroup.get('tipoTransacao')?.value == false) {
+        //entrada = 1 | saida = 2o
+        this.transacao.tipoTransacao = 2;
+      } else {
+        this.transacao.tipoTransacao = 1;
+      }
+  
+      if (!this.transacao.dataPrevista) {
+        this.transacao.dataPrevista = null;
+      }
+  
+      if (!this.transacao.dataEfetivacao) {
+        this.transacao.dataEfetivacao = null;
+      }
+  
+      if (this.transacao.status == true) {
+        this.transacao.dataEfetivacao = new Date();
+      }
 
-    if (!this.transacao.dataPrevista) {
-      this.transacao.dataPrevista = null;
-    }
+      this.transacao = {
+        id: this.transacao.id,
+        tipoTransacao: this.transacao.tipoTransacao,
+        nome: this.formGroup.get('nome')?.value,
+        valor: this.formGroup.get('valor')?.value,
+        idContaBancaria: this.formGroup.get('idContaBancaria')?.value,
+        idSubcategoriaTransacao: this.formGroup.get('idSubcategoriaTransacao')?.value,
+        status: this.formGroup.get('status')?.value,
+        dataPrevista: this.formGroup.get('dataPrevista')?.value,
+        dataEfetivacao: this.formGroup.get('dataEfetivacao')?.value,
+      }
 
-    if (!this.transacao.dataEfetivacao) {
-      this.transacao.dataEfetivacao = null;
+      console.log(this.transacao.id);
+  
+      this.transacaoService.atualizar(this.transacao)
+        .subscribe(x => this.router.navigate(['/transacoes'])
+        )
     }
-
-    if(this.transacao.status == true){
-      this.transacao.dataEfetivacao = new Date();
-    }
-
-    this.transacaoService.atualizar(this.transacao)
-      .subscribe(x => this.router.navigate(['/transacoes'])
-      )
   }
 
   cancelar() {
     this.router.navigate(['/transacoes'])
+  }
+
+  obterMensagemErro() {
+    const nomeControl = this.formGroup.get('nome');
+    const idSubcategoriaTransacaoControl = this.formGroup.get('idSubcategoriaTransacao');
+    const idCategoriaTransacaoControl = this.formGroup.get('idCategoriaTransacao');
+    const valorControl = this.formGroup.get('valor');
+    const idContaBancariaControl = this.formGroup.get('idContaBancaria');
+
+    if (nomeControl?.hasError('maxlength')) {
+      this.errorMessages!.nome = 'O nome da transação deve ter no máximo 100 caracteres.';
+    } else if (nomeControl?.hasError('required')) {
+      this.errorMessages!.nome = 'O nome da transação é obrigatório.';
+    } else {
+      this.errorMessages!.nome = '';
+    }
+
+    if (idSubcategoriaTransacaoControl?.hasError('required')) {
+      this.errorMessages!.idSubcategoriaTransacao = 'É necessário selecionar uma subcategoria';
+    } else {
+      this.errorMessages!.idSubcategoriaTransacao = '';
+    }
+
+    if (idCategoriaTransacaoControl?.hasError('required')) {
+      this.errorMessages!.idCategoriaTransacao = 'É necessário selecionar uma categoria';
+    } else {
+      this.errorMessages!.idCategoriaTransacao = '';
+    }
+
+    if (idContaBancariaControl?.hasError('required')) {
+      this.errorMessages!.idContaBancaria = 'É necessário selecionar uma conta bancária';
+    } else {
+      this.errorMessages!.idContaBancaria = '';
+    }
+
+    if (valorControl?.hasError('required')) {
+      this.errorMessages!.valor = 'Valor deve ser preenchido';
+    } else {
+      this.errorMessages!.valor = '';
+    }
   }
 }

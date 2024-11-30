@@ -9,5 +9,5 @@ export interface TransacaoFormUpdate {
     tipoTransacao?: number,
     valor?: number,
     valorDiferenca?: number,
-    nome: string,    
+    nome?: string,    
 }

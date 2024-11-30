@@ -1,25 +1,19 @@
-<div class="main">
+<form class="main" [formGroup]="formGroup">
     <div class="form-container">
         <div class="input-group">
-            <label for="username" class="form-label">Nome da Transação</label>
-            <input pInputText id="username" [(ngModel)]="transacao.nome" class="form-input" autocomplete="off" />
+            <label for="username" class="form-label">Nome da Transação <span class="warning-text">*</span></label>
+            <input pInputText id="username" class="form-input" autocomplete="off" formControlName="nome" />
+            <span class="warning-text">
+                {{ errorMessages!.nome }}
+            </span>
         </div>
 
         <div class="radio-group">
-            <label for="validContaBancaria" class="form-label">Deseja vincular a uma conta existente?</label>
-            <div class="radio-options">
-                <p-radioButton [value]="true" [(ngModel)]="stringValidaConta" inputId="sim"
-                    (ngModelChange)="validarConta()" class="radio-btn" />
-                <label for="sim" class="radio-label">Sim</label>
-
-                <p-radioButton [value]="false" [(ngModel)]="stringValidaConta" inputId="nao"
-                    (ngModelChange)="validarConta()" class="radio-btn" />
-                <label for="nao" class="radio-label">Não</label>
-            </div>
-
-            <p-dropdown [options]="contasDropdown" [(ngModel)]="transacao.idContaBancaria" optionLabel="name"
+            <label for="validContaBancaria" class="form-label">Selecione a conta que deseja vincular <span
+                    class="warning-text">*</span></label>
+            <p-dropdown [options]="contasDropdown" formControlName="idContaBancaria" optionLabel="name"
                 (onShow)="carregarContasBancarias()" optionValue="id" placeholder="Escolha a conta a ser vinculada"
-                (onChange)="atribuirIdConta(transacao.idContaBancaria!)" [disabled]="!stringValidaConta">
+                (onChange)="atribuirIdConta(transacao.idContaBancaria!)">
                 <ng-template let-cartao pTemplate="item">
                     {{cartao.nome}}
                 </ng-template>
@@ -27,14 +21,17 @@
                     {{cartao.nome}}
                 </ng-template>
             </p-dropdown>
+            <span class="warning-text">
+                {{ errorMessages!.idContaBancaria }}
+            </span>
         </div>
 
         <div class="input-group flex flex-row">
             <div class="flex flex-column">
-                <label class="form-label">Categoria</label>
-                <p-dropdown [options]="categorias" [(ngModel)]="categoriaId" optionLabel="name" optionValue="id"
-                    (onShow)="carregarCategorias()" placeholder="Escolha a categoria à ser vinculada"
-                    (onChange)="onCategoriaChange()">
+                <label class="form-label">Categoria <span class="warning-text">*</span></label>
+                <p-dropdown [options]="categorias" optionLabel="name" optionValue="id" (onShow)="carregarCategorias()"
+                    placeholder="Escolha a categoria à ser vinculada" (onChange)="onCategoriaChange()"
+                    formControlName="idCategoriaTransacao">
                     <ng-template let-categoria pTemplate="item">
                         {{categoria.nome}}
                     </ng-template>
@@ -42,12 +39,16 @@
                         {{categoria.nome}}
                     </ng-template>
                 </p-dropdown>
+                <span class="warning-text">
+                    {{ errorMessages!.idCategoriaTransacao }}
+                </span>
             </div>
             <div class="flex flex-column">
-                <label class="form-label">Subcategoria</label>
-                <p-dropdown [options]="subcategorias" [(ngModel)]="transacao.idSubcategoriaTransacao" optionLabel="name"
-                    optionValue="id" [loading]="carregandoSubcategoriasDropdown"
-                    placeholder="Escolha a categoria à ser vinculada" [disabled]="desabilitadoSubcategoriaDropdown">
+                <label class="form-label">Subcategoria <span class="warning-text">*</span></label>
+                <p-dropdown [options]="subcategorias" optionLabel="name" optionValue="id"
+                    [loading]="carregandoSubcategoriasDropdown" placeholder="Escolha a categoria à ser vinculada"
+                    [disabled]="formGroup.get('idSubcategoriaTransacao')!.disabled"
+                    formControlName="idSubcategoriaTransacao">
                     <ng-template let-categoria pTemplate="item">
                         {{categoria.nome}}
                     </ng-template>
@@ -55,33 +56,36 @@
                         {{categoria.nome}}
                     </ng-template>
                 </p-dropdown>
+                <span class="warning-text">
+                    {{ errorMessages!.idSubcategoriaTransacao }}
+                </span>
             </div>
         </div>
 
         <div class="flex flex-row">
             <div class="flex flex-column">
                 <label for="dataPrevista" class="form-label">Data prevista</label>
-                <p-calendar [(ngModel)]="transacao.dataPrevista" [iconDisplay]="'input'" [showIcon]="true"
+                <p-calendar formControlName="dataPrevista" [iconDisplay]="'input'" [showIcon]="true"
                     inputId="dataPrevista">
                 </p-calendar>
             </div>
 
             <div class="flex flex-column">
                 <label for="dataEfetivacao" class="form-label">Data efetivação</label>
-                <p-calendar [(ngModel)]="transacao.dataEfetivacao" [iconDisplay]="'input'" [showIcon]="true"
-                    [disabled]="habilitarCalendario(transacao.status!)" inputId="dataEfetivacao">
+                <p-calendar formControlName="dataEfetivacao" [iconDisplay]="'input'" [showIcon]="true"
+                    inputId="dataEfetivacao">
                 </p-calendar>
             </div>
         </div>
 
         <label class="form-label">Status da transação</label>
         <div class="radio-options">
-            <p-radioButton [value]="false" [(ngModel)]="transacao.status" inputId="pendente" />
+            <p-radioButton [value]="false" formControlName="status" inputId="pendente" />
             <label for="pendente" class="ml-2">
                 Pendente
             </label>
 
-            <p-radioButton [value]="true" [(ngModel)]="transacao.status" inputId="efetuada" />
+            <p-radioButton [value]="true" formControlName="status" inputId="efetuada" />
             <label for="efetuada" class="ml-2">
                 Efetuada
             </label>
@@ -89,17 +93,20 @@
 
         <label for="validContaBancaria" class="form-label">Tipo de Transação</label>
         <div class="radio-options">
-            <p-radioButton [value]="true" [(ngModel)]="tipoTransacao" inputId="entrada" class="radio-btn" />
+            <p-radioButton [value]="true" formControlName="tipoTransacao" inputId="entrada" class="radio-btn" />
             <label for="entrada" class="radio-label">Entrada</label>
 
-            <p-radioButton [value]="false" [(ngModel)]="tipoTransacao" inputId="saida" class="radio-btn" />
+            <p-radioButton [value]="false" formControlName="tipoTransacao" inputId="saida" class="radio-btn" />
             <label for="saida" class="radio-label">Saída</label>
         </div>
 
         <div class="input-group">
             <label for="valorTransacao" class="form-label">Valor da Transação</label>
-            <input pInputText id="valorTransacao" [(ngModel)]="transacao.valor" class="form-input" autocomplete="off"
-                placeholder="R$" />
+            <input type="number" inputId="valorTransacao" class="form-input" autocomplete="off" placeholder="R$" locale="pt-BR"
+                min="0" formControlName="valor" (input)="evitarNumeroNegativo($event)"/>
+            <span class="warning-text">
+                {{ errorMessages!.valor }}
+            </span>
 
             <div class="button-group">
                 <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true"
@@ -108,4 +115,4 @@
             </div>
         </div>
     </div>
-</div>
+</form>
