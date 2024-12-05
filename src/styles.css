@@ -1,4 +1,10 @@
+body {
+    padding: 0px;
+    margin: 0px;
+}
 .warning-text{
+    font-weight: bold;
     color: rgb(153, 61, 61);
     font-size: 12px;
 }
+

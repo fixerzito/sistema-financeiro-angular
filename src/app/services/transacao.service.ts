@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { TransacaoTable } from '../models/tables/transacao-table';
 import { TransacaoFormInsert } from '../models/forms/insert/transacao-form-insert';
 import { TransacaoFormUpdate } from '../models/forms/update/transacao-form-update';
+import { TransacaoDropdown } from '../models/dropdowns/transacao-dropdown';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +28,20 @@ export class TransacaoService {
     return this.httpClient.get<TransacaoTable[]>(`${this.url}`)
   }
 
+  consultarDropdown(): Observable<TransacaoDropdown[]> {
+    return this.httpClient.get<TransacaoDropdown[]>(`${this.url}/dropdown`)
+  }
+
   apagar(id: number): Observable<void> {
     return this.httpClient.patch<void>(`${this.url}/${id}`, {})
   }
 
-  salvar(transacaoCriada: TransacaoFormInsert): Observable<TransacaoFormInsert> {
-    return this.httpClient.post<TransacaoFormInsert>(`${this.url}`, transacaoCriada)
+  cadastrarDespesa(transacaoCriada: TransacaoFormInsert): Observable<TransacaoFormInsert> {
+    return this.httpClient.post<TransacaoFormInsert>(`${this.url}/despesa`, transacaoCriada)
+  }
+
+  cadastrarReceita(transacaoCriada: TransacaoFormInsert): Observable<TransacaoFormInsert> {
+    return this.httpClient.post<TransacaoFormInsert>(`${this.url}receita`, transacaoCriada)
   }
 
   consultarPorId(id: number): Observable<TransacaoFormUpdate> {
