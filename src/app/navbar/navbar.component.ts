@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
@@ -11,6 +11,7 @@ import { MenubarModule } from 'primeng/menubar';
     MenubarModule,
     AvatarModule
   ],
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -71,7 +72,6 @@ export class NavbarComponent {
           }
         ]
       }
-
     ]
   }
 }

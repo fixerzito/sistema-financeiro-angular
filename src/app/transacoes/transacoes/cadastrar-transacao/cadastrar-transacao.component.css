@@ -6,6 +6,10 @@
     font-family: 'Arial', sans-serif;
 }
 
+p-autoComplete {
+    width: 900px;
+}
+
 body {
     background-color: #f4f7fa;
     display: flex;

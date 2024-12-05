@@ -15,6 +15,7 @@ import { CategoriaContaBancariaService } from '../../../services/categoria-conta
 import { ContaBancariaService } from '../../../services/conta-bancaria.service';
 import { DialogModule } from 'primeng/dialog';
 import { CategoriaContaBancariaFormInsert } from '../../../models/forms/insert/categoria-conta-bancaria-form-insert';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-page-cad-conta-bancaria',
@@ -28,8 +29,7 @@ import { CategoriaContaBancariaFormInsert } from '../../../models/forms/insert/c
     InputGroupAddonModule,
     InputGroupModule,
     InputNumberModule,
-    DialogModule,
-
+    DialogModule
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './page-cad-conta-bancaria.component.html',

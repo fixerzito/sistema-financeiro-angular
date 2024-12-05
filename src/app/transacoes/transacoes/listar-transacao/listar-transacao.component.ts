@@ -9,6 +9,7 @@ import { TransacaoService } from '../../../services/transacao.service';
 import { TransacaoTable } from '../../../models/tables/transacao-table';
 import { TagModule } from 'primeng/tag';
 import { DatePipe } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-listar-transacao',
@@ -19,7 +20,8 @@ import { DatePipe } from '@angular/common';
     RouterModule,
     ConfirmDialogModule,
     ToastModule,
-    TagModule
+    TagModule,
+    TooltipModule
   ],
   templateUrl: './listar-transacao.component.html',
   styleUrl: './listar-transacao.component.css',

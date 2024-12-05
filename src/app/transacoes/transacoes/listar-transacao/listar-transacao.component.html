@@ -1,6 +1,6 @@
 <p-toast />
 <p-confirmDialog />
-<div class="card flex justify-content-end">
+<div class="card flex justify-content-end mb-2">
     <p-button routerLink="/transacoes/cadastro" icon="pi pi-plus" />
 </div>
 
@@ -34,8 +34,8 @@
                     <p-tag [severity]="obterStatus(transacao.status)" [value]="obterTexto(transacao.status)"></p-tag>
                 </td>
                 <td class="flex align-items-center justify-content-start gap-2">
-                    <p-button (onClick)="editar(transacao.id)" icon="pi pi-pencil" [rounded]="true"/>
-                    <p-button (onClick)="confirmacaoApagar($event, transacao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" [rounded]="true" [rounded]="true"/>
+                    <p-button (onClick)="editar(transacao.id)" icon="pi pi-pencil" [rounded]="true" pTooltip="Editar" showDelay="100" hideDelay="300"/>
+                    <p-button (onClick)="confirmacaoApagar($event, transacao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" [rounded]="true" [rounded]="true" pTooltip="Apagar" showDelay="100" hideDelay="100" tooltipPosition="left" />
                     <p-button [label]="buttonTexto(transacao.status)" [icon]=" buttonIcon(transacao.status)" [severity]="buttonSeverity(transacao.status)" (onClick)="alterarStatus(transacao.status, transacao.id)" />
                 </td>
             </tr>
