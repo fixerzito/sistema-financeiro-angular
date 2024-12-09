@@ -1,4 +1,4 @@
-export class ErrorMessages {
+export class TransactionErrorMessages {
     nome: string
     valor: string
     idSubcategoriaTransacao: string

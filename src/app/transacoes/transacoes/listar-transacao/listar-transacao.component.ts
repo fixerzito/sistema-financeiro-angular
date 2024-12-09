@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,6 +10,7 @@ import { TransacaoTable } from '../../../models/tables/transacao-table';
 import { TagModule } from 'primeng/tag';
 import { DatePipe } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
+import { CadastrarDespesaComponent } from "../cadastrar-transacao/cadastrar-transacao.component";
 
 @Component({
   selector: 'app-listar-transacao',
@@ -21,13 +22,19 @@ import { TooltipModule } from 'primeng/tooltip';
     ConfirmDialogModule,
     ToastModule,
     TagModule,
-    TooltipModule
-  ],
+    TooltipModule,
+    CadastrarDespesaComponent
+],
   templateUrl: './listar-transacao.component.html',
   styleUrl: './listar-transacao.component.css',
   providers: [ConfirmationService, MessageService, DatePipe]
 })
 export class ListarTransacaoComponent implements OnInit {
+  @ViewChild(CadastrarDespesaComponent) cadastroComponent!: CadastrarDespesaComponent;
+
+  visivel: boolean;
+  tituloDialog: string;
+  tipoTransacao!: number;
 
   transacoes: TransacaoTable[] = [];
   statusString!: string;
@@ -39,7 +46,10 @@ export class ListarTransacaoComponent implements OnInit {
     private router: Router,
     private transacaoService: TransacaoService,
     private datePipe: DatePipe
-  ) { }
+  ) { 
+    this.visivel = false;
+    this.tituloDialog = "";
+  }
 
   consultar() {
     this.transacaoService.consultar()
@@ -135,7 +145,30 @@ export class ListarTransacaoComponent implements OnInit {
       });
   }
 
-  editar(id: number) {
-    this.router.navigate(['transacoes/editar', id]);
+  protected abrirModal(){
+    this.visivel = true;
+  }
+
+  protected fecharDialog(mensagem: string){
+    this.visivel = false;
+    this.consultar();
+  }
+
+  protected abrirModalCadastrarReceita(){
+    this.tipoTransacao = 1;
+    this.tituloDialog = "Cadastro de receita";
+    this.abrirModal();
+  }
+
+  protected editar(id: number){
+    this.tituloDialog = "Editar entrada";
+    this.cadastroComponent.carregarEntradaExistente(id);
+    this.abrirModal();
+  }
+
+  protected abrirModalCadastrarDespesa(){
+    this.tipoTransacao = 2;
+    this.tituloDialog = "Cadastro de despesa";
+    this.abrirModal();
   }
 }

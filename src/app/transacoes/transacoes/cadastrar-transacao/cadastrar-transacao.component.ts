@@ -1,29 +1,29 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
-import { TransacaoFormInsert } from '../../../models/forms/insert/transacao-form-insert';
-import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
-import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
-import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
-import { SubcategoriaTransacaoDropdown } from '../../../models/dropdowns/subcategoria-transacao-dropdown';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TransacaoService } from '../../../services/transacao.service';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { ContaBancariaDropdown } from '../../../models/dropdowns/conta-bancaria-dropdown';
-import { ContaBancariaService } from '../../../services/conta-bancaria.service';
+import { AutoCompleteModule, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-import { ErrorMessages } from '../Models/errorMessages';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { TransacaoDropdown } from '../../../models/dropdowns/transacao-dropdown';
-import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
-import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
+import { ContaBancariaDropdown } from '../../../models/dropdowns/conta-bancaria-dropdown';
+import { SubcategoriaTransacaoDropdown } from '../../../models/dropdowns/subcategoria-transacao-dropdown';
+import { TransacaoDropdown } from '../../../models/dropdowns/transacao-dropdown';
+import { TransacaoFormInsert } from '../../../models/forms/insert/transacao-form-insert';
 import { TransacaoFormUpdate } from '../../../models/forms/update/transacao-form-update';
+import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
+import { ContaBancariaService } from '../../../services/conta-bancaria.service';
+import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
+import { TransacaoService } from '../../../services/transacao.service';
+import { TransactionErrorMessages } from '../models/transactionErrorMessages';
 
 @Component({
-  selector: 'app-cadastrar-transacao',
+  selector: 'app-cadastrar-despesa',
   standalone: true,
   imports: [
     FormsModule,
@@ -41,14 +41,21 @@ import { TransacaoFormUpdate } from '../../../models/forms/update/transacao-form
   templateUrl: './cadastrar-transacao.component.html',
   styleUrl: './cadastrar-transacao.component.css'
 })
-export class CadastrarTransacaoComponent {
+export class CadastrarDespesaComponent {
+  @Input() dialogVisivel: boolean;
+  @Input() tituloDialog: string;
+  @Input() tipoTransacao: number;
+  @Output() cadastroFinalizado: EventEmitter<string>;
+
+  idEntradaExistente?: number;
+
   transacao: TransacaoFormInsert;
   transacoesDropdown: TransacaoDropdown[];
   transacaoDropdown: TransacaoDropdown;
   formTransacaoClone: FormGroup;
   transacaoClone: TransacaoFormUpdate;
   filteredTransacoesDropdown: TransacaoDropdown[]
-  errorMessages: ErrorMessages;
+  errorMessages: TransactionErrorMessages;
   categoriaId?: number;
   categorias!: CategoriaTransacoesDropdown[]; // TODO: CategoriaTransacaoDropdown
   subcategorias!: SubcategoriaTransacaoDropdown[];
@@ -60,8 +67,10 @@ export class CadastrarTransacaoComponent {
   formGroup!: FormGroup;
   visible: boolean = false;
 
-  //false = saida, true = entrada
-  tipoTransacao: boolean = false;
+  protected fecharDialogo() {
+    this.reset();
+    this.cadastroFinalizado.emit("Finalizado");
+  }
 
   constructor(
     private router: Router,
@@ -70,12 +79,17 @@ export class CadastrarTransacaoComponent {
     private transacaoService: TransacaoService,
     private contaBancariaService: ContaBancariaService,
   ) {
+    this.tipoTransacao = 0;
+    this.dialogVisivel = false;
+    this.cadastroFinalizado = new EventEmitter();
+    this.tituloDialog = "Cadastro de Despesa";
+
     this.transacaoDropdown = {};
     this.transacaoClone = {};
     this.transacao = {};
     this.transacoesDropdown = [];
     this.filteredTransacoesDropdown = [];
-    this.errorMessages = new ErrorMessages()
+    this.errorMessages = new TransactionErrorMessages()
 
     this.formTransacaoClone = new FormGroup({
       nome: new FormControl(''),
@@ -88,7 +102,6 @@ export class CadastrarTransacaoComponent {
       nome: new FormControl('', [Validators.required, Validators.maxLength(100)]),
       valor: new FormControl('', Validators.required),
       status: new FormControl(false),
-      tipoTransacao: new FormControl(''),
       dataPrevista: new FormControl(null),
       dataEfetivacao: new FormControl(null),
       idSubcategoriaTransacao: new FormControl({ value: '', disabled: true }, [Validators.required]),
@@ -97,19 +110,22 @@ export class CadastrarTransacaoComponent {
     });
   }
 
-  resetarCamposFormulario() {
+  reset() {
     this.formGroup.setValue({
       nome: '',
       valor: '',
       status: false,
-      tipoTransacao: '',
       dataPrevista: null,
       dataEfetivacao: null,
-      idSubcategoriaTransacao: { value: '', disabled: true },
       idCategoriaTransacao: '',
+      idSubcategoriaTransacao: '',
       idContaBancaria: ''
     });
+    this.categoriaId = undefined;
+  }
 
+  resetarCamposFormulario() {
+    this.reset()
     this.fecharModal()
   }
 
@@ -117,15 +133,15 @@ export class CadastrarTransacaoComponent {
     this.visible = false
   }
 
-  salvarModal(){
+  salvarModal() {
     this.carregarCategorias();
     this.categoriaId = this.transacaoClone.idCategoriaTransacao;
 
     this.carregarSubcategorias();
     this.carregarContasBancarias();
     this.formGroup.patchValue({
-      nome: this.formTransacaoClone.get('nome')?.value,
-      valor: this.formTransacaoClone.get('valor')?.value,
+      nome: this.formTransacaoClone.get('nome')?.value[0],
+      valor: this.formTransacaoClone.get('valor')?.value[0],
       idCategoriaTransacao: this.transacaoClone.idCategoriaTransacao,
       idSubcategoriaTransacao: this.transacaoClone.idSubcategoriaTransacao,
       idContaBancaria: this.transacaoClone.idContaBancaria,
@@ -167,8 +183,8 @@ export class CadastrarTransacaoComponent {
     this.transacaoDropdown = this.formGroup.get('nome')?.value;
     this.transacaoClone!.id = this.transacaoDropdown.id;
     this.transacaoService.consultarPorId(this.transacaoClone.id!)
-      .subscribe(transacao =>  {
-        this.transacaoClone = transacao;   
+      .subscribe(transacao => {
+        this.transacaoClone = transacao;
       })
     this.visible = true;
   }
@@ -191,7 +207,6 @@ export class CadastrarTransacaoComponent {
         filtered.push(transacaoBuscada);
       }
     }
-
     this.filteredTransacoesDropdown = filtered;
   }
 
@@ -212,27 +227,19 @@ export class CadastrarTransacaoComponent {
 
   onCategoriaChange(event: any) {
     this.categoriaId = this.formGroup.get('idCategoriaTransacao')!.value
-    this.transacao.idSubcategoriaTransacao = undefined;
+    this.formGroup.patchValue({
+      idSubcategoriaTransacao: undefined
+    });
     this.carregarSubcategorias();
-    console.log(this.categoriaId);
-
   }
 
   atribuirIdConta(id: number) {
-    this.transacao.idSubcategoriaTransacao = id;
+    this.transacao.idContaBancaria = id;
   }
 
   salvar() {
     this.obterMensagemErro()
     if (this.formGroup.valid) {
-
-      if (this.formGroup.get('tipoTransacao')?.value == false) {
-        //entrada = 1 | saida = 2
-        this.transacao.tipoTransacao = 2;
-      } else {
-        this.transacao.tipoTransacao = 1;
-      }
-
       if (!this.transacao.dataPrevista) {
         this.transacao.dataPrevista = null;
       }
@@ -248,6 +255,7 @@ export class CadastrarTransacaoComponent {
       this.transacao = {
         nome: this.formGroup.get('nome')?.value,
         valor: this.formGroup.get('valor')?.value,
+        tipoTransacao: this.tipoTransacao,
         idContaBancaria: this.formGroup.get('idContaBancaria')?.value,
         idSubcategoriaTransacao: this.formGroup.get('idSubcategoriaTransacao')?.value,
         status: this.formGroup.get('status')?.value,
@@ -255,14 +263,26 @@ export class CadastrarTransacaoComponent {
         dataEfetivacao: this.formGroup.get('dataEfetivacao')?.value,
       }
 
-      // this.transacaoService.salvar(this.transacao)
-      //   .subscribe(x => this.router.navigate(['/transacoes'])
-      //   )
+      if (this.idEntradaExistente) {
+        this.transacao.id = this.idEntradaExistente;
+        this.transacaoService.atualizar(this.transacao)
+          .subscribe(x => this.dialogVisivel = false)
+      }
+
+      if (!this.idEntradaExistente && this.tipoTransacao == 1) {
+        this.transacaoService.cadastrarReceita(this.transacao)
+          .subscribe(x => this.dialogVisivel = false)
+      } else if (!this.idEntradaExistente && this.tipoTransacao == 2) {
+        this.transacaoService.cadastrarDespesa(this.transacao)
+          .subscribe(x => this.dialogVisivel = false)
+      }
+
     }
   }
 
   cancelar() {
-    this.router.navigate(['/transacoes'])
+    this.reset()
+    this.dialogVisivel = false
   }
 
   evitarNumeroNegativo(event: any) {
@@ -316,5 +336,36 @@ export class CadastrarTransacaoComponent {
     if (event.key == '-') {
       event.preventDefault();
     }
+  }
+
+  public carregarEntradaExistente(id: number) {
+    this.idEntradaExistente = id;
+    this.tituloDialog = "Editar transação"
+    this.transacaoService.consultarPorId(this.idEntradaExistente).subscribe({
+      next: entradaLista => {
+        this.categoriaId = entradaLista.idCategoriaTransacao
+        this.preencherFormularioEditar(entradaLista)
+      },
+      error: erro => {
+        alert("Não foi possível carregar a entrada")
+        console.error(erro);
+      }
+    })
+  }
+
+  preencherFormularioEditar(transacao: TransacaoFormUpdate) {
+    this.carregarContasBancarias();
+    this.carregarSubcategorias()
+    this.carregarCategorias();
+    this.formGroup.setValue({
+      nome: transacao.nome,
+      valor: transacao.valor,
+      status: transacao.status,
+      dataPrevista: transacao.dataPrevista ? new Date(transacao.dataPrevista) : null,
+      dataEfetivacao: transacao.dataEfetivacao ? new Date(transacao.dataEfetivacao) : null,
+      idCategoriaTransacao: transacao.idCategoriaTransacao,
+      idSubcategoriaTransacao: transacao.idSubcategoriaTransacao,
+      idContaBancaria: transacao.idContaBancaria
+    });
   }
 }
