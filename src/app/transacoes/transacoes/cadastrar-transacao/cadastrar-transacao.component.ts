@@ -21,6 +21,7 @@ import { ContaBancariaService } from '../../../services/conta-bancaria.service';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { TransacaoService } from '../../../services/transacao.service';
 import { TransactionErrorMessages } from '../models/transactionErrorMessages';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @Component({
   selector: 'app-cadastrar-despesa',
@@ -36,7 +37,8 @@ import { TransactionErrorMessages } from '../models/transactionErrorMessages';
     ReactiveFormsModule,
     AutoCompleteModule,
     DialogModule,
-    CheckboxModule
+    CheckboxModule,
+    ToggleButtonModule
   ],
   templateUrl: './cadastrar-transacao.component.html',
   styleUrl: './cadastrar-transacao.component.css'
