@@ -98,17 +98,10 @@
             </div>
 
             <label class="form-label">Status da transação</label>
-            <div class="radio-options">
-                <p-radioButton [value]="false" formControlName="status" inputId="pendente" />
-                <label for="pendente" class="ml-2">
-                    Pendente
-                </label>
-
-                <p-radioButton [value]="true" formControlName="status" inputId="efetuada" />
-                <label for="efetuada" class="ml-2">
-                    Efetuada
-                </label>
-            </div>
+            <p-toggleButton 
+            formControlName="status" 
+            onLabel="Efetivada" 
+            offLabel="Pendente" />
 
             <div class="input-group">
                 <label for="valorTransacao" class="form-label">Valor da Transação <span
