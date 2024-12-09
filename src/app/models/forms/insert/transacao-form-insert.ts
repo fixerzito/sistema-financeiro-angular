@@ -1,4 +1,5 @@
 export interface TransacaoFormInsert {
+    id?: number,
     nome?: string,    
     valor?: number,
     status?: boolean,

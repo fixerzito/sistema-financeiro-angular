@@ -1,7 +1,16 @@
 <p-toast />
 <p-confirmDialog />
-<div class="card flex justify-content-end mb-2">
-    <p-button routerLink="/transacoes/cadastro" icon="pi pi-plus" />
+
+<app-cadastrar-despesa
+[dialogVisivel]="visivel"
+[tituloDialog]="tituloDialog"
+[tipoTransacao]="tipoTransacao"
+(cadastroFinalizado)="fecharDialog($event)"></app-cadastrar-despesa>
+
+
+<div class="card flex justify-content-end mb-2 gap-2">
+    <p-button (onClick)="abrirModalCadastrarReceita()" icon="pi pi-plus" />
+    <p-button (onClick)="abrirModalCadastrarDespesa()" severity="danger" icon="pi pi-minus" />
 </div>
 
 <div class="card">

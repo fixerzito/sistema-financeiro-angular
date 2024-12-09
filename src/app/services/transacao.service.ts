@@ -41,14 +41,14 @@ export class TransacaoService {
   }
 
   cadastrarReceita(transacaoCriada: TransacaoFormInsert): Observable<TransacaoFormInsert> {
-    return this.httpClient.post<TransacaoFormInsert>(`${this.url}receita`, transacaoCriada)
+    return this.httpClient.post<TransacaoFormInsert>(`${this.url}/receita`, transacaoCriada)
   }
 
   consultarPorId(id: number): Observable<TransacaoFormUpdate> {
     return this.httpClient.get<TransacaoFormUpdate>(`${this.url}/${id}`)
   }
 
-  atualizar(transacao: TransacaoFormUpdate): Observable<TransacaoFormUpdate> {
+  atualizar(transacao: TransacaoFormInsert): Observable<TransacaoFormUpdate> {
     return this.httpClient.put<TransacaoFormUpdate>(`${this.url}/${transacao.id}`, transacao)
   }
 }

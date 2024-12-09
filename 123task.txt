@@ -92,8 +92,8 @@ ISSUES:
     - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
 
     TRANSAÇÃO
-    - MIGRAR PARA MODAL DE CADASTRO DE DESPESA
-    - MIGRAR PARA MODAL DE CADASTRO DE ENTRADA
+    - MIGRAR PARA MODAL DE CADASTRO DE DESPESA, PERMANECER NA LISTAGEM COM MODAL ABERTA PARA CADASTRO
+    - MIGRAR PARA MODAL DE CADASTRO DE ENTRADA, PERMANECER NA LISTAGEM COM MODAL ABERTA PARA CADASTRO
     - Trazer mensagem confirmando alterações efetivação ou pendência
     - Apresentar feedback de conclusões de operação "Efetivar" e "Pendente"
     - Later: Migrar utilização de "ngModel" para "Reactive Forms", validando "required", "min/max length"
@@ -114,5 +114,14 @@ ISSUES:
 
     AO CARREGAR O SISTEMA:  
     - Apresentar Loading antes da tela ser carregada (https://loading.io)
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+    TRANSACAO
+    - Alterar label-nome dos cadastros de despesa e receita
+    - Modal de manter dados deve vir com todos os checkbox selecionados
+    - Deselecionar campos da modal "manter dados" que foram preenchidos pelo usuário de forma manual, permitindo a escsolha de sobrescrever ou não
+    - ALterar nome dos botões para "Cancelar" e "Continuar" da modal "manter dados"
 
     
