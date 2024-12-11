@@ -9,6 +9,7 @@ import { CategoriaTransacaoService } from '../../../services/categoria-transacao
 import { DialogModule } from 'primeng/dialog';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { SubcategoriaTransacaoFormInsert } from '../../../models/forms/insert/subcategoria-transacao-insert';
+import { ValidatorRecorrencia } from '../../../models/validators/validator-recorrencia';
 
 @Component({
   selector: 'app-modal-cadastrar-categoria-transacao',
@@ -30,6 +31,7 @@ export class ModalCadastrarCategoriaTransacaoComponent {
   @Output() idCategoriaGerado: EventEmitter<number>;
   @Output() idSubcategoriaGerado: EventEmitter<number>;
   formGroup!: FormGroup;
+  recorrencia?: ValidatorRecorrencia;
   mensagemErroCategoria?: string;
   mensagemErroSubcaategoria?: string;
 
@@ -55,6 +57,9 @@ export class ModalCadastrarCategoriaTransacaoComponent {
       const categoria: CategoriaTransacaoFormInsert = {
         nome: this.formGroup.value.nomeCategoria
       };
+      this.categoriaTransacaoService.consultarRecorrencia(categoria).subscribe(x => this.recorrencia = x)
+
+     if(this.recorrencia?.recorrencia){
       this.categoriaTransacaoService.salvar(categoria)
       .subscribe(response => {
         this.idCategoriaGerado.emit(response.id)
@@ -68,6 +73,9 @@ export class ModalCadastrarCategoriaTransacaoComponent {
           })
         this.fecharDialog()
       });
+     } else {
+      this.mensagemErroCategoria = 'Categoria já cadastrada'
+     }
     }
     this.obterMensagemErroNome()
   }

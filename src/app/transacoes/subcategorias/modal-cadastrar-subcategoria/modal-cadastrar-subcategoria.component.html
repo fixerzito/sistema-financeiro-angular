@@ -1,12 +1,12 @@
-<p-dialog header="Cadastrar nova categoria de transação" [modal]="true" [(visible)]="dialogVisivel"
+<p-dialog header="Cadastrar nova subcategoria de transação" [modal]="true" [(visible)]="dialogVisivel"
     [style]="{ width: '50rem' }" (onHide)="fecharDialog()">
     <form class="main card flex flex-column justify-content-center" [formGroup]="formGroup">
-        <div class="flex">
+        <div class="flex flex-column">
             <div>
                 <div class="flex align-items-center gap-3 mb-3 mr-2">
-                    <label for="categoria" class="font-semibold w-10rem">Nome da categoria <span
+                    <label for="subcategoria" class="font-semibold w-10rem">Nome da subcategoria <span
                             class="warning-text">*</span></label>
-                    <input pInputText id="categoria" formControlName="nomeSubcategoria" class="flex-auto"
+                    <input pInputText id="subcategoria" formControlName="nomeSubcategoria" class="flex-auto"
                         autocomplete="off" />
                 </div>
                 <span class="warning-text">
