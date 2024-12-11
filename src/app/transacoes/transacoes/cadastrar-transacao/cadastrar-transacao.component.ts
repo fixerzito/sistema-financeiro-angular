@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AutoCompleteModule, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
@@ -22,6 +22,9 @@ import { SubcategoriaTransacaoService } from '../../../services/subcategoria-tra
 import { TransacaoService } from '../../../services/transacao.service';
 import { TransactionErrorMessages } from '../models/transactionErrorMessages';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { ModalCadastrarCategoriaTransacaoComponent } from '../../categorias/modal-cadastrar-categoria-transacao/modal-cadastrar-categoria-transacao.component';
+import { ModalCadastrarSubcategoriaTransacaoComponent } from "../../subcategorias/modal-cadastrar-subcategoria/modal-cadastrar-subcategoria.component";
 
 @Component({
   selector: 'app-cadastrar-despesa',
@@ -38,12 +41,20 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     AutoCompleteModule,
     DialogModule,
     CheckboxModule,
-    ToggleButtonModule
-  ],
+    ToggleButtonModule,
+    InputGroupModule,
+    ModalCadastrarCategoriaTransacaoComponent,
+    ModalCadastrarSubcategoriaTransacaoComponent
+],
   templateUrl: './cadastrar-transacao.component.html',
   styleUrl: './cadastrar-transacao.component.css'
 })
 export class CadastrarDespesaComponent {
+  @ViewChild(ModalCadastrarCategoriaTransacaoComponent) modalCadastrarCategoriaTransacaoComponent!: ModalCadastrarCategoriaTransacaoComponent;
+  @ViewChild(ModalCadastrarSubcategoriaTransacaoComponent) modalCadastrarSubcategoriaTransacaoComponent!: ModalCadastrarSubcategoriaTransacaoComponent;
+  modalCadastrarCategoriaTransacaoVisivel: boolean;
+  modalCadastrarSubcategoriaTransacaoVisivel: boolean;
+
   @Input() dialogVisivel: boolean;
   @Input() tituloDialog: string;
   @Input() tipoTransacao: number;
@@ -75,12 +86,13 @@ export class CadastrarDespesaComponent {
   }
 
   constructor(
-    private router: Router,
     private subcategoriaTransacaoService: SubcategoriaTransacaoService,
     private categoriaTransacaoService: CategoriaTransacaoService,
     private transacaoService: TransacaoService,
     private contaBancariaService: ContaBancariaService,
   ) {
+    this.modalCadastrarCategoriaTransacaoVisivel = false;
+    this.modalCadastrarSubcategoriaTransacaoVisivel = false;
     this.tipoTransacao = 0;
     this.dialogVisivel = false;
     this.cadastroFinalizado = new EventEmitter();
@@ -160,9 +172,9 @@ export class CadastrarDespesaComponent {
   }
 
   carregarCategorias() {
-    if (this.categorias != undefined) {
-      return
-    }
+    // if (this.categorias != undefined) {
+    //   return
+    // }
 
     this.categoriaTransacaoService.consultarDropdown()
       .subscribe(categorias =>
@@ -219,7 +231,6 @@ export class CadastrarDespesaComponent {
         this.carregandoSubcategoriasDropdown = false
         this.subcategorias = subcategorias
         if (subcategorias.length == 0) {
-          alert("Nenhuma subcategoria cadastrada")  //TODO: definir para mensagem padrão do sistema
           this.formGroup.get('idSubcategoriaTransacao')?.disable();
           return
         }
@@ -369,5 +380,43 @@ export class CadastrarDespesaComponent {
       idSubcategoriaTransacao: transacao.idSubcategoriaTransacao,
       idContaBancaria: transacao.idContaBancaria
     });
+  }
+
+  //-------------------------------
+
+  dialogCategoriaTransacao() {
+    this.modalCadastrarCategoriaTransacaoVisivel = true;
+  }
+
+  fecharDialogCategoriaTransacao(mensagem: string) {
+    this.modalCadastrarCategoriaTransacaoVisivel = false;
+  }
+
+  fecharDialogSubcategoriaTransacao(mensagem: string) {
+    this.modalCadastrarSubcategoriaTransacaoVisivel = false;
+  }
+
+  dialogSubcategoriaTransacao() {
+    if(this.categoriaId != undefined){
+      this.modalCadastrarSubcategoriaTransacaoVisivel = true;
+    } else {
+      this.modalCadastrarCategoriaTransacaoVisivel = true;
+    } 
+  }
+
+  receberIdCategoriaGerado(novoId: number) {
+    this.formGroup.patchValue({
+      idCategoriaTransacao: novoId
+    })
+    this.carregarCategorias()
+    this.categoriaId = novoId 
+    this.carregarSubcategorias()
+  }
+
+  receberIdSubcategoriaGerado(novoId: number) {
+    this.carregarSubcategorias()
+    this.formGroup.patchValue({
+      idSubcategoriaTransacao: novoId
+    })
   }
 }

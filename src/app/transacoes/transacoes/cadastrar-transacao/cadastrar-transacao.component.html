@@ -1,9 +1,20 @@
-<p-dialog
-    [header]="tituloDialog"
-    [modal]="true"
-    [(visible)]="dialogVisivel"
-    [style]="{ width: '45rem' }"
-     (onHide)="fecharDialogo()">
+<app-modal-cadastrar-categoria-transacao
+[dialogVisivel]="modalCadastrarCategoriaTransacaoVisivel"
+(cadastroFinalizado)="fecharDialogCategoriaTransacao($event)"
+(idCategoriaGerado)="receberIdCategoriaGerado($event)"
+(idSubcategoriaGerado)="receberIdSubcategoriaGerado($event)"
+></app-modal-cadastrar-categoria-transacao>
+
+<app-modal-cadastrar-subcategoria
+[dialogVisivel]="modalCadastrarSubcategoriaTransacaoVisivel"
+[idCategoriaRecebido]="categoriaId!"
+(cadastroFinalizado)="fecharDialogSubcategoriaTransacao($event)"
+(idSubcategoriaGerado)="receberIdSubcategoriaGerado($event)">
+
+</app-modal-cadastrar-subcategoria>
+
+<p-dialog [header]="tituloDialog" [modal]="true" [(visible)]="dialogVisivel" [style]="{ width: '50rem' }"
+    (onHide)="fecharDialogo()">
     <form [formGroup]="formGroup">
         <div class="form-container">
             <div class="input-group">
@@ -32,7 +43,7 @@
                         class="warning-text">*</span></label>
                 <p-dropdown [options]="contasDropdown" formControlName="idContaBancaria" optionLabel="name"
                     (onShow)="carregarContasBancarias()" optionValue="id" placeholder="Escolha a conta a ser vinculada"
-                    (onChange)="atribuirIdConta(transacao.idContaBancaria!)">
+                    (onChange)="atribuirIdConta(transacao.idContaBancaria!)" [filter]="true" filterBy="nome">
                     <ng-template let-cartao pTemplate="item">
                         {{cartao.nome}}
                     </ng-template>
@@ -48,33 +59,43 @@
             <div class="input-group flex flex-row">
                 <div class="flex flex-column">
                     <label class="form-label">Categoria <span class="warning-text">*</span></label>
-                    <p-dropdown [options]="categorias" optionLabel="name" optionValue="id"
-                        (onShow)="carregarCategorias()" placeholder="Escolha a categoria à ser vinculada"
-                        (onChange)="onCategoriaChange($event)" formControlName="idCategoriaTransacao">
-                        <ng-template let-categoria pTemplate="item">
-                            {{categoria.nome}}
-                        </ng-template>
-                        <ng-template let-categoria pTemplate="selectedItem">
-                            {{categoria.nome}}
-                        </ng-template>
-                    </p-dropdown>
+                    <p-inputGroup>
+                        <p-dropdown [options]="categorias" optionLabel="name" optionValue="id" class="p-dropdown-lucas"
+                            (onShow)="carregarCategorias()" placeholder="Escolha a categoria à ser vinculada"
+                            (onChange)="onCategoriaChange($event)" formControlName="idCategoriaTransacao"
+                            [filter]="true" filterBy="nome">
+                            <ng-template let-categoria pTemplate="item">
+                                {{categoria.nome}}
+                            </ng-template>
+                            <ng-template let-categoria pTemplate="selectedItem">
+                                {{categoria.nome}}
+                            </ng-template>
+                        </p-dropdown>
+                        <button type="button" pButton icon="pi pi-plus" class="p-button-primary"
+                            (click)="dialogCategoriaTransacao()"></button>
+                    </p-inputGroup>
                     <span class="warning-text">
                         {{ errorMessages!.idCategoriaTransacao }}
                     </span>
                 </div>
                 <div class="flex flex-column">
                     <label class="form-label">Subcategoria <span class="warning-text">*</span></label>
-                    <p-dropdown [options]="subcategorias" optionLabel="name" optionValue="id"
-                        [loading]="carregandoSubcategoriasDropdown" placeholder="Escolha a categoria à ser vinculada"
-                        [disabled]="formGroup.get('idSubcategoriaTransacao')!.disabled"
-                        formControlName="idSubcategoriaTransacao">
-                        <ng-template let-categoria pTemplate="item">
-                            {{categoria.nome}}
-                        </ng-template>
-                        <ng-template let-categoria pTemplate="selectedItem">
-                            {{categoria.nome}}
-                        </ng-template>
-                    </p-dropdown>
+                    <p-inputGroup>
+                        <p-dropdown [options]="subcategorias" optionLabel="name" optionValue="id"
+                            class="p-dropdown-lucas" [loading]="carregandoSubcategoriasDropdown"
+                            placeholder="Escolha a categoria à ser vinculada"
+                            [disabled]="formGroup.get('idSubcategoriaTransacao')!.disabled" [filter]="true"
+                            filterBy="nome" formControlName="idSubcategoriaTransacao" [filter]="true">
+                            <ng-template let-categoria pTemplate="item">
+                                {{categoria.nome}}
+                            </ng-template>
+                            <ng-template let-categoria pTemplate="selectedItem">
+                                {{categoria.nome}}
+                            </ng-template>
+                        </p-dropdown>
+                        <button type="button" pButton icon="pi pi-plus" class="p-button-primary"
+                            (click)="dialogSubcategoriaTransacao()"></button>
+                    </p-inputGroup>
                     <span class="warning-text">
                         {{ errorMessages!.idSubcategoriaTransacao }}
                     </span>
@@ -98,10 +119,7 @@
             </div>
 
             <label class="form-label">Status da transação</label>
-            <p-toggleButton 
-            formControlName="status" 
-            onLabel="Efetivada" 
-            offLabel="Pendente" />
+            <p-toggleButton formControlName="status" onLabel="Efetivada" offLabel="Pendente" />
 
             <div class="input-group">
                 <label for="valorTransacao" class="form-label">Valor da Transação <span

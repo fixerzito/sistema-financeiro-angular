@@ -32,6 +32,11 @@ body {
     color: #ffffff;
 }
 
+.p-dropdown-lucas > .p-component{
+    width: 90%;
+    border-radius: 6px 0px 0px 6px !important;
+    position: relative;
+}
 /* Container principal do formulário */
 .form-container {
     display: flex;
@@ -53,61 +58,9 @@ body {
     display: block;
 }
 
-.form-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease-in-out;
-}
-
-/* Estilos para o grupo de radio buttons */
-.radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.radio-options {
-    display: flex;
-    gap: 1rem;
-}
-
-.radio-btn {
-    margin-right: 0.5rem;
-}
-
-.radio-label {
-    font-size: 1rem;
-    color: #ffffff;
-}
-
-/* Botões de ação */
 .button-group {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
 }
 
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .main {
-        width: 90%;
-        margin-top: 5%;
-    }
-
-    .form-container {
-        padding: 1rem;
-    }
-
-    .button-group {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .button {
-        width: 100%;
-    }
-}
