@@ -43,7 +43,6 @@ export class ListarTransacaoComponent implements OnInit {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private router: Router,
     private transacaoService: TransacaoService,
     private datePipe: DatePipe
   ) { 
@@ -93,7 +92,7 @@ export class ListarTransacaoComponent implements OnInit {
 
   obterTexto(status: boolean): string {
     if (status)
-      return "Recebido"
+      return "Efetivado"
     return "Pendente"
   }
 
@@ -145,7 +144,7 @@ export class ListarTransacaoComponent implements OnInit {
       });
   }
 
-  protected abrirModal(){
+  protected abrirDialog(){
     this.visivel = true;
   }
 
@@ -157,18 +156,18 @@ export class ListarTransacaoComponent implements OnInit {
   protected abrirModalCadastrarReceita(){
     this.tipoTransacao = 1;
     this.tituloDialog = "Cadastro de receita";
-    this.abrirModal();
+    this.abrirDialog();
   }
 
   protected editar(id: number){
     this.tituloDialog = "Editar entrada";
     this.cadastroComponent.carregarEntradaExistente(id);
-    this.abrirModal();
+    this.abrirDialog();
   }
 
   protected abrirModalCadastrarDespesa(){
     this.tipoTransacao = 2;
     this.tituloDialog = "Cadastro de despesa";
-    this.abrirModal();
+    this.abrirDialog();
   }
 }
