@@ -8,6 +8,7 @@ import { CategoriaTransacaoFormInsert } from '../../../models/forms/insert/categ
 import { SubcategoriaTransacaoFormInsert } from '../../../models/forms/insert/subcategoria-transacao-insert';
 import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
+import { ValidatorRecorrencia } from '../../../models/validators/validator-recorrencia';
 
 @Component({
   selector: 'app-modal-cadastrar-subcategoria',
@@ -28,6 +29,8 @@ export class ModalCadastrarSubcategoriaTransacaoComponent {
   @Input() idCategoriaRecebido: number;
   @Output() cadastroFinalizado: EventEmitter<string>;
   @Output() idSubcategoriaGerado: EventEmitter<number>;
+  
+  recorrencia?: ValidatorRecorrencia;
   formGroup!: FormGroup;
   mensagemErroSubcategoria?: string;
 
@@ -52,11 +55,16 @@ export class ModalCadastrarSubcategoriaTransacaoComponent {
         nome: this.formGroup.value.nomeSubcategoria,
         categoria: this.idCategoriaRecebido
       };
-      this.subcategoriaTransacaoService.salvar(subcategoria)
+      this.subcategoriaTransacaoService.consultarRecorrencia(subcategoria).subscribe(x => this.recorrencia = x)
+      if(this.recorrencia){
+        this.subcategoriaTransacaoService.salvar(subcategoria)
       .subscribe(response => {
         this.idSubcategoriaGerado.emit(response.id)
         this.fecharDialog()
       });
+      } else {
+        this.mensagemErroSubcategoria = 'Subcategoria já cadastrada'
+      }
     }
     this.obterMensagemErroNome()
   }

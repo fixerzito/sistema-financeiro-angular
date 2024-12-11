@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -6,6 +6,7 @@ import { SubcategoriaTransacaoTable } from '../models/tables/subcategoria-transa
 import { SubcategoriaTransacaoDropdown } from '../models/dropdowns/subcategoria-transacao-dropdown';
 import { SubcategoriaTransacaoFormInsert } from '../models/forms/insert/subcategoria-transacao-insert';
 import { SubcategoriaTransacaoFormUpdate } from '../models/forms/update/subcategoria-transacao-form-update';
+import { ValidatorRecorrencia } from '../models/validators/validator-recorrencia';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,13 @@ export class SubcategoriaTransacaoService {
 
   consultarPorId(id: number): Observable<SubcategoriaTransacaoFormUpdate> {
     return this.httpClient.get<SubcategoriaTransacaoFormUpdate>(`${this.url}/${id}`)
+  }
+
+  consultarRecorrencia(subcategoria: SubcategoriaTransacaoFormInsert): Observable<ValidatorRecorrencia> {
+    const params = new HttpParams()
+    .set('nome', subcategoria.nome!)
+    .set('categoria', subcategoria.categoria!);
+    return this.httpClient.get<ValidatorRecorrencia>(`${this.url}`)
   }
 
   salvar(subcategoria: SubcategoriaTransacaoFormInsert): Observable<SubcategoriaTransacaoFormInsert> {
