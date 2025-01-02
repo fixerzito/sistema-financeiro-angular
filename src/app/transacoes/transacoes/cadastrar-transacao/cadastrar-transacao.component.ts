@@ -10,7 +10,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
+import { CategoriaTransacaoDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
 import { ContaBancariaDropdown } from '../../../models/dropdowns/conta-bancaria-dropdown';
 import { SubcategoriaTransacaoDropdown } from '../../../models/dropdowns/subcategoria-transacao-dropdown';
 import { TransacaoDropdown } from '../../../models/dropdowns/transacao-dropdown';
@@ -25,6 +25,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { ModalCadastrarCategoriaTransacaoComponent } from '../../categorias/modal-cadastrar-categoria-transacao/modal-cadastrar-categoria-transacao.component';
 import { ModalCadastrarSubcategoriaTransacaoComponent } from "../../subcategorias/modal-cadastrar-subcategoria/modal-cadastrar-subcategoria.component";
+import { CategoriaTransacaoCadastroRapidoFormInsertResponse } from '../../../models/forms/insert/categoria-transacao-cadastro-rapido-form-insert-response';
 
 @Component({
   selector: 'app-cadastrar-despesa',
@@ -70,7 +71,7 @@ export class CadastrarDespesaComponent {
   filteredTransacoesDropdown: TransacaoDropdown[]
   errorMessages: TransactionErrorMessages;
   categoriaId?: number;
-  categorias!: CategoriaTransacoesDropdown[]; // TODO: CategoriaTransacaoDropdown
+  categorias!: CategoriaTransacaoDropdown[]; // TODO: CategoriaTransacaoDropdown
   subcategorias!: SubcategoriaTransacaoDropdown[];
   carregandoSubcategoriasDropdown: boolean = false;
   desabilitadoSubcategoriaDropdown: boolean = true;
@@ -226,7 +227,7 @@ export class CadastrarDespesaComponent {
 
   carregarSubcategorias() {
     this.carregandoSubcategoriasDropdown = true
-    this.subcategoriaTransacaoService.consultarDropdown(this.categoriaId!)
+    this.subcategoriaTransacaoService.consultarDropdown(this.formGroup.get('idCategoriaTransacao')!.value)
       .subscribe(subcategorias => {
         this.carregandoSubcategoriasDropdown = false
         this.subcategorias = subcategorias
@@ -397,19 +398,19 @@ export class CadastrarDespesaComponent {
   }
 
   dialogSubcategoriaTransacao() {
-    if(this.categoriaId != undefined){
+    if(this.formGroup.get('idCategoriaTransacao')!.value != ''){
       this.modalCadastrarSubcategoriaTransacaoVisivel = true;
     } else {
       this.modalCadastrarCategoriaTransacaoVisivel = true;
     } 
   }
 
-  receberIdCategoriaGerado(novoId: number) {
+  receberIdCategoriaGerado(response: CategoriaTransacaoCadastroRapidoFormInsertResponse) {
     this.formGroup.patchValue({
-      idCategoriaTransacao: novoId
+      idCategoriaTransacao: response.idCategoria,
+      idSubcategoriaTransacao: response.idSubcategoria 
     })
     this.carregarCategorias()
-    this.categoriaId = novoId 
     this.carregarSubcategorias()
   }
 

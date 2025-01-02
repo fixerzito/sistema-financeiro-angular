@@ -1,0 +1,5 @@
+<div class="flex flex-column">
+    <label for="Nome" class="text-xs font-semibold mb-1">Subcategoria</label>
+    <p-dropdown [options]="subcategorias" [(ngModel)]="subcategoria" optionLabel="nome" optionValue="nome" (onShow)="iniciar()" [showClear]="true" [style]="{ 'width': '18rem' }"
+        placeholder="Selecione uma subcategoria" [disabled]="desablitado"/>
+</div>

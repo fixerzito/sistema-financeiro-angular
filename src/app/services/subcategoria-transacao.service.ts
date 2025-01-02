@@ -16,7 +16,7 @@ export class SubcategoriaTransacaoService {
 
   constructor(
     private httpClient: HttpClient,
-  ) { 
+  ) {
     this.url = `${environment.apiUrl}/api/subcategorias-transacao`;
   }
 
@@ -38,9 +38,11 @@ export class SubcategoriaTransacaoService {
 
   consultarRecorrencia(subcategoria: SubcategoriaTransacaoFormInsert): Observable<ValidatorRecorrencia> {
     const params = new HttpParams()
-    .set('nome', subcategoria.nome!)
-    .set('categoria', subcategoria.categoria!);
-    return this.httpClient.get<ValidatorRecorrencia>(`${this.url}`)
+      .set('nome', subcategoria.nome!);
+    if (subcategoria.idCategoria) {
+      params.set('idCategoria', subcategoria.idCategoria!);
+    }
+    return this.httpClient.get<ValidatorRecorrencia>(`${this.url}/validar-existente`, { params })
   }
 
   salvar(subcategoria: SubcategoriaTransacaoFormInsert): Observable<SubcategoriaTransacaoFormInsert> {

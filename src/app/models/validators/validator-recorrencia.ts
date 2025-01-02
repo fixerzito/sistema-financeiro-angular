@@ -1,3 +1,3 @@
 export interface ValidatorRecorrencia {
-    recorrencia: boolean
+    existe: boolean
 }

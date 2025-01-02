@@ -11,6 +11,7 @@ import { TagModule } from 'primeng/tag';
 import { DatePipe } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
 import { CadastrarDespesaComponent } from "../cadastrar-transacao/cadastrar-transacao.component";
+import { TransacaoFiltersComponent } from "../filters/transacao-filters/transacao-filters.component";
 
 @Component({
   selector: 'app-listar-transacao',
@@ -23,7 +24,8 @@ import { CadastrarDespesaComponent } from "../cadastrar-transacao/cadastrar-tran
     ToastModule,
     TagModule,
     TooltipModule,
-    CadastrarDespesaComponent
+    CadastrarDespesaComponent,
+    TransacaoFiltersComponent
 ],
   templateUrl: './listar-transacao.component.html',
   styleUrl: './listar-transacao.component.css',

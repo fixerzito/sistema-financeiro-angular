@@ -127,4 +127,12 @@ ISSUES:
     -- alterar mapping categoria para o nome ser único
     -- Configurar a subcategoria para conter unic do nome da subcategoria com o id da categoria 
 
+
+    - Nome da transação deve ocupar o tamanho inteiro da modal
+    - Data prevista e efetivação deve ter espaçamento entre elas, e padronizar tamanho
+    - Verificar lable-titulo das modais
+    - desabilitar salvar ao n cumprir requisitos do formulario
+    - Colocar icone ao funcionar
+    - ADicionar busca nos dropdowns tela transacao
+
     

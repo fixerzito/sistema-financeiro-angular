@@ -11,7 +11,7 @@ import { CategoriaTransacaoService } from '../../../services/categoria-transacao
 import { ActivatedRoute, Router } from '@angular/router';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { SubcategoriaTransacaoFormUpdate } from '../../../models/forms/update/subcategoria-transacao-form-update';
-import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
+import { CategoriaTransacaoDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
 
 @Component({
   selector: 'app-editar-subcategorias-transacao',
@@ -35,7 +35,7 @@ export class EditarSubcategoriasTransacaoComponent implements OnInit {
   erroNome?: string;
   erroCategoria?: string;
   subcategoriaEditar: SubcategoriaTransacaoFormUpdate;
-  categorias!: CategoriaTransacoesDropdown[];
+  categorias!: CategoriaTransacaoDropdown[];
 
   constructor(
     private router: Router,

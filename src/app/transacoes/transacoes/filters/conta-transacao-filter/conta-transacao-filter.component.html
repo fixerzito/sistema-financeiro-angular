@@ -1,0 +1,5 @@
+<div class="flex flex-column">
+    <label for="Nome" class="text-xs font-semibold mb-1">Conta bancária</label>
+    <p-dropdown [options]="contas" [(ngModel)]="id" optionLabel="nome" optionValue="id" (onChange)="enviarConta()" [showClear]="true" [style]="{ 'width': '27rem' }"
+        placeholder="Selecione uma conta bancária" />
+</div>

@@ -6,8 +6,11 @@
                 <div class="flex align-items-center gap-3 mb-3 mr-2">
                     <label for="subcategoria" class="font-semibold w-10rem">Nome da subcategoria <span
                             class="warning-text">*</span></label>
-                    <input pInputText id="subcategoria" formControlName="nomeSubcategoria" class="flex-auto"
-                        autocomplete="off" />
+                        <p-iconField iconPosition="right">
+                            <p-inputIcon styleClass="pi pi-spinner pi-spin" *ngIf="loadingValidationSubcategoriaNome" />
+                            <input pInputText id="subcategoria" formControlName="nomeSubcategoria" class="flex-auto"
+                                autocomplete="off" (blur)="validarNomeSubcategoriaNaoUtilizado()" />
+                        </p-iconField>
                 </div>
                 <span class="warning-text">
                     {{ mensagemErroSubcategoria }}

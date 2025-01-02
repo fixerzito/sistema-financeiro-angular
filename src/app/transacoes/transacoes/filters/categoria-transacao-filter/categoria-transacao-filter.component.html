@@ -1,0 +1,5 @@
+<div class="flex flex-column">
+    <label for="Nome" class="text-xs font-semibold mb-1">Categoria</label>
+    <p-dropdown [options]="categorias" [(ngModel)]="id" optionLabel="nome" optionValue="id" (onChange)="enviarIdCategoria()" [showClear]="true" [style]="{ 'width': '19rem' }"
+        placeholder="Selecione uma categoria" />
+</div>
