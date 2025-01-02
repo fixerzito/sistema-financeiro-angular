@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -10,6 +10,11 @@ import { DialogModule } from 'primeng/dialog';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { SubcategoriaTransacaoFormInsert } from '../../../models/forms/insert/subcategoria-transacao-insert';
 import { ValidatorRecorrencia } from '../../../models/validators/validator-recorrencia';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
+import { finalize } from 'rxjs';
+import { CategoriaTransacaoCadastroRapidoFormInsert } from '../../../models/forms/insert/categoria-transacao-cadastro-rapido-form-insert';
+import { CategoriaTransacaoCadastroRapidoFormInsertResponse } from '../../../models/forms/insert/categoria-transacao-cadastro-rapido-form-insert-response';
 
 @Component({
   selector: 'app-modal-cadastrar-categoria-transacao',
@@ -20,31 +25,34 @@ import { ValidatorRecorrencia } from '../../../models/validators/validator-recor
     InputTextModule,
     ButtonModule,
     ReactiveFormsModule,
-    DialogModule
+    DialogModule,
+    InputIconModule,
+    IconFieldModule
   ],
   templateUrl: './modal-cadastrar-categoria-transacao.component.html',
-  styleUrl: './modal-cadastrar-categoria-transacao.component.css'
+  styleUrl: './modal-cadastrar-categoria-transacao.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class ModalCadastrarCategoriaTransacaoComponent {
   @Input() dialogVisivel: boolean;
   @Output() cadastroFinalizado: EventEmitter<string>;
-  @Output() idCategoriaGerado: EventEmitter<number>;
-  @Output() idSubcategoriaGerado: EventEmitter<number>;
+  @Output() categoriaSubcategoriaGerada: EventEmitter<CategoriaTransacaoCadastroRapidoFormInsertResponse>;
   formGroup!: FormGroup;
-  recorrencia?: ValidatorRecorrencia;
+  recorrenciaCategoria?: boolean;
+  recorrenciaSubcategoria?: boolean;
   mensagemErroCategoria?: string;
-  mensagemErroSubcaategoria?: string;
+  mensagemErroSubcategoria?: string;
+  loadingValidationCategoriaNome: boolean = false;
 
   constructor(
     private categoriaTransacaoService: CategoriaTransacaoService,
-    private subcategoriaTransacaoService: SubcategoriaTransacaoService,
   ) {
     this.mensagemErroCategoria = ''
     this.cadastroFinalizado = new EventEmitter();
-    this.idCategoriaGerado = new EventEmitter<number>();
-    this.idSubcategoriaGerado = new EventEmitter<number>();
+    this.categoriaSubcategoriaGerada = new EventEmitter<CategoriaTransacaoCadastroRapidoFormInsertResponse>();
     this.dialogVisivel = false;
   }
+
   ngOnInit(): void {
     this.formGroup = new FormGroup({
       nomeCategoria: new FormControl('', [Validators.required, Validators.maxLength(100)]),
@@ -54,33 +62,42 @@ export class ModalCadastrarCategoriaTransacaoComponent {
 
   salvar() {
     if (this.formGroup.valid) {
-      const categoria: CategoriaTransacaoFormInsert = {
-        nome: this.formGroup.value.nomeCategoria
+      const categoria: CategoriaTransacaoCadastroRapidoFormInsert = {
+        nome: this.formGroup.value.nomeCategoria,
+        subcategoria: this.formGroup.value.nomeSubcategoria,
       };
-      this.categoriaTransacaoService.consultarRecorrencia(categoria).subscribe(x => this.recorrencia = x)
-
-     if(this.recorrencia?.recorrencia){
-      this.categoriaTransacaoService.salvar(categoria)
-      .subscribe(response => {
-        this.idCategoriaGerado.emit(response.id)
-        const subcategoria: SubcategoriaTransacaoFormInsert = {
-          nome: this.formGroup.value.nomeSubcategoria,
-          categoria: response.id!
-        }
-        this.subcategoriaTransacaoService.salvar(subcategoria)
-          .subscribe(responseSubcategoria => {
-            this.idSubcategoriaGerado.emit(responseSubcategoria.id)
-          })
-        this.fecharDialog()
-      });
-     } else {
-      this.mensagemErroCategoria = 'Categoria já cadastrada'
-     }
+      if (!this.recorrenciaCategoria) {
+        this.categoriaTransacaoService.cadastroRapido(categoria)
+          .subscribe(response => {
+            this.categoriaSubcategoriaGerada.emit(response)
+          
+            this.fecharDialog()
+          });
+      } else {
+        this.mensagemErroCategoria = 'Categoria já cadastrada'
+      }
     }
     this.obterMensagemErroNome()
   }
 
-  protected fecharDialog(){
+  validarNomeCategoriaNaoUtilizado() {
+    const categoria: CategoriaTransacaoFormInsert = {
+      nome: this.formGroup.value.nomeCategoria
+    };
+    this.loadingValidationCategoriaNome = true;
+    this.categoriaTransacaoService.consultarRecorrencia(categoria)
+      .pipe(finalize(() => this.loadingValidationCategoriaNome = false))
+      .subscribe(x => {
+        this.recorrenciaCategoria = x.existe
+        if (this.recorrenciaCategoria) {
+          this.mensagemErroCategoria = 'Categoria já cadastrada'
+        } else {
+          this.mensagemErroCategoria = ''
+        }
+      })
+  }
+
+  protected fecharDialog() {
     this.cadastroFinalizado.emit("Finalizado");
     this.formGroup.setValue({
       nomeCategoria: '',
@@ -98,7 +115,7 @@ export class ModalCadastrarCategoriaTransacaoComponent {
     const nomeSubcategoria = this.formGroup.get('nomeSubcategoria');
 
     if (nomeCategoria?.hasError('maxlength')) {
-      this.mensagemErroCategoria =  'O nome da categoria deve ter no máximo 100 caracteres.';
+      this.mensagemErroCategoria = 'O nome da categoria deve ter no máximo 100 caracteres.';
     }
 
     if (nomeCategoria?.hasError('required')) {
@@ -106,11 +123,11 @@ export class ModalCadastrarCategoriaTransacaoComponent {
     }
 
     if (nomeSubcategoria?.hasError('maxlength')) {
-      this.mensagemErroSubcaategoria = 'O nome da subcategoria deve ter no máximo 100 caracteres.';
-    } 
-    
+      this.mensagemErroSubcategoria = 'O nome da subcategoria deve ter no máximo 100 caracteres.';
+    }
+
     if (nomeSubcategoria?.hasError('required')) {
-      this.mensagemErroSubcaategoria = 'O nome da subcategoria é obrigatório.';
-    } 
+      this.mensagemErroSubcategoria = 'O nome da subcategoria é obrigatório.';
+    }
   }
 }

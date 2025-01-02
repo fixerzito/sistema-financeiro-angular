@@ -1,4 +1,4 @@
-export interface CategoriaTransacoesDropdown {
-    id: number,
+export interface CategoriaTransacaoDropdown {
+    id?: number,
     nome: string
 }

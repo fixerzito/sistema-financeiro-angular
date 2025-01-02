@@ -10,7 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { SubcategoriaTransacaoService } from '../../../services/subcategoria-transacao.service';
 import { SubcategoriaTransacaoFormInsert } from '../../../models/forms/insert/subcategoria-transacao-insert';
-import { CategoriaTransacoesDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
+import { CategoriaTransacaoDropdown } from '../../../models/dropdowns/categoria-transacoes-dropdown';
 import { CategoriaTransacaoService } from '../../../services/categoria-transacao.service';
 
 @Component({
@@ -35,8 +35,8 @@ export class CadastrarSubcategoriasTransacaoComponent implements OnInit {
   erroNome?: string;
   erroCategoria?: string;
 
-  categorias!: CategoriaTransacoesDropdown[];
-  categoriaSelecionada: CategoriaTransacoesDropdown = {
+  categorias!: CategoriaTransacaoDropdown[];
+  categoriaSelecionada: CategoriaTransacaoDropdown = {
     id: 0,
     nome: ''
   }
@@ -63,7 +63,7 @@ export class CadastrarSubcategoriasTransacaoComponent implements OnInit {
     if(this.formGroup.valid){
       const subcategoria: SubcategoriaTransacaoFormInsert = {
         nome: this.formGroup.get('nome')?.value,
-        categoria: this.formGroup.get('categoria')?.value
+        idCategoria: this.formGroup.get('categoria')?.value
       }
       this.subcategoriaTransacaoService.salvar(subcategoria)
         .subscribe(x => this.router.navigate(['/subcategorias-transacao'])

@@ -1,13 +1,12 @@
 <app-modal-cadastrar-categoria-transacao
 [dialogVisivel]="modalCadastrarCategoriaTransacaoVisivel"
 (cadastroFinalizado)="fecharDialogCategoriaTransacao($event)"
-(idCategoriaGerado)="receberIdCategoriaGerado($event)"
-(idSubcategoriaGerado)="receberIdSubcategoriaGerado($event)"
+(categoriaSubcategoriaGerada)="receberIdCategoriaGerado($event)"
 ></app-modal-cadastrar-categoria-transacao>
 
 <app-modal-cadastrar-subcategoria
 [dialogVisivel]="modalCadastrarSubcategoriaTransacaoVisivel"
-[idCategoriaRecebido]="categoriaId!"
+[idCategoriaRecebido]="formGroup.get('idCategoriaTransacao')!.value!"
 (cadastroFinalizado)="fecharDialogSubcategoriaTransacao($event)"
 (idSubcategoriaGerado)="receberIdSubcategoriaGerado($event)">
 

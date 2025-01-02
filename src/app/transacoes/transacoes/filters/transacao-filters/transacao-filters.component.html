@@ -1,0 +1,47 @@
+<p-accordion>
+    <p-accordionTab header="Filtros">
+        <div class="flex">
+            <div class="flex flex-column">
+                <div class="flex mr-2">
+                    <app-nome-transacao-filter class="mb-2 mr-2"
+                    (nomeTransacaoEmitter)="receberNomeTransacao($event)"></app-nome-transacao-filter>
+                <app-valor-transacao-filter
+                    (valorTransacaoEmitter)="receberValorTransacao($event)"></app-valor-transacao-filter>
+                </div>
+
+                <div class="flex flex-row">
+                    <app-categoria-transacao-filter class="mr-2"
+                        (idCategoriaTransacaoEmitter)="receberIdCategoriaTransacao($event)"></app-categoria-transacao-filter>
+                    <app-subcategoria-transacao-filter class="mr-2"
+                        [idCategoria]="idCategoria!"></app-subcategoria-transacao-filter>
+                </div>
+            </div>
+
+            <div class="flex flex-column ml-4">
+                <app-conta-transacao-filter class="mr-2 mb-2"
+                    (idContaBancariaEmitter)="receberContaBancaria($event)"></app-conta-transacao-filter>
+                <div class="flex flex-row">
+                    <app-tipo-transacao-filter class="mr-2"
+                        (idTipoTransacaoEmitter)="receberTipoTransacao($event)"></app-tipo-transacao-filter>
+                    <app-status-transacao-filter class="mr-2"
+                        (idStatusTransacaoEmitter)="receberStatusTransacao($event)"></app-status-transacao-filter>
+                </div>
+            </div>
+
+            <div class="flex flex-column ml-4">
+                <app-data-efetivacao-transacao-filter class="mr-2 mb-2"
+                    (dataEfetivacaoEmitter)="receberDataEfetivacao($event)"></app-data-efetivacao-transacao-filter>
+                <app-previsao-efetivacao-transacao-filter class="mr-2"
+                    (dataPrevisaoEfetivacaoEmitter)="receberDataPrevisaoEfetivacao($event)"></app-previsao-efetivacao-transacao-filter>
+            </div>
+
+            <div class="flex flex-column ml-4">
+                <app-periodo-transacao-filter></app-periodo-transacao-filter>
+            </div>
+
+            <div class="flex flex-row-reverse">
+                <button type="button" pButton icon="pi pi-search" class="p-button-primary" [rounded]="true"></button>
+            </div>
+        </div>
+    </p-accordionTab>
+</p-accordion>
