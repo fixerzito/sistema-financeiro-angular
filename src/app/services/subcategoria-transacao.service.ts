@@ -39,7 +39,7 @@ export class SubcategoriaTransacaoService {
   consultarRecorrencia(subcategoria: SubcategoriaTransacaoFormInsert): Observable<ValidatorRecorrencia> {
     const params = new HttpParams()
       .set('nome', subcategoria.nome!);
-    if (subcategoria.idCategoria) {
+    if (subcategoria.idCategoria) { 
       params.set('idCategoria', subcategoria.idCategoria!);
     }
     return this.httpClient.get<ValidatorRecorrencia>(`${this.url}/validar-existente`, { params })

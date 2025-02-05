@@ -32,11 +32,12 @@ body {
     color: #ffffff;
 }
 
-.p-dropdown-lucas > .p-component{
+.p-dropdown-lucas>.p-component {
     width: 90%;
     border-radius: 6px 0px 0px 6px !important;
     position: relative;
 }
+
 /* Container principal do formulário */
 .form-container {
     display: flex;
@@ -64,3 +65,13 @@ body {
     gap: 1rem;
 }
 
+.line-field {
+    max-width: 100%; /* Não ultrapassa a largura do contêiner */
+    max-height: 100%; /* Não ultrapassa a altura, se aplicável */
+    box-sizing: border-box;
+    width: 100% !important;
+}
+
+.son-line-field {
+    width: 100% !important;
+}

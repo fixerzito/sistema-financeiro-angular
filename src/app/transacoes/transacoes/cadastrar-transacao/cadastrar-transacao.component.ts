@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { AutoCompleteModule, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -28,7 +27,7 @@ import { ModalCadastrarSubcategoriaTransacaoComponent } from "../../subcategoria
 import { CategoriaTransacaoCadastroRapidoFormInsertResponse } from '../../../models/forms/insert/categoria-transacao-cadastro-rapido-form-insert-response';
 
 @Component({
-  selector: 'app-cadastrar-despesa',
+  selector: 'app-cadastrar-transacao',
   standalone: true,
   imports: [
     FormsModule,
@@ -50,7 +49,7 @@ import { CategoriaTransacaoCadastroRapidoFormInsertResponse } from '../../../mod
   templateUrl: './cadastrar-transacao.component.html',
   styleUrl: './cadastrar-transacao.component.css'
 })
-export class CadastrarDespesaComponent {
+export class CadastrarTransacaoComponent {
   @ViewChild(ModalCadastrarCategoriaTransacaoComponent) modalCadastrarCategoriaTransacaoComponent!: ModalCadastrarCategoriaTransacaoComponent;
   @ViewChild(ModalCadastrarSubcategoriaTransacaoComponent) modalCadastrarSubcategoriaTransacaoComponent!: ModalCadastrarSubcategoriaTransacaoComponent;
   modalCadastrarCategoriaTransacaoVisivel: boolean;
@@ -81,6 +80,8 @@ export class CadastrarDespesaComponent {
   formGroup!: FormGroup;
   visible: boolean = false;
 
+  desabilitarBotao: Boolean;
+
   protected fecharDialogo() {
     this.reset();
     this.cadastroFinalizado.emit("Finalizado");
@@ -98,6 +99,7 @@ export class CadastrarDespesaComponent {
     this.dialogVisivel = false;
     this.cadastroFinalizado = new EventEmitter();
     this.tituloDialog = "Cadastro de Despesa";
+    this.desabilitarBotao = true;
 
     this.transacaoDropdown = {};
     this.transacaoClone = {};
@@ -115,7 +117,7 @@ export class CadastrarDespesaComponent {
 
     this.formGroup = new FormGroup({
       nome: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-      valor: new FormControl('', Validators.required),
+      valor: new FormControl(undefined, Validators.required),
       status: new FormControl(false),
       dataPrevista: new FormControl(null),
       dataEfetivacao: new FormControl(null),
@@ -136,6 +138,15 @@ export class CadastrarDespesaComponent {
       idSubcategoriaTransacao: '',
       idContaBancaria: ''
     });
+
+    this.errorMessages = {
+      nome: '',
+      valor: '',
+      idContaBancaria: '',
+      idCategoriaTransacao: '',
+      idSubcategoriaTransacao: ''
+    }
+    this.formGroup.get('idSubcategoriaTransacao')?.disable();
     this.categoriaId = undefined;
   }
 
@@ -226,7 +237,7 @@ export class CadastrarDespesaComponent {
   }
 
   carregarSubcategorias() {
-    this.carregandoSubcategoriasDropdown = true
+    this.carregandoSubcategoriasDropdown = true      
     this.subcategoriaTransacaoService.consultarDropdown(this.formGroup.get('idCategoriaTransacao')!.value)
       .subscribe(subcategorias => {
         this.carregandoSubcategoriasDropdown = false
@@ -369,7 +380,6 @@ export class CadastrarDespesaComponent {
 
   preencherFormularioEditar(transacao: TransacaoFormUpdate) {
     this.carregarContasBancarias();
-    this.carregarSubcategorias()
     this.carregarCategorias();
     this.formGroup.setValue({
       nome: transacao.nome,
@@ -381,6 +391,7 @@ export class CadastrarDespesaComponent {
       idSubcategoriaTransacao: transacao.idSubcategoriaTransacao,
       idContaBancaria: transacao.idContaBancaria
     });
+    this.carregarSubcategorias();
   }
 
   //-------------------------------

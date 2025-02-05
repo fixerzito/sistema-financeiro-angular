@@ -1,11 +1,11 @@
 <p-toast />
 <p-confirmDialog />
 
-<app-cadastrar-despesa
+<app-cadastrar-transacao
 [dialogVisivel]="visivel"
 [tituloDialog]="tituloDialog"
 [tipoTransacao]="tipoTransacao"
-(cadastroFinalizado)="fecharDialog($event)"></app-cadastrar-despesa>
+(cadastroFinalizado)="fecharDialog($event)"></app-cadastrar-transacao>
 
 <app-transacao-filters></app-transacao-filters>
 
@@ -41,7 +41,7 @@
                 <td class="flex align-items-center justify-content-start gap-2">
                     <p-button (onClick)="editar(transacao.id)" icon="pi pi-pencil" [rounded]="true" pTooltip="Editar" showDelay="100" hideDelay="300"/>
                     <p-button (onClick)="confirmacaoApagar($event, transacao.id)" severity="danger" icon="pi pi-trash" [outlined]="true" [rounded]="true" [rounded]="true" pTooltip="Apagar" showDelay="100" hideDelay="100" tooltipPosition="left" />
-                    <p-button [label]="buttonTexto(transacao.status)" [icon]=" buttonIcon(transacao.status)" [severity]="buttonSeverity(transacao.status)" (onClick)="alterarStatus(transacao.status, transacao.id)" />
+                    <p-button [label]="buttonTexto(transacao.status)" [icon]=" buttonIcon(transacao.status)" [severity]="buttonSeverity(transacao.status)" (onClick)="alterarStatus(transacao.status, transacao.id)" [rounded]="true"/>
                 </td>
             </tr>
         </ng-template>

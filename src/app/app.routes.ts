@@ -17,10 +17,16 @@ import { ListarContasBancariasComponent } from './contas-bancarias/contas-bancar
 import { PageCadContaBancariaComponent } from './contas-bancarias/contas-bancarias/page-cad-conta-bancaria/page-cad-conta-bancaria.component';
 import { ListarTransacaoComponent } from './transacoes/transacoes/listar-transacao/listar-transacao.component';
 import { HomeComponent } from './home/home.component';
+import { CadastroComponent } from './login/cadastro/cadastro.component';
+import { AutenticacaoComponent } from './login/autenticacao/autenticacao.component';
 
 export const routes: Routes = [
+    { path: '', redirectTo: 'login', pathMatch:'full'},
     { path: 'login', component: LoginComponent },
-    {path: 'home', component: HomeComponent },
+    { path: 'login/cadastro', component: CadastroComponent },
+    { path: 'login/autenticacao', component: AutenticacaoComponent },
+
+    { path: 'home', component: HomeComponent },
 
     { path: 'contas', component: ListarContasBancariasComponent },
     { path: 'contas/cadastro', component: PageCadContaBancariaComponent },
