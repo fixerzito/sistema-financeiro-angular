@@ -1,0 +1,16 @@
+<div class="main flex flex-column">
+    <div>
+        <h1>Seja bem vindo ao Budget Buddy!</h1>
+    </div>
+    <form [formGroup]="formGroup">
+        <div class="card flex flex-column">
+            <input type="text" pInputText id="nome" placeholder="Nome completo" class="mr-2" class="input-email mr-2"
+                formControlName="nome" />
+
+            <input type="text" pInputText id="email" placeholder="Email" class="mr-2" class="input-email mr-2"
+                formControlName="email" />
+
+            <button pButton class="buttons btn-login">Cadastrar</button>
+        </div>
+    </form>
+</div>

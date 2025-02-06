@@ -10,7 +10,7 @@ import { TransacaoTable } from '../../../models/tables/transacao-table';
 import { TagModule } from 'primeng/tag';
 import { DatePipe } from '@angular/common';
 import { TooltipModule } from 'primeng/tooltip';
-import { CadastrarDespesaComponent } from "../cadastrar-transacao/cadastrar-transacao.component";
+import { CadastrarTransacaoComponent } from "../cadastrar-transacao/cadastrar-transacao.component";
 import { TransacaoFiltersComponent } from "../filters/transacao-filters/transacao-filters.component";
 
 @Component({
@@ -24,7 +24,7 @@ import { TransacaoFiltersComponent } from "../filters/transacao-filters/transaca
     ToastModule,
     TagModule,
     TooltipModule,
-    CadastrarDespesaComponent,
+    CadastrarTransacaoComponent,
     TransacaoFiltersComponent
 ],
   templateUrl: './listar-transacao.component.html',
@@ -32,7 +32,7 @@ import { TransacaoFiltersComponent } from "../filters/transacao-filters/transaca
   providers: [ConfirmationService, MessageService, DatePipe]
 })
 export class ListarTransacaoComponent implements OnInit {
-  @ViewChild(CadastrarDespesaComponent) cadastroComponent!: CadastrarDespesaComponent;
+  @ViewChild(CadastrarTransacaoComponent) cadastroComponent!: CadastrarTransacaoComponent;
 
   visivel: boolean;
   tituloDialog: string;
@@ -162,7 +162,7 @@ export class ListarTransacaoComponent implements OnInit {
   }
 
   protected editar(id: number){
-    this.tituloDialog = "Editar entrada";
+    this.tituloDialog = "Editar transação";
     this.cadastroComponent.carregarEntradaExistente(id);
     this.abrirDialog();
   }

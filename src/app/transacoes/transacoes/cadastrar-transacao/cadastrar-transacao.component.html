@@ -1,14 +1,11 @@
-<app-modal-cadastrar-categoria-transacao
-[dialogVisivel]="modalCadastrarCategoriaTransacaoVisivel"
-(cadastroFinalizado)="fecharDialogCategoriaTransacao($event)"
-(categoriaSubcategoriaGerada)="receberIdCategoriaGerado($event)"
-></app-modal-cadastrar-categoria-transacao>
+<app-modal-cadastrar-categoria-transacao [dialogVisivel]="modalCadastrarCategoriaTransacaoVisivel"
+    (cadastroFinalizado)="fecharDialogCategoriaTransacao($event)"
+    (categoriaSubcategoriaGerada)="receberIdCategoriaGerado($event)"></app-modal-cadastrar-categoria-transacao>
 
-<app-modal-cadastrar-subcategoria
-[dialogVisivel]="modalCadastrarSubcategoriaTransacaoVisivel"
-[idCategoriaRecebido]="formGroup.get('idCategoriaTransacao')!.value!"
-(cadastroFinalizado)="fecharDialogSubcategoriaTransacao($event)"
-(idSubcategoriaGerado)="receberIdSubcategoriaGerado($event)">
+<app-modal-cadastrar-subcategoria [dialogVisivel]="modalCadastrarSubcategoriaTransacaoVisivel"
+    [idCategoriaRecebido]="formGroup.get('idCategoriaTransacao')!.value!"
+    (cadastroFinalizado)="fecharDialogSubcategoriaTransacao($event)"
+    (idSubcategoriaGerado)="receberIdSubcategoriaGerado($event)">
 
 </app-modal-cadastrar-subcategoria>
 
@@ -16,11 +13,12 @@
     (onHide)="fecharDialogo()">
     <form [formGroup]="formGroup">
         <div class="form-container">
-            <div class="input-group">
-                <label for="username" class="form-label"> Nome da Transação <span class="warning-text">*</span></label>
-                <p-autoComplete id="username" class="w-10rem" autocomplete="off" formControlName="nome" [optionLabel]=""
-                    (onSelect)="abrirModal()" [suggestions]="filteredTransacoesDropdown"
-                    (completeMethod)="filtrarTransacoes($event)" [showClear]="true" showEmptyMessage="false">
+            <div>
+                <label for="username" class="form-label mb-1"> Nome da Transação <span class="warning-text">*</span></label>
+                <p-autoComplete inputId="username" autocomplete="off" formControlName="nome"
+                    [optionLabel]="" (onSelect)="abrirModal()" [suggestions]="filteredTransacoesDropdown"
+                    (completeMethod)="filtrarTransacoes($event)" [showClear]="true" showEmptyMessage="false"
+                    [inputStyle]="{width: '47rem'}">
                     <ng-template let-transacao pTemplate="item">
                         <div class="flex flex-row">
                             <h4 class="mr-2">{{ transacao.nome }}</h4>
@@ -37,27 +35,41 @@
                 </span>
             </div>
 
-            <div class="radio-group">
-                <label for="validContaBancaria" class="form-label">Selecione a conta que deseja vincular <span
-                        class="warning-text">*</span></label>
-                <p-dropdown [options]="contasDropdown" formControlName="idContaBancaria" optionLabel="name"
-                    (onShow)="carregarContasBancarias()" optionValue="id" placeholder="Escolha a conta a ser vinculada"
-                    (onChange)="atribuirIdConta(transacao.idContaBancaria!)" [filter]="true" filterBy="nome">
-                    <ng-template let-cartao pTemplate="item">
-                        {{cartao.nome}}
-                    </ng-template>
-                    <ng-template let-cartao pTemplate="selectedItem">
-                        {{cartao.nome}}
-                    </ng-template>
-                </p-dropdown>
-                <span class="warning-text">
-                    {{ errorMessages!.idContaBancaria }}
-                </span>
+            <div class="flex line-field">
+                <div class="mr-2">
+                    <label for="validContaBancaria" class="form-label mb-1">Selecione a conta que deseja vincular <span
+                            class="warning-text">*</span></label>
+                    <p-dropdown [options]="contasDropdown" formControlName="idContaBancaria" optionLabel="name"
+                        (onShow)="carregarContasBancarias()" optionValue="id"
+                        placeholder="Escolha a conta a ser vinculada" [style]="{width: '23rem'}"
+                        (onChange)="atribuirIdConta(transacao.idContaBancaria!)" [filter]="true" filterBy="nome">
+                        <ng-template let-cartao pTemplate="item">
+                            {{cartao.nome}}
+                        </ng-template>
+                        <ng-template let-cartao pTemplate="selectedItem">
+                            {{cartao.nome}}
+                        </ng-template>
+                    </p-dropdown>
+                    <span class="warning-text">
+                        {{ errorMessages!.idContaBancaria }}
+                    </span>
+                </div>
+
+                <div class="son-line-field">
+                    <label for="valorTransacao" class="form-label mb-1">Valor da Transação <span
+                            class="warning-text">*</span></label>
+                    <p-inputNumber mode="decimal" inputId="valorTransacao" autocomplete="off" placeholder="R$"
+                        locale="pt-BR" formControlName="valor" (onKeyDown)="filterNotNumberKeys($event)"
+                        [minFractionDigits]="2" [maxFractionDigits]="2" class="son-line-field" [inputStyle]="{width: '23rem'}"/>
+                    <span class="warning-text">
+                        {{ errorMessages!.valor }}
+                    </span>
+                </div>
             </div>
 
             <div class="input-group flex flex-row">
                 <div class="flex flex-column">
-                    <label class="form-label">Categoria <span class="warning-text">*</span></label>
+                    <label class="form-label mb-1">Categoria <span class="warning-text mb-1">*</span></label>
                     <p-inputGroup>
                         <p-dropdown [options]="categorias" optionLabel="name" optionValue="id" class="p-dropdown-lucas"
                             (onShow)="carregarCategorias()" placeholder="Escolha a categoria à ser vinculada"
@@ -78,13 +90,13 @@
                     </span>
                 </div>
                 <div class="flex flex-column">
-                    <label class="form-label">Subcategoria <span class="warning-text">*</span></label>
+                    <label class="form-label mb-1">Subcategoria <span class="warning-text">*</span></label>
                     <p-inputGroup>
                         <p-dropdown [options]="subcategorias" optionLabel="name" optionValue="id"
                             class="p-dropdown-lucas" [loading]="carregandoSubcategoriasDropdown"
-                            placeholder="Escolha a categoria à ser vinculada"
+                            placeholder="Escolha a subcategoria à ser vinculada"
                             [disabled]="formGroup.get('idSubcategoriaTransacao')!.disabled" [filter]="true"
-                            filterBy="nome" formControlName="idSubcategoriaTransacao" [filter]="true">
+                            filterBy="nome" formControlName="idSubcategoriaTransacao">
                             <ng-template let-categoria pTemplate="item">
                                 {{categoria.nome}}
                             </ng-template>
@@ -102,34 +114,26 @@
             </div>
 
             <div class="flex flex-row">
-                <div class="flex flex-column">
-                    <label for="dataPrevista" class="form-label">Data prevista</label>
+                <div class="flex flex-column mr-2">
+                    <label for="dataPrevista" class="form-label mb-1">Data prevista</label>
                     <p-calendar formControlName="dataPrevista" [iconDisplay]="'input'" [showIcon]="true"
-                        inputId="dataPrevista">
+                        inputId="dataPrevista" [inputStyle]="{width: '23rem'}">
                     </p-calendar>
                 </div>
 
                 <div class="flex flex-column">
-                    <label for="dataEfetivacao" class="form-label">Data efetivação</label>
+                    <label for="dataEfetivacao" class="form-label mb-1">Data efetivação</label>
                     <p-calendar formControlName="dataEfetivacao" [iconDisplay]="'input'" [showIcon]="true"
-                        inputId="dataEfetivacao">
+                        inputId="dataEfetivacao" [inputStyle]="{width: '23rem'}">
                     </p-calendar>
                 </div>
             </div>
 
-            <label class="form-label">Status da transação</label>
-            <p-toggleButton formControlName="status" onLabel="Efetivada" offLabel="Pendente" />
-
-            <div class="input-group">
-                <label for="valorTransacao" class="form-label">Valor da Transação <span
-                        class="warning-text">*</span></label>
-                <p-inputNumber mode="decimal" inputId="valorTransacao" autocomplete="off" placeholder="R$"
-                    locale="pt-BR" formControlName="valor" (onKeyDown)="filterNotNumberKeys($event)"
-                    [minFractionDigits]="2" [maxFractionDigits]="2" />
-                <span class="warning-text">
-                    {{ errorMessages!.valor }}
-                </span>
-
+            
+            <div class="input-group flex">              
+                <label class="form-label mb-1">Status da transação</label>
+                <p-toggleButton formControlName="status" onLabel="Efetivada" offLabel="Pendente" />
+                
                 <div class="button-group">
                     <p-button label="Cancelar" (onClick)="cancelar()" severity="secondary" [outlined]="true"
                         icon="pi pi-undo" class="button cancel" />
@@ -161,7 +165,7 @@
             </div>
             <div class="flex justify-content-end gap-2">
                 <p-button label="Cancelar" severity="secondary" (onClick)="resetarCamposFormulario()" />
-                <p-button label="Salvar" (onClick)="salvarModal()" />
+                <p-button label="Salvar" (onClick)="salvarModal()" [disabled]="desabilitarBotao" />
             </div>
         </p-dialog>
     </form>
