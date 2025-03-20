@@ -1,9 +1,15 @@
-<div class="main">
+<div class="main flex flex-column w-4" style="margin-top: 12%;">
+    <div class="flex justify-content-center mt-0">
+        <h2>Realize seu login!</h2>
+    </div>
     <form [formGroup]="formGroup">
-        <div class="card flex flex-column">
-            <input type="text" pInputText id="email" placeholder="Digite seu email" class="mr-2"
-                class="input-email mr-2" formControlName="email"/>
-            <button pButton (click)="verificarEmail()" class="buttons btn-login">Login</button>
+        <div class="card flex flex-column mt-0">
+            <input type="text" pInputText id="email" placeholder="Digite seu email"
+                class="input-email mb-2" formControlName="email" (input)="onInputChange($event)"/>
+            <input type="password" pInputText id="senha" placeholder="Digite sua senha"
+                class="input-email mb-2" formControlName="senha" (input)="onInputChange($event)"/>
+            <button pButton (click)="loginRequest()" class="buttons btn-login mb-2" [disabled]="disabled">Login</button>
+            <span class="warning-text">{{errorMsg}}</span>
         </div>
     </form>
-</div>  
+</div>

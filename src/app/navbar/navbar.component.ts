@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { UsuarioService } from '../services/usuario.service';
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { MenubarModule } from 'primeng/menubar';
@@ -15,8 +16,10 @@ import { MenubarModule } from 'primeng/menubar';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
-  items: MenuItem[] | undefined;
+export class NavbarComponent implements OnInit {
+  items: MenuItem[] = [];
+
+  constructor(private usuarioService: UsuarioService, private router: Router) {}
 
   ngOnInit() {
     this.items = [
@@ -26,30 +29,25 @@ export class NavbarComponent {
         routerLink: '/home'
       },
       {
-        label: 'Login',
-        icon: 'pi pi-sign-in',
-        routerLink: '/login'
-      },
-      {
         label: 'Contas Bancárias',
         icon: 'pi pi-building-columns',
         items: [
           {
             label: 'Contas bancárias',
             icon: 'pi pi-building-columns',
-            routerLink: 'contas'
+            routerLink: '/contas'
           },
           {
             label: 'Categorias',
             icon: 'pi pi-tags',
-            routerLink: 'categorias-contas-bancarias'
+            routerLink: '/categorias-contas-bancarias'
           },
         ]
       },
       {
         label: 'Cartões de crédito',
         icon: 'pi pi-credit-card',
-        routerLink: 'cartoes'
+        routerLink: '/cartoes'
       },
       {
         label: 'Transações',
@@ -58,20 +56,41 @@ export class NavbarComponent {
           {
             label: 'Transações',
             icon: 'pi pi-arrow-right-arrow-left',
-            routerLink: 'transacoes'
+            routerLink: '/transacoes'
           },
           {
             label: 'Categorias',
             icon: 'pi pi-tags',
-            routerLink: 'categorias-transacao'
+            routerLink: '/categorias-transacao'
           },
           {
             label: 'Subcategorias',
             icon: 'pi pi-tag',
-            routerLink: 'subcategorias-transacao'
+            routerLink: '/subcategorias-transacao'
+          }
+        ]
+      },
+      {
+        label: 'Usuário',
+        icon: 'pi pi-user',
+        items: [
+          {
+            label: 'Perfil',
+            icon: 'pi pi-user',
+            routerLink: '/perfil'
+          },
+          {
+            label: 'Sair',
+            icon: 'pi pi-sign-out',
+            command: () => this.logout()
           }
         ]
       }
-    ]
+    ];
+  }
+
+  logout() {
+    this.usuarioService.logout();
+    this.router.navigate(['/login']);
   }
 }

@@ -1,9 +1,11 @@
-<div class="main">
+<h1 class=" flex justify-content-center mt-4 mb-3">Seja bem-vindo ao Budget Buddy!</h1>
+<h3 class=" flex justify-content-center mt-4 mb-3">Seu assistente financeiro pessoal favorito :)</h3>
+<div class="main" [style]="{ width: '45rem' }">
     <form [formGroup]="formGroup">
-        <div class="card flex flex-column">
-            <input type="text" pInputText id="email" placeholder="Digite seu email" class="mr-2"
-                class="input-email mr-2" formControlName="email"/>
-            <button pButton (click)="verificarEmail()" class="buttons btn-login">Login</button>
+        <div class="flex align-items-center gap-1 mb-1" [style]="{ width: '40rem' }">
+            <input type="text" pInputText id="email" placeholder="Digite seu email"
+                class="flex-auto mr-2" formControlName="email"/>
+            <button pButton (click)="verificarEmail()" class="w-2">Login</button>
         </div>
     </form>
 </div>  

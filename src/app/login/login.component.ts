@@ -12,7 +12,7 @@ import { PasswordModule } from "primeng/password";
 import { UsuarioService } from "../services/usuario.service";
 import { UsuarioVerify } from "../models/forms/user/UsuarioVerify";
 import { UsarioVerifyResponse } from "../models/forms/user/UsuarioVerifyResponse";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SharedService } from "../services/shared.service";
 
 
@@ -45,7 +45,7 @@ export class LoginComponent {
   constructor(
     private usuarioService: UsuarioService,
     private router: Router,
-    private sharedService: SharedService,
+    private route: ActivatedRoute,
   ){
     this.usuarioVerify = {};
     this.usarioVerifyResponse = {};
@@ -55,6 +55,20 @@ export class LoginComponent {
     })
   }
 
+  ngOnInit(){
+    this.usuarioService.logout()
+    
+    this.route.queryParams.subscribe(params => {
+      const email = params['email'];
+
+      if(email != ''){
+        this.formGroup.patchValue({
+          email: email
+        });
+      }
+    });
+  }
+
   verificarEmail(){
     this.usuarioVerify = {
       email: this.formGroup.get('email')?.value
@@ -62,11 +76,14 @@ export class LoginComponent {
     this.usuarioService.verificarEmail(this.usuarioVerify).subscribe(response => {
       this.usarioVerifyResponse = response
       
-      this.sharedService.setValor(`${this.usuarioVerify.email}`)
       if(this.usarioVerifyResponse.ativo == true){
-        this.router.navigate(['/login/autenticacao'])
+        this.router.navigate(['/login/autenticacao'], {
+          queryParams: { email: `${this.usuarioVerify!.email}`}
+        })
       } else {
-        this.router.navigate(['/login/cadastro'])
+        this.router.navigate(['/login/cadastro'], {
+          queryParams: { email: `${this.usuarioVerify!.email}`}
+        })
       }
     
     })

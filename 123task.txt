@@ -1,36 +1,20 @@
 COISAS QUE EU NÃO SEI
-    - Login JWT
-    - Envio de Email
     - Fluent Validation
     - Paginação
     - Agrupamento de dados no Back-end para gráficos / Relatórios
 
-Criar issues no board do projeto, e trabalhar corretamente com as Branches!!!
-    - Verificar issues que já foram implementadas
-    - Criar issue para BUG's
-
 ISSUES:
     LATER
-    - fazer login - JWT 
-    - Fazer Refresh Token
     - Login com Google Account
-    - Alterar todas as tabelas para fk usuario
     - adicionar testes unitários e testes de integração
 
     SISTEMA FRONT-END
-    - Inputs obrigatórios devem possuir Labels com asterísco vermelho para identificar que são obrigatórias
     - Utiliziar BREADCRUMBS
     - Criar Speed Dial para cadastros "Cadastro de conta", "Cadastro de Categoria de conta", "Cadastro de Cartões", ... 
     - Apresentar loading de tabelas 
     - Apresentar loading de Dropdown (Carregar dados apenas quando o usuário clicar no Dropdown)
     
-    LOGIN COM USUÁRIO - part.1
-    - Ajustar tela de Login
-    - Tela de login deve conter somente o campo de "Login" (Email/nome usuário)
-    - Se o usuário existir, deve redirecionar para a tela de senha, caso contrário, redirecionar para a tela de cadastro 
-    
     LOGIN COM SENHA - part.2
-    - Colocar campo "Senha"
     - Bloquear após 3 tentativas (adicionar cooldown)
     - Adicionar Link "Esqueci minha senha"
 
@@ -42,7 +26,6 @@ ISSUES:
         -   CPF 
 
     PÓS-CADASTRO
-    - Validar que o link não está expirado, permitir o usuário definir senha/confirmação de senha
     - Popular base com itens pré estabelecidos para usuário recém cadastrado
     
     PÓS-CADASTRO (Link expirado)
@@ -60,35 +43,18 @@ ISSUES:
     CONTA BANCARIA
     - Alterar formatação dos valores para pt-BR
     - Listagem de contas permitir filtrar por "Nome"
-    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
-    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
-    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
     - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
 
     CATEGORIAS CONTA
     - Listagem de contas permitir filtrar por "Nome"
-    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
-    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
-    - Remover Código da listagem
-    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
     - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
 
     CATEGORIAS TRANSAÇÃO
     - Listagem de contas permitir filtrar por "Nome"
-    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
-    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
-    - Remover Código da listagem
-    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
     - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
 
     SUBCATEGORIAS TRANSAÇÃO
     - Listagem de contas permitir filtrar por "Nome"
-    - Listagem de contas espaçamento do "editar", "apagar" e "cadastrar"
-    - Botões "Cancelar" e "Salvar" devem ficar nas posição inferior-direita
-    - "cadastrar" e "editar" devem ficar em linhas separadas
-    - "cadastrar" e "editar", alterar label para ser somente "Nome"
-    - Remover Código da listagem
-    - Later: Migrar utilização de "ngModel" para "Rective Forms", validando "required", "min/max length"
     - Later: API validar utilizando "Fluent Validation", definir contrato de retorno de StatusCode '422' com os erros de validação
 
     TRANSAÇÃO
@@ -111,9 +77,7 @@ ISSUES:
 
     AO CARREGAR O SISTEMA:  
     - Apresentar Loading antes da tela ser carregada (https://loading.io)
-
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
     TRANSACAO
     - Alterar label-nome dos cadastros de despesa e receita
     - Modal de manter dados deve vir com todos os checkbox selecionados
@@ -126,7 +90,6 @@ ISSUES:
     -- subcategoria pode ser repetida desde que nça seja da mesma categoria
     -- alterar mapping categoria para o nome ser único
     -- Configurar a subcategoria para conter unic do nome da subcategoria com o id da categoria 
-
 
     - Nome da transação deve ocupar o tamanho inteiro da modal
     - Data prevista e efetivação deve ter espaçamento entre elas, e padronizar tamanho

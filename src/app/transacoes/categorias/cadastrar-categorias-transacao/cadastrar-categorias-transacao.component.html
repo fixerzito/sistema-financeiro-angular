@@ -1,7 +1,8 @@
 <form class="main card flex flex-column justify-content-center" [formGroup]="formGroup">
     <div class="flex">
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="username" class="font-semibold w-10rem">Nome da categoria <span class="warning-text">*</span></label>
+            <label for="username" class="font-semibold w-10rem">Nome da categoria <span
+                    class="warning-text">*</span></label>
             <input pInputText id="username" formControlName="nome" class="flex-auto" autocomplete="off" />
         </div>
         <div class="flex justify-content-end gap-2">
@@ -12,5 +13,5 @@
     </div>
     <span *ngIf="formGroup.get('nome')?.touched && formGroup.get('nome')?.invalid" class="warning-text">
         {{ obterMensagemErroNome() }}
-      </span>
+    </span>
 </form>

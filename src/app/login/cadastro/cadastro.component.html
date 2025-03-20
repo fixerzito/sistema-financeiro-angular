@@ -1,16 +1,16 @@
+<div class="flex justify-content-center mt-6">
+    <h3>Parece que você não possui uma conta, vamos realizar seu cadastro?</h3>
+</div>
 <div class="main flex flex-column">
-    <div>
-        <h1>Seja bem vindo ao Budget Buddy!</h1>
-    </div>
     <form [formGroup]="formGroup">
-        <div class="card flex flex-column">
-            <input type="text" pInputText id="nome" placeholder="Nome completo" class="mr-2" class="input-email mr-2"
+        <div class="card flex flex-column mt-0">
+            <input type="text" pInputText id="nome" placeholder="Nome completo" class="input-email mb-2"
                 formControlName="nome" />
 
-            <input type="text" pInputText id="email" placeholder="Email" class="mr-2" class="input-email mr-2"
+            <input type="text" pInputText id="email" placeholder="Email" class="input-email mb-2"
                 formControlName="email" />
 
-            <button pButton class="buttons btn-login">Cadastrar</button>
+            <button pButton (click)="cadastrar()" class="buttons btn-login">Cadastrar</button>
         </div>
     </form>
 </div>

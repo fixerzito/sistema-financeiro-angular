@@ -9,6 +9,7 @@ import { CategoriaTransacaoTable } from '../models/tables/categoria-transacao-ta
 import { ValidatorRecorrencia } from '../models/validators/validator-recorrencia';
 import { CategoriaTransacaoCadastroRapidoFormInsert } from '../models/forms/insert/categoria-transacao-cadastro-rapido-form-insert';
 import { CategoriaTransacaoCadastroRapidoFormInsertResponse } from '../models/forms/insert/categoria-transacao-cadastro-rapido-form-insert-response';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class CategoriaTransacaoService {
 
   constructor(
     private httpClient: HttpClient,
+    private usuarioService: UsuarioService
   ) { 
     this.url = `${environment.apiUrl}/api/categorias-transacao`;
   }
