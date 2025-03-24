@@ -16,37 +16,44 @@ import { EditarContaBancariaComponent } from './contas-bancarias/contas-bancaria
 import { ListarContasBancariasComponent } from './contas-bancarias/contas-bancarias/listar-contas-bancarias/listar-contas-bancarias.component';
 import { PageCadContaBancariaComponent } from './contas-bancarias/contas-bancarias/page-cad-conta-bancaria/page-cad-conta-bancaria.component';
 import { ListarTransacaoComponent } from './transacoes/transacoes/listar-transacao/listar-transacao.component';
-import { HomeComponent } from './home/home.component';
 import { CadastroComponent } from './login/cadastro/cadastro.component';
 import { AutenticacaoComponent } from './login/autenticacao/autenticacao.component';
+import { ConfirmarEmailComponent } from './login/confirmar-email/confirmar-email.component';
+import { CadastrarSenhaComponent } from './login/cadastrar-senha/cadastrar-senha.component';
+import { AuthGuard } from './interceptors/auth.guard';
+import { EmailEnviadoComponent } from './login/email-enviado/email-enviado.component';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch:'full'},
     { path: 'login', component: LoginComponent },
     { path: 'login/cadastro', component: CadastroComponent },
     { path: 'login/autenticacao', component: AutenticacaoComponent },
+    { path: 'login/confirmar-email', component: ConfirmarEmailComponent },
+    { path: 'login/cadastrar-senha', component: CadastrarSenhaComponent },
+    { path: 'login/email-enviado', component: EmailEnviadoComponent },
 
-    { path: 'home', component: HomeComponent },
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
 
-    { path: 'contas', component: ListarContasBancariasComponent },
-    { path: 'contas/cadastro', component: PageCadContaBancariaComponent },
-    { path: 'contas/editar/:id', component: EditarContaBancariaComponent },
+    { path: 'contas', component: ListarContasBancariasComponent, canActivate: [AuthGuard] },
+    { path: 'contas/cadastro', component: PageCadContaBancariaComponent, canActivate: [AuthGuard] },
+    { path: 'contas/editar/:id', component: EditarContaBancariaComponent, canActivate: [AuthGuard] },
 
-    { path: 'categorias-contas-bancarias', component: ListaCategoriaContaBancariaComponent },
-    { path: 'categorias-contas-bancarias/editar/:id', component: EditarCategoriaComponent },
-    { path: 'categorias-contas-bancarias/cadastro', component: CadastroCategoriaContaBancariaComponent },
+    { path: 'categorias-contas-bancarias', component: ListaCategoriaContaBancariaComponent, canActivate: [AuthGuard] },
+    { path: 'categorias-contas-bancarias/editar/:id', component: EditarCategoriaComponent, canActivate: [AuthGuard] },
+    { path: 'categorias-contas-bancarias/cadastro', component: CadastroCategoriaContaBancariaComponent, canActivate: [AuthGuard] },
 
-    { path: 'cartoes', component: ListarCartoesComponent },
-    { path: 'cartoes/cadastro', component: CadastroCartoesCreditoComponent },
-    { path: 'cartoes/editar/:id', component: EditarCartoesComponent  },
+    { path: 'cartoes', component: ListarCartoesComponent, canActivate: [AuthGuard] },
+    { path: 'cartoes/cadastro', component: CadastroCartoesCreditoComponent, canActivate: [AuthGuard] },
+    { path: 'cartoes/editar/:id', component: EditarCartoesComponent, canActivate: [AuthGuard]  },
 
-    { path: 'categorias-transacao', component: ListarCategoriasTransacaoComponent  },
-    { path: 'categorias-transacao/cadastro', component: CadastrarCategoriasTransacaoComponent  },
-    { path: 'categorias-transacao/editar/:id', component: EditarCategoriasTransacaoComponent  },
+    { path: 'categorias-transacao', component: ListarCategoriasTransacaoComponent, canActivate: [AuthGuard]  },
+    { path: 'categorias-transacao/cadastro', component: CadastrarCategoriasTransacaoComponent, canActivate: [AuthGuard]  },
+    { path: 'categorias-transacao/editar/:id', component: EditarCategoriasTransacaoComponent, canActivate: [AuthGuard]  },
 
-    { path: 'subcategorias-transacao', component: ListarSubcategoriasTransacaoComponent  },
-    { path: 'subcategorias-transacao/cadastro', component: CadastrarSubcategoriasTransacaoComponent  },
-    { path: 'subcategorias-transacao/editar/:id', component: EditarSubcategoriasTransacaoComponent  },
+    { path: 'subcategorias-transacao', component: ListarSubcategoriasTransacaoComponent, canActivate: [AuthGuard]  },
+    { path: 'subcategorias-transacao/cadastro', component: CadastrarSubcategoriasTransacaoComponent, canActivate: [AuthGuard]  },
+    { path: 'subcategorias-transacao/editar/:id', component: EditarSubcategoriasTransacaoComponent, canActivate: [AuthGuard]  },
 
     { path: 'transacoes', component: ListarTransacaoComponent  },
 ];

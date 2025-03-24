@@ -1,0 +1,15 @@
+<div class="flex flex-column justify-content-center align-items-center">
+  <h2>Definir Senha</h2>
+  <p>Email: <b>{{ email }}</b></p>
+</div>
+<div class="main flex justify-content-center align-items-center">
+  <form [formGroup]="form" (ngSubmit)="cadastrarSenha()" class="flex flex-column">
+    <label for="senha" class="mb-2">Nova Senha:</label>
+    <p-password type="password" inputId="senha" formControlName="senha" required class="mb-3" />
+
+    <label for="confirmarSenha" class="mb-2">Confirmar Senha:</label>
+    <p-password type="password" inputId="confirmarSenha" formControlName="confirmarSenha" required class="mb-3" />
+
+    <button pButton type="submit" [disabled]="form.invalid" class="flex justify-content-center">Salvar Senha</button>
+  </form>
+</div>

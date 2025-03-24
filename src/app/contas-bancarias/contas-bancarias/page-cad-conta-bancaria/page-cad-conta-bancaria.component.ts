@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -16,6 +16,7 @@ import { ContaBancariaService } from '../../../services/conta-bancaria.service';
 import { DialogModule } from 'primeng/dialog';
 import { CategoriaContaBancariaFormInsert } from '../../../models/forms/insert/categoria-conta-bancaria-form-insert';
 import { TooltipModule } from 'primeng/tooltip';
+import { ContaBancariaErrorMessages } from '../../../models/errorMessages/ContaBancariaErrorMessages';
 
 @Component({
   selector: 'app-page-cad-conta-bancaria',
@@ -29,29 +30,22 @@ import { TooltipModule } from 'primeng/tooltip';
     InputGroupAddonModule,
     InputGroupModule,
     InputNumberModule,
-    DialogModule
+    DialogModule,
+    ReactiveFormsModule
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './page-cad-conta-bancaria.component.html',
   styleUrl: './page-cad-conta-bancaria.component.css'
 })
 export class PageCadContaBancariaComponent {
+  formGroup: FormGroup;
   visibleCadastroCategoria: boolean = false;
   categoriaCadastro: CategoriaContaBancariaFormInsert;
-  contaCriada: ContaBancariaFormInsert = {
-    nome: '',
-    saldo: 0,
-    icon: '',
-    idCategoria: 0
-  };
-
+  contaCriada: ContaBancariaFormInsert;
+  errorMessages: ContaBancariaErrorMessages;
   visible: boolean = false;
-
   categorias: CategoriaContaBancariaDropDown[] = [];
-  categoria: CategoriaContaBancariaDropDown = {
-    id: 0,
-    nome: ''
-  };
+  categoria: CategoriaContaBancariaDropDown;
 
   icons: IconFormInsert[] = [];
   icon: IconFormInsert = {
@@ -62,10 +56,31 @@ export class PageCadContaBancariaComponent {
     private router: Router,
     private contaBancariaService: ContaBancariaService,
     private categoriaContaBancariaService: CategoriaContaBancariaService,
-  ) { 
+  ) {
     this.categoriaCadastro = {
 
     }
+
+    this.contaCriada = {
+      nome: '',
+      saldo: undefined,
+      icon: '',
+      idCategoria: 0
+    }
+
+    this.categoria = {
+      id: 0,
+      nome: ''
+    }
+
+    this.formGroup = new FormGroup({
+      nome: new FormControl(null, [Validators.required, Validators.maxLength(100), Validators.minLength(1)]),
+      saldo: new FormControl(null, Validators.required),
+      icon: new FormControl(null, Validators.required),
+      idCategoria: new FormControl(null, Validators.required),
+    })
+
+    this.errorMessages = new ContaBancariaErrorMessages()
   }
 
   ngOnInit() {
@@ -96,20 +111,63 @@ export class PageCadContaBancariaComponent {
   }
 
   salvar() {
-    this.contaCriada.icon = this.icon.nome;
+    this.obterMensagemErro()
 
-    this.contaBancariaService.salvar(this.contaCriada)
-      .subscribe(x => {
-        this.router.navigate(['/contas'])
-      })
+    if (this.formGroup) {
+      this.contaCriada = {
+        nome: this.formGroup.get('nome')!.value,
+        icon: this.formGroup.get('icon')!.value,
+        idCategoria: this.formGroup.get('idCategoria')!.value,
+        saldo: this.formGroup.get('saldo')!.value,
+      }
 
+      this.contaBancariaService.salvar(this.contaCriada)
+        .subscribe(x => {
+          this.router.navigate(['/contas'])
+        })
+    }
   }
 
   cancelar() {
     this.router.navigate(['/contas'])
   }
 
-  criarCategoria(){
+  obterMensagemErro() {
+    const nomeControl = this.formGroup.get('nome');
+    const saldoControl = this.formGroup.get('saldo');
+    const iconControl = this.formGroup.get('icon');
+    const idCategoriaControl = this.formGroup.get('idCategoria');
+
+    if (nomeControl?.hasError('maxlength')) {
+      this.errorMessages!.nome = 'O nome da conta deve ter no máximo 100 caracteres.';
+    } else if (nomeControl?.hasError('minlength')) {
+      this.errorMessages!.nome = 'O nome da conta deve ter no mínimo 1 caracter.';
+    } else if (nomeControl?.hasError('required')) {
+      this.errorMessages!.nome = 'O nome da conta é obrigatório.';
+    } else {
+      this.errorMessages!.nome = '';
+    }
+
+    if (saldoControl?.hasError('required')) {
+      this.errorMessages!.saldo = 'É necessário um valor válido';
+    } else {
+      this.errorMessages!.saldo = '';
+    }
+
+    if (iconControl?.hasError('required')) {
+      this.errorMessages!.icon = 'Um icone deve ser selecionado';
+    } else {
+      this.errorMessages!.icon = '';
+    }
+
+    if (idCategoriaControl?.hasError('required')) {
+      this.errorMessages!.idCategoria = 'Selecione uma categoria';
+    } else {
+      this.errorMessages!.idCategoria = '';
+    }
+  }
+
+  criarCategoria() {
     this.categoriaContaBancariaService.salvar(this.categoriaCadastro)
       .subscribe(x => {
         this.visibleCadastroCategoria = false
