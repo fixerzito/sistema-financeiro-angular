@@ -36,8 +36,6 @@ export class UsuarioService {
       return this.httpClient.post( `${this.url}/confirmar-email`, body);
     }
     
-    
-  
     cadastrarSenha(email: string, senha: string): Observable<any> {
       return this.httpClient.post(`${this.url}/cadastrar-senha`, { email, senha });
     }
