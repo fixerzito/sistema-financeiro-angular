@@ -1,5 +1,5 @@
 .main {
-    width: 40%;
+    width: 20%;
     margin: 5% auto;
     margin-top: 5%;
     margin-bottom: 0px;
@@ -19,6 +19,6 @@
     display: block;
 }
 
-::ng-deep .inputMask input {
+::ng-deep .input input {
     width: 100%;
 }

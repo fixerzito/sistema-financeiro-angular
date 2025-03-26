@@ -23,6 +23,8 @@ import { CadastrarSenhaComponent } from './login/cadastrar-senha/cadastrar-senha
 import { AuthGuard } from './interceptors/auth.guard';
 import { EmailEnviadoComponent } from './login/email-enviado/email-enviado.component';
 import { HomeComponent } from './home/home.component';
+import { EsqueciSenhaComponent } from './login/redefinir-senhas/esqueci-senha/esqueci-senha.component';
+import { RedefinirSenhaComponent } from './login/redefinir-senhas/redefinir-senha/redefinir-senha.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch:'full'},
@@ -32,6 +34,8 @@ export const routes: Routes = [
     { path: 'login/confirmar-email', component: ConfirmarEmailComponent },
     { path: 'login/cadastrar-senha', component: CadastrarSenhaComponent },
     { path: 'login/email-enviado', component: EmailEnviadoComponent },
+    { path: 'login/esqueci-minha-senha', component: EsqueciSenhaComponent },
+    { path: 'login/redefinir-senha', component: RedefinirSenhaComponent },
 
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
 

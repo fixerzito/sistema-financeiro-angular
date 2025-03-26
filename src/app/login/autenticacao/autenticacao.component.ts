@@ -61,6 +61,10 @@ export class AutenticacaoComponent {
     }
   }
 
+  esqueciMinhaSenha(){
+    this.router.navigate(['/login/esqueci-minha-senha']);
+  }
+
   loginRequest() {
     if (this.formGroup) {
       this.login = {

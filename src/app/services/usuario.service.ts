@@ -7,6 +7,7 @@ import { CadastroRequest } from '../models/forms/user/cadastro/cadastroRequest';
 import { Router } from '@angular/router';
 import { UserLogin } from '../models/forms/insert/user-login';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { RedefinirSenha } from '../models/forms/insert/redefinir-senha';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,14 @@ export class UsuarioService {
     
     cadastrarSenha(email: string, senha: string): Observable<any> {
       return this.httpClient.post(`${this.url}/cadastrar-senha`, { email, senha });
+    }
+
+    esqueciSenha(email: string): Observable<any> {
+      return this.httpClient.post(`${this.url}/esqueci-senha`, {email} );
+    }
+
+    redefinirSenha(redefinirSenha: RedefinirSenha): Observable<any> {
+      return this.httpClient.post(`${this.url}/redefinir-senha`, redefinirSenha);
     }
 
 

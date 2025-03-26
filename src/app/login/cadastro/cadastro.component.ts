@@ -14,6 +14,9 @@ import { UsuarioService } from '../../services/usuario.service';
 import { SharedService } from '../../services/shared.service';
 import { CalendarModule } from 'primeng/calendar';
 import { CadastroRequest } from '../../models/forms/user/cadastro/cadastroRequest';
+import { UsuarioVerify } from '../../models/forms/user/UsuarioVerify';
+import { UsarioVerifyResponse } from '../../models/forms/user/UsuarioVerifyResponse';
+import { InputMaskModule } from 'primeng/inputmask';
 
 @Component({
   selector: 'app-cadastro',
@@ -32,25 +35,32 @@ import { CadastroRequest } from '../../models/forms/user/cadastro/cadastroReques
     InputNumberModule,
     FormsModule,
     InputGroupModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    InputMaskModule
   ],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.css'
 })
 export class CadastroComponent implements OnInit {
   formGroup: FormGroup;
+  usuarioVerify: UsuarioVerify;
+  usuarioVerifyResponse: UsarioVerifyResponse;
   cadastroRequest?: CadastroRequest;
 
   constructor(
     private usuarioService: UsuarioService,
     private router: Router,
-    private route: ActivatedRoute,
-    private sharedService: SharedService
+    private route: ActivatedRoute
   ) {
     this.formGroup = new FormGroup({
       nome: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.required)
+      email: new FormControl(null, Validators.required),
+      cpf: new FormControl(null, Validators.required),
+      dataNascimento: new FormControl(null, Validators.required),
     })
+
+    this.usuarioVerify = {};
+    this.usuarioVerifyResponse = {};
   }
 
   ngOnInit(): void {
@@ -62,21 +72,35 @@ export class CadastroComponent implements OnInit {
           email: email
         });
       }
-  })
-}
+    })
+  }
 
-  cadastrar(){
-    if (this.formGroup){
+  cadastrar() {
+    if (this.formGroup) {
       this.cadastroRequest = {
         nome: this.formGroup.get('nome')?.value,
-        email: this.formGroup.get('email')?.value
+        email: this.formGroup.get('email')?.value,
+        cpf: this.formGroup.get('cpf')?.value,
+        dataNascimento: this.formGroup.get('dataNascimento')?.value,
       }
-    }
 
-    this.usuarioService.cadastrar(this.cadastroRequest!).subscribe(x => {
-      this.router.navigate(['/login/email-enviado'], {
-        queryParams: { email: `${this.cadastroRequest!.email}`}
+      this.usuarioVerify.email = this.cadastroRequest.email
+
+      this.usuarioService.verificarEmail(this.usuarioVerify).subscribe(response => {
+        this.usuarioVerifyResponse = response
+        
+        if(this.usuarioVerifyResponse.ativo == true){
+          this.router.navigate(['/login/autenticacao'], {
+            queryParams: { email: `${this.usuarioVerify!.email}`}
+          })
+        } else {
+          this.usuarioService.cadastrar(this.cadastroRequest!).subscribe(x => {
+            this.router.navigate(['/login/email-enviado'], {
+              queryParams: { email: `${this.cadastroRequest!.email}` }
+            })
+          })
+        }
       })
-    })
+    }
   }
 }

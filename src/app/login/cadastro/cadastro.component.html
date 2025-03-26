@@ -7,10 +7,17 @@
             <input type="text" pInputText id="nome" placeholder="Nome completo" class="input-email mb-2"
                 formControlName="nome" />
 
+            <p-inputMask mask="999.999.999-99" placeholder="Digite seu CPF" formControlName="cpf" class="inputMask mb-2"></p-inputMask>
+
+
             <input type="text" pInputText id="email" placeholder="Email" class="input-email mb-2"
                 formControlName="email" />
 
-            <button pButton (click)="cadastrar()" class="buttons btn-login">Cadastrar</button>
+            <p-calendar formControlName="dataNascimento" [iconDisplay]="'input'" [showIcon]="true" inputId="dataNascimento"
+                [inputStyle]="{width: '35rem'}" class="mb-2">
+            </p-calendar>
+
+            <button pButton (click)="cadastrar()" class="buttons btn-login" [disabled]="formGroup.invalid">Cadastrar</button>
         </div>
     </form>
 </div>

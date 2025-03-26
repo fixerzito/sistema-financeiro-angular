@@ -39,7 +39,7 @@ import { SharedService } from "../services/shared.service";
 })
 export class LoginComponent {
   usuarioVerify: UsuarioVerify;
-  usarioVerifyResponse: UsarioVerifyResponse;
+  usuarioVerifyResponse: UsarioVerifyResponse;
   formGroup: FormGroup;
 
   constructor(
@@ -48,7 +48,7 @@ export class LoginComponent {
     private route: ActivatedRoute,
   ){
     this.usuarioVerify = {};
-    this.usarioVerifyResponse = {};
+    this.usuarioVerifyResponse = {};
 
     this.formGroup = new FormGroup ({
       email: new FormControl (null, Validators.required)
@@ -74,9 +74,9 @@ export class LoginComponent {
       email: this.formGroup.get('email')?.value
     }
     this.usuarioService.verificarEmail(this.usuarioVerify).subscribe(response => {
-      this.usarioVerifyResponse = response
+      this.usuarioVerifyResponse = response
       
-      if(this.usarioVerifyResponse.ativo == true){
+      if(this.usuarioVerifyResponse.ativo == true){
         this.router.navigate(['/login/autenticacao'], {
           queryParams: { email: `${this.usuarioVerify!.email}`}
         })

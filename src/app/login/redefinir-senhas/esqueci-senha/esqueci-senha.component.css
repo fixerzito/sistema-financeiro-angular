@@ -19,6 +19,6 @@
     display: block;
 }
 
-::ng-deep .inputMask input {
+::ng-deep .input input {
     width: 100%;
 }

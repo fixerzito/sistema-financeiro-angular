@@ -5,7 +5,7 @@
         <div class="flex align-items-center gap-1 mb-1" [style]="{ width: '40rem' }">
             <input type="text" pInputText id="email" placeholder="Digite seu email"
                 class="flex-auto mr-2" formControlName="email"/>
-            <button pButton (click)="verificarEmail()" class="w-2">Login</button>
+            <button pButton (click)="verificarEmail()" class="w-2" [disabled]="formGroup.invalid">Login</button>
         </div>
     </form>
 </div>  
